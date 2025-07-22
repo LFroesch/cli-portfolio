@@ -120,11 +120,11 @@ export const contentData = {
   },
   contact: {
     items: [
-      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' },
-      { icon: '💻', text: 'github.com/LFroesch', url: 'https://github.com/LFroesch' },
-      { icon: '💼', text: 'linkedin.com/in/lucas-froeschner', url: 'https://www.linkedin.com/in/lucas-froeschner-938886114/' },
+      { icon: '💻', text: 'GitHub', url: 'https://github.com/LFroesch' },
+      { icon: '🎮', text: 'Game Projects', url: 'https://lfroesch.itch.io/' },
+      { icon: '💼', text: 'LinkedIn', url: 'https://www.linkedin.com/in/lucas-froeschner-938886114/' },
       { icon: '📝', text: 'Resume / CV', url: '#' }, // this will be a page on this site
-      { icon: '🎮', text: 'Game Projects', url: 'https://lfroesch.itch.io/' }
+      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' } // make this copy the email
     ]
   }
 };
