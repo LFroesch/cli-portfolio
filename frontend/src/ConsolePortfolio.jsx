@@ -55,7 +55,7 @@ function ConsolePortfolio() {
   const { formData, status, handleInputChange, submitForm } = useContactForm();
 
   // GitHub stats
-  const { githubData, activity, loading: githubLoading, error: githubError, refresh: refreshGitHub } = useGitHubStats();
+  const { githubData, activity, loading: githubLoading } = useGitHubStats();
 
   // Navigation functions (defined before useEffect that references them)
   const navigateMenu = useCallback((direction) => {
@@ -536,103 +536,83 @@ function ConsolePortfolio() {
       
       case 'stats':
         return (
-          <div className="w-full max-w-4xl mx-auto text-center">
-            {/* Status Indicator */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <div className={`flex items-center gap-2 px-3 py-1 text-xs font-medium border ${getBorderRadius('small')} ${
-                isOnline 
-                  ? 'border-white/40 text-white/80' 
-                  : 'border-white/20 text-white/60'
-              }`}>
-                <div className={`w-2 h-2 ${getBorderRadius()} ${isOnline ? 'bg-white/80' : 'bg-white/40'}`}></div>
-                {isOnline ? 'analytics online' : 'offline mode'}
-              </div>
-              
-              <div className={`flex items-center gap-2 px-3 py-1 text-xs font-medium border ${getBorderRadius('small')} ${
-                githubData && !githubError
-                  ? 'border-white/40 text-white/80' 
-                  : 'border-white/20 text-white/60'
-              }`}>
-                <div className={`w-2 h-2 ${getBorderRadius()} ${githubData && !githubError ? 'bg-white/80' : 'bg-white/40'}`}></div>
-                {githubData && !githubError ? 'github connected' : 'github offline'}
-              </div>
-              
-              <button
-                onClick={refreshGitHub}
-                className={`px-3 py-1 border border-white/40 hover:bg-white/10 transition-all duration-300 text-xs ${getBorderRadius('button')}`}
-                disabled={githubLoading}
-              >
-                {githubLoading ? 'syncing...' : 'refresh'}
-              </button>
-            </div>
-
-            {/* Overview Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          <div className="w-full max-w-6xl mx-auto space-y-8">
+            {/* Key Metrics - Responsive Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4">
               {isInitialLoad || githubLoading ? (
                 <>
-                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
-                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
-                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
                   <StatsCardSkeleton getBorderRadius={getBorderRadius} />
                   <StatsCardSkeleton getBorderRadius={getBorderRadius} />
                   <StatsCardSkeleton getBorderRadius={getBorderRadius} />
                 </>
               ) : (
                 <>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
-                    <div className="text-2xl font-bold text-white">{githubData?.stats?.currentStreak || 0}</div>
-                    <div className="text-sm opacity-80">streak days</div>
-                  </div>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                  {/* <div 
+                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors animate-slide-in ${getBorderRadius('card')}`}
+                    style={{ animationDelay: '0.1s' }}
+                  >
+                    <div className="text-2xl font-bold text-white">{githubData?.user?.followers || 0}</div>
+                    <div className="text-sm opacity-80">followers</div>
+                  </div> */}
+                  {/* <div 
+                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors animate-slide-in ${getBorderRadius('card')}`}
+                    style={{ animationDelay: '0.2s' }}
+                  >
                     <div className="text-2xl font-bold text-white">{githubData?.stats?.totalRepos || 0}</div>
                     <div className="text-sm opacity-80">repositories</div>
-                  </div>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
-                    <div className="text-2xl font-bold text-white">{githubData?.stats?.contributionsLast30Days || 0}</div>
-                    <div className="text-sm opacity-80">contributions</div>
-                  </div>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                  </div> */}
+                  <div 
+                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}
+                  >
                     <div className="text-2xl font-bold text-white">{stats.siteHits}</div>
                     <div className="text-sm opacity-80">site visits</div>
                   </div>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                  <div 
+                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}
+                  >
+                    <div className="text-2xl font-bold text-white">{getTotalSectionViews()}</div>
+                    <div className="text-sm opacity-80">section views</div>
+                  </div>
+                  <div 
+                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}
+                  >
                     <div className="text-2xl font-bold text-white">{getTotalProjectViews()}</div>
                     <div className="text-sm opacity-80">project views</div>
-                  </div>
-                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
-                    <div className="text-2xl font-bold text-white">{githubData?.user?.followers || 0}</div>
-                    <div className="text-sm opacity-80">followers</div>
                   </div>
                 </>
               )}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              {/* Recent Commits */}
-              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4">Recent Commits</h3>
-                <div className="space-y-3 max-h-64 overflow-y-auto">
-                  {githubLoading ? (
-                    <div className="text-center py-4 opacity-60">Loading...</div>
-                  ) : githubData?.recentCommits?.length > 0 ? (
-                    githubData.recentCommits.slice(0, 5).map((commit, index) => (
-                      <div key={index} className="text-left">
-                        <div className="text-sm truncate mb-1">{commit.message}</div>
-                        <div className="text-xs opacity-60">
-                          <span className="font-mono">{commit.sha}</span> • {commit.repo.split('/')[1]} • {new Date(commit.date).toLocaleDateString()}
-                        </div>
+            {/* Main Content - Four Equal Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* Most Viewed Projects */}
+              <div 
+                className={`p-6 bg-white/5 border border-white/10 h-[330px] flex flex-col ${getBorderRadius('card')}`}
+              >
+                <h3 className="text-lg font-medium mb-4">Most Viewed Projects</h3>
+                <div className="flex-1 space-y-2 overflow-y-auto">
+                  {getTopProjects().length > 0 ? (
+                    getTopProjects().map((project) => (
+                      <div key={project.name} className="flex justify-between items-center py-2 border-b border-white/10 last:border-b-0">
+                        <span className="flex items-center gap-2">
+                          <span>{project.name}</span>
+                        </span>
+                        <span className="text-white/80 font-mono">{project.views}</span>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-4 opacity-60">No recent commits</div>
+                    <div className="text-center py-4 opacity-60">No project views yet</div>
                   )}
                 </div>
               </div>
-
+              
               {/* Language Usage */}
-              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4">Language Usage</h3>
-                <div className="space-y-3">
+              <div 
+                className={`p-6 bg-white/5 border border-white/10 h-[330px] flex flex-col ${getBorderRadius('card')}`}
+              >
+                <h3 className="text-lg font-medium mb-6">Language Usage</h3>
+                <div className="flex-1 space-y-5 overflow-y-auto">
                   {githubLoading ? (
                     <div className="text-center py-4 opacity-60">Loading...</div>
                   ) : githubData?.topLanguages?.length > 0 ? (
@@ -656,10 +636,35 @@ function ConsolePortfolio() {
                 </div>
               </div>
 
+              {/* Recent Commits */}
+              <div 
+                className={`p-6 bg-white/5 border border-white/10 h-[360px] flex flex-col ${getBorderRadius('card')}`}
+              >
+                <h3 className="text-lg font-medium mb-4">Recent Commits</h3>
+                <div className="flex-1 space-y-4 overflow-y-auto">
+                  {githubLoading ? (
+                    <div className="text-center py-4 opacity-60">Loading...</div>
+                  ) : githubData?.recentCommits?.length > 0 ? (
+                    githubData.recentCommits.slice(0, 5).map((commit, index) => (
+                      <div key={index} className="text-left">
+                        <div className="text-sm truncate mb-1">{commit.message}</div>
+                        <div className="text-xs opacity-60">
+                          <span className="font-mono">{commit.sha}</span> • {commit.repo.split('/')[1]} • {new Date(commit.date).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 opacity-60">No recent commits</div>
+                  )}
+                </div>
+              </div>
+
               {/* Recent Repositories */}
-              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
+              <div 
+                className={`p-6 bg-white/5 border border-white/10 h-[360px] flex flex-col ${getBorderRadius('card')}`}
+              >
                 <h3 className="text-lg font-medium mb-4">Recent Repos</h3>
-                <div className="space-y-3 max-h-64 overflow-y-auto">
+                <div className="flex-1 space-y-2 overflow-y-auto">
                   {githubLoading ? (
                     <div className="text-center py-4 opacity-60">Loading...</div>
                   ) : githubData?.recentRepos?.length > 0 ? (
@@ -680,70 +685,52 @@ function ConsolePortfolio() {
                   )}
                 </div>
               </div>
+
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              {/* Top Projects */}
-              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4">Most Viewed Projects</h3>
-                <div className="space-y-2">
-                  {getTopProjects().length > 0 ? (
-                    getTopProjects().map((project) => (
-                      <div key={project.name} className="flex justify-between items-center py-2 border-b border-white/10 last:border-b-0">
-                        <span className="flex items-center gap-2">
-                          <span>{project.name}</span>
-                        </span>
-                        <span className="text-white/80 font-mono">{project.views}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-4 opacity-60">No project views yet</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Activity Preview */}
-              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
-                {githubLoading ? (
-                  <div className="text-center py-4 opacity-60">Loading...</div>
-                ) : activity && activity.length > 0 ? (
-                  <div>
-                    <div className="grid grid-cols-7 gap-1 mb-4">
-                      {activity.slice(-21).map((day, index) => {
-                        const intensity = Math.min(day.total / 3, 1);
-                        return (
-                          <div
-                            key={index}
-                            className={`w-6 h-6 border border-white/20 ${getBorderRadius('small')}`}
-                            style={{
-                              backgroundColor: intensity > 0 
-                                ? `rgba(255, 255, 255, ${0.1 + intensity * 0.4})`
-                                : 'rgba(255, 255, 255, 0.05)'
-                            }}
-                            title={`${day.date}: ${day.total} events`}
-                          ></div>
-                        );
-                      })}
-                    </div>
-                    <div className="text-xs opacity-60 text-center">
-                      last 3 weeks
-                    </div>
+            {/* Activity Preview - Full Width */}
+            <div 
+              className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}
+            >
+              <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
+              {githubLoading ? (
+                <div className="text-center py-4 opacity-60">Loading...</div>
+              ) : activity && activity.length > 0 ? (
+                <div>
+                  <div className="grid grid-cols-7 gap-1 mb-4">
+                    {activity.slice(-21).map((day, index) => {
+                      const intensity = Math.min(day.total / 3, 1);
+                      return (
+                        <div
+                          key={index}
+                          className={`w-6 h-6 border border-white/20 ${getBorderRadius('small')}`}
+                          style={{
+                            backgroundColor: intensity > 0 
+                              ? `rgba(255, 255, 255, ${0.1 + intensity * 0.4})`
+                              : 'rgba(255, 255, 255, 0.05)'
+                          }}
+                          title={`${day.date}: ${day.total} events`}
+                        ></div>
+                      );
+                    })}
                   </div>
-                ) : (
-                  <div className="text-center py-4 opacity-60">No activity data</div>
-                )}
-              </div>
+                  <div className="text-xs opacity-60 text-center">
+                    last 3 weeks
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-4 opacity-60">No activity data</div>
+              )}
             </div>
 
-            {/* Last Updated */}
+            {/* Footer */}
             <div className={`p-4 bg-white/5 border border-white/10 text-center ${getBorderRadius('card')}`}>
-              <div className="text-sm opacity-80">
-                <span>Site last visit: {stats.lastVisit ? new Date(stats.lastVisit).toLocaleString() : 'Never'}</span>
+              <div className="text-sm opacity-80 space-x-4">
+                <span>Last visit: {stats.lastVisit ? new Date(stats.lastVisit).toLocaleString() : 'Never'}</span>
                 {githubData && (
                   <>
-                    <span className="mx-2">•</span>
-                    <span>GitHub data updated: {new Date().toLocaleString()}</span>
+                    <span className="opacity-40">•</span>
+                    <span>Data refreshed: {new Date().toLocaleString()}</span>
                   </>
                 )}
               </div>

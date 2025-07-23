@@ -67,7 +67,7 @@ async function fetchGitHubData() {
     }
 
     // Fetch repositories
-    const reposResponse = await fetch(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=10`, { headers });
+    const reposResponse = await fetch(`${GITHUB_API_BASE}/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=50`, { headers });
     const reposData = await reposResponse.json();
     
     if (!Array.isArray(reposData)) {

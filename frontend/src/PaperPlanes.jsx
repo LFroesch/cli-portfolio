@@ -10,17 +10,17 @@ const PaperPlanes = () => {
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
       rotation: (direction * 180 / Math.PI) + 45, // Point in direction of travel
-      scale: 0.4 + Math.random() * 0.3, // Random size between 0.4 and 0.7
-      speed: 2 + Math.random() * 3, // Much faster forward speed (2-5 pixels per frame)
+      scale: 0.5 + Math.random() * 0.3, // Random size between 0.5 and 0.8
+      speed: 1 + Math.random() * 3, // Much faster forward speed (1-4 pixels per frame)
       direction: direction,
       turnTimer: 0,
       nextTurn: 60 + Math.random() * 120, // Turn every 3-9 seconds (at 20fps)
-      opacity: 0.4 + Math.random() * 0.3, // Random opacity between 0.4 and 0.7
+      opacity: 0.5 + Math.random() * 0.3, // Random opacity between 0.5 and 0.8
     };
   };
 
   useEffect(() => {
-    // Initialize 5 planes
+    // Initialize 15 planes
     const initialPlanes = Array.from({ length: 15 }, createPlane);
     setPlanes(initialPlanes);
 
