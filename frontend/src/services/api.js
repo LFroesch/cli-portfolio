@@ -1,18 +1,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5051/api';
 
 class APIService {
-  constructor() {
-    this.sessionId = this.getOrCreateSessionId();
-  }
-
-  getOrCreateSessionId() {
-    let sessionId = localStorage.getItem('portfolio-session-id');
-    if (!sessionId) {
-      sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('portfolio-session-id', sessionId);
-    }
-    return sessionId;
-  }
+  // No more session tracking - using global stats only
 
   async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
@@ -58,17 +47,10 @@ class APIService {
   // Analytics endpoints
   async trackVisit() {
     try {
-      const response = await this.request('/analytics/track-visit', {
+      return await this.request('/analytics/track-visit', {
         method: 'POST',
-        body: { sessionId: this.sessionId }
+        body: {}
       });
-      
-      if (response.sessionId) {
-        this.sessionId = response.sessionId;
-        localStorage.setItem('portfolio-session-id', response.sessionId);
-      }
-      
-      return response;
     } catch (error) {
       console.error('Failed to track visit:', error);
       return null;
@@ -79,7 +61,7 @@ class APIService {
     try {
       return await this.request('/analytics/track-project', {
         method: 'POST',
-        body: { sessionId: this.sessionId, projectName }
+        body: { projectName }
       });
     } catch (error) {
       console.error('Failed to track project view:', error);
@@ -91,7 +73,7 @@ class APIService {
     try {
       return await this.request('/analytics/track-section', {
         method: 'POST',
-        body: { sessionId: this.sessionId, sectionName }
+        body: { sectionName }
       });
     } catch (error) {
       console.error('Failed to track section view:', error);

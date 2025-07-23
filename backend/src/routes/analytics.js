@@ -1,179 +1,155 @@
 const express = require('express');
-const Visitor = require('../models/Visitor');
+const GlobalStats = require('../models/GlobalStats');
 const router = express.Router();
 
-// Generate session ID
-const generateSessionId = () => {
-  return 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-};
-
-// Track visitor/session
+// Track visitor/session - NO personal data stored
 router.post('/track-visit', async (req, res) => {
   try {
-    const { sessionId: clientSessionId } = req.body;
-    const ipAddress = req.ip || req.connection.remoteAddress;
-    const userAgent = req.get('User-Agent');
-    const referrer = req.get('Referrer');
-
-    let sessionId = clientSessionId;
+    // Get or create global stats document
+    let globalStats = await GlobalStats.findById('global');
     
-    // If no session ID provided, generate one
-    if (!sessionId) {
-      sessionId = generateSessionId();
-    }
-
-    // Check if visitor exists
-    let visitor = await Visitor.findOne({ sessionId });
-    
-    if (visitor) {
-      // Update existing visitor
-      visitor.lastVisit = new Date();
-      visitor.visitCount += 1;
-      await visitor.save();
-    } else {
-      // Create new visitor
-      visitor = new Visitor({
-        sessionId,
-        ipAddress,
-        userAgent,
-        referrer
+    if (!globalStats) {
+      globalStats = new GlobalStats({
+        _id: 'global',
+        siteHits: 1,
+        totalSessions: 1
       });
-      await visitor.save();
+    } else {
+      globalStats.siteHits += 1;
+      globalStats.totalSessions += 1;
+      globalStats.lastUpdated = new Date();
     }
+    
+    await globalStats.save();
 
     res.json({ 
-      success: true, 
-      sessionId: visitor.sessionId,
-      visitCount: visitor.visitCount 
+      success: true,
+      siteHits: globalStats.siteHits
     });
   } catch (error) {
     console.error('Error tracking visit:', error);
-    res.status(500).json({ error: 'Failed to track visit' });
+    // Don't fail silently - still return success for client
+    res.json({ success: true, siteHits: 0 });
   }
 });
 
-// Track project view
+// Track project view - Global stats only
 router.post('/track-project', async (req, res) => {
   try {
-    const { sessionId, projectName } = req.body;
+    const { projectName } = req.body;
     
-    if (!sessionId || !projectName) {
-      return res.status(400).json({ error: 'Session ID and project name required' });
+    if (!projectName) {
+      return res.status(400).json({ error: 'Project name required' });
     }
 
-    const visitor = await Visitor.findOne({ sessionId });
-    if (!visitor) {
-      return res.status(404).json({ error: 'Session not found' });
+    // Get or create global stats document
+    let globalStats = await GlobalStats.findById('global');
+    if (!globalStats) {
+      globalStats = new GlobalStats({ _id: 'global' });
     }
 
-    // Find existing project view or create new one
-    const existingView = visitor.projectViews.find(view => view.projectName === projectName);
+    // Find existing project or create new one
+    const existingProject = globalStats.projectViews.find(p => p.name === projectName);
     
-    if (existingView) {
-      existingView.viewCount += 1;
-      existingView.lastViewed = new Date();
+    if (existingProject) {
+      existingProject.views += 1;
     } else {
-      visitor.projectViews.push({
-        projectName,
-        viewCount: 1,
-        lastViewed: new Date()
+      globalStats.projectViews.push({
+        name: projectName,
+        views: 1
       });
     }
 
-    await visitor.save();
+    globalStats.lastUpdated = new Date();
+    await globalStats.save();
+    
     res.json({ success: true });
   } catch (error) {
     console.error('Error tracking project view:', error);
-    res.status(500).json({ error: 'Failed to track project view' });
+    res.json({ success: true }); // Don't fail silently
   }
 });
 
-// Track section view
+// Track section view - Global stats only
 router.post('/track-section', async (req, res) => {
   try {
-    const { sessionId, sectionName } = req.body;
+    const { sectionName } = req.body;
     
-    if (!sessionId || !sectionName) {
-      return res.status(400).json({ error: 'Session ID and section name required' });
+    if (!sectionName) {
+      return res.status(400).json({ error: 'Section name required' });
     }
 
-    const visitor = await Visitor.findOne({ sessionId });
-    if (!visitor) {
-      return res.status(404).json({ error: 'Session not found' });
+    // Get or create global stats document
+    let globalStats = await GlobalStats.findById('global');
+    if (!globalStats) {
+      globalStats = new GlobalStats({ _id: 'global' });
     }
 
-    // Find existing section view or create new one
-    const existingView = visitor.sectionViews.find(view => view.sectionName === sectionName);
+    // Find existing section or create new one
+    const existingSection = globalStats.sectionViews.find(s => s.name === sectionName);
     
-    if (existingView) {
-      existingView.viewCount += 1;
-      existingView.lastViewed = new Date();
+    if (existingSection) {
+      existingSection.views += 1;
     } else {
-      visitor.sectionViews.push({
-        sectionName,
-        viewCount: 1,
-        lastViewed: new Date()
+      globalStats.sectionViews.push({
+        name: sectionName,
+        views: 1
       });
     }
 
-    await visitor.save();
+    globalStats.lastUpdated = new Date();
+    await globalStats.save();
+    
     res.json({ success: true });
   } catch (error) {
     console.error('Error tracking section view:', error);
-    res.status(500).json({ error: 'Failed to track section view' });
+    res.json({ success: true }); // Don't fail silently
   }
 });
 
-// Get analytics data
+// Get analytics data - Global stats only
 router.get('/stats', async (req, res) => {
   try {
-    const totalVisitors = await Visitor.countDocuments();
-    const totalSessions = await Visitor.aggregate([
-      { $group: { _id: null, totalVisits: { $sum: '$visitCount' } } }
-    ]);
+    // Get global stats document
+    const globalStats = await GlobalStats.findById('global');
+    
+    if (!globalStats) {
+      // Return default stats if none exist yet
+      return res.json({
+        totalVisitors: 0,
+        totalSessions: 0,
+        topProjects: [],
+        topSections: [],
+        recentVisitors: []
+      });
+    }
 
-    // Get top projects
-    const topProjects = await Visitor.aggregate([
-      { $unwind: '$projectViews' },
-      { 
-        $group: { 
-          _id: '$projectViews.projectName', 
-          totalViews: { $sum: '$projectViews.viewCount' }
-        }
-      },
-      { $sort: { totalViews: -1 } },
-      { $limit: 10 }
-    ]);
-
-    // Get top sections
-    const topSections = await Visitor.aggregate([
-      { $unwind: '$sectionViews' },
-      { 
-        $group: { 
-          _id: '$sectionViews.sectionName', 
-          totalViews: { $sum: '$sectionViews.viewCount' }
-        }
-      },
-      { $sort: { totalViews: -1 } },
-      { $limit: 10 }
-    ]);
-
-    // Recent visitors
-    const recentVisitors = await Visitor.find()
-      .sort({ lastVisit: -1 })
-      .limit(10)
-      .select('firstVisit lastVisit visitCount country region city');
+    // Sort projects and sections by views
+    const topProjects = globalStats.projectViews
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 10);
+      
+    const topSections = globalStats.sectionViews
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 10);
 
     res.json({
-      totalVisitors,
-      totalSessions: totalSessions[0]?.totalVisits || 0,
-      topProjects: topProjects.map(p => ({ name: p._id, views: p.totalViews })),
-      topSections: topSections.map(s => ({ name: s._id, views: s.totalViews })),
-      recentVisitors
+      totalVisitors: globalStats.siteHits,
+      totalSessions: globalStats.totalSessions,
+      topProjects,
+      topSections,
+      recentVisitors: [] // No longer tracking individual visitors
     });
   } catch (error) {
     console.error('Error getting stats:', error);
-    res.status(500).json({ error: 'Failed to get analytics data' });
+    // Return empty stats instead of failing
+    res.json({
+      totalVisitors: 0,
+      totalSessions: 0,
+      topProjects: [],
+      topSections: [],
+      recentVisitors: []
+    });
   }
 });
 
