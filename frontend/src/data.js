@@ -8,112 +8,58 @@ export const sections = ['about', 'skills', 'contact', 'stats', 'projects'];
 export const contentData = {
   about: {
     paragraphs: [
-      "I'm a full-stack developer passionate about creating clean, efficient solutions. I enjoy learning new tech/langs or modifying existing ones to their extreme.",
-      "When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech in other fields."
+      "I'm a full-stack developer passionate about creating clean & efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme.",
+      "When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech in other fields, I love a good info rabbithole."
     ]
   },
   skills: {
     categories: [
       {
-        name: 'Frontend',
+        name: 'Frontend Development',
+        description: 'I love building interactive, responsive user interfaces. Most comfortable with React ecosystem, but enjoy exploring different frameworks and modern CSS approaches.',
         items: [
-          'JavaScript', 'TypeScript', 'React', 'Vue.js', 'Angular', 'Svelte', 'Next.js', 'Nuxt.js',
-          'HTML5', 'CSS3', 'SCSS/Sass', 'Less', 'Tailwind CSS', 'Bootstrap', 'Material-UI', 'Chakra UI',
-          'Styled Components', 'Emotion', 'jQuery', 'Alpine.js', 'Lit', 'Stencil', 'Web Components',
-          'PWA', 'Service Workers', 'WebAssembly', 'Three.js', 'D3.js', 'Chart.js', 'Framer Motion',
-          'React Native', 'Flutter', 'Ionic', 'Cordova', 'Electron'
+          'JavaScript', 'TypeScript', 'React', 'Vue.js', 'Next.js',
+          'HTML', 'CSS', 'Tailwind CSS', 'Material-UI', 'Chakra UI', 'Vite',
+          'PWA', 'Three.js', 'Framer Motion', 'React Native', 'Electron'
         ]
       },
       {
-        name: 'Backend',
+        name: 'Backend Development',
+        description: 'Experienced in building robust APIs and server-side applications. Particularly enjoy working with Node.js and Python for rapid development and Go for performance.',
         items: [
-          'Node.js', 'Express', 'Fastify', 'Koa', 'NestJS', 'Python', 'Django', 'Flask', 'FastAPI',
-          'Java', 'Spring Boot', 'C#', '.NET', 'ASP.NET Core', 'Go', 'Gin', 'Fiber', 'Rust', 'Actix',
-          'PHP', 'Laravel', 'Symfony', 'Ruby', 'Rails', 'Sinatra', 'Kotlin', 'Scala', 'Play Framework',
-          'Deno', 'Bun', 'GraphQL', 'Apollo', 'REST APIs', 'gRPC', 'tRPC', 'Socket.io', 'WebSockets',
-          'Microservices', 'Serverless', 'Lambda', 'Azure Functions', 'Vercel Functions'
+          'Node.js', 'Express', 'Python', 'Django', 'Flask', 'FastAPI',
+          'C#', 'Go', 'Gin'
         ]
       },
       {
-        name: 'Databases',
+        name: 'Database Systems',
+        description: 'Comfortable working with both SQL and NoSQL databases. I like choosing the right database for the job and optimizing queries for performance.',
         items: [
-          'MongoDB', 'MySQL', 'PostgreSQL', 'SQLite', 'Redis', 'Elasticsearch', 'DynamoDB',
-          'Cassandra', 'CouchDB', 'Neo4j', 'Firebase Firestore', 'Supabase', 'PlanetScale',
-          'Prisma', 'TypeORM', 'Mongoose', 'Sequelize', 'Drizzle', 'Knex.js'
+          'MongoDB', 'MySQL', 'PostgreSQL', 'SQLite', 'Redis',
+          'Supabase', 'Prisma', 'Mongoose', 'Drizzle'
         ]
       },
       {
-        name: 'Cloud & DevOps',
+        name: 'Programming Languages',
+        description: 'I enjoy learning new languages and picking the right tool for each project. Always curious about language design and performance characteristics.',
         items: [
-          'AWS', 'Azure', 'Google Cloud', 'Digital Ocean', 'Heroku', 'Vercel', 'Netlify',
-          'Docker', 'Kubernetes', 'Docker Compose', 'Terraform', 'Ansible', 'Jenkins',
-          'GitHub Actions', 'GitLab CI', 'CircleCI', 'Travis CI', 'Nginx', 'Apache',
-          'Cloudflare', 'CDN', 'Load Balancers', 'Auto Scaling'
-        ]
-      },
-      {
-        name: 'Languages',
-        items: [
-          'JavaScript', 'TypeScript', 'Python', 'Java', 'C#', 'Go', 'Rust', 'C++', 'C',
-          'PHP', 'Ruby', 'Kotlin', 'Swift', 'Dart', 'Scala', 'Clojure', 'Haskell', 'Erlang',
-          'Elixir', 'F#', 'OCaml', 'Lua', 'Shell/Bash', 'PowerShell', 'SQL', 'NoSQL'
-        ]
-      },
-      {
-        name: 'Tools & Platforms',
-        items: [
-          'Git', 'GitHub', 'GitLab', 'Bitbucket', 'VS Code', 'IntelliJ IDEA', 'WebStorm',
-          'Vim/Neovim', 'Emacs', 'Sublime Text', 'Atom', 'Postman', 'Insomnia', 'Thunder Client',
-          'Figma', 'Sketch', 'Adobe XD', 'Photoshop', 'GIMP', 'Blender', 'Unity', 'Unreal Engine',
-          'Jira', 'Trello', 'Notion', 'Slack', 'Discord', 'Teams', 'Zoom'
-        ]
-      },
-      {
-        name: 'Testing & QA',
-        items: [
-          'Jest', 'Vitest', 'Mocha', 'Chai', 'Cypress', 'Playwright', 'Selenium', 'Puppeteer',
-          'Testing Library', 'Enzyme', 'Storybook', 'Chromatic', 'Percy', 'Lighthouse',
-          'WebPageTest', 'k6', 'Artillery', 'JMeter', 'Postman Tests', 'Newman'
-        ]
-      },
-      {
-        name: 'Build Tools',
-        items: [
-          'Vite', 'Webpack', 'Rollup', 'Parcel', 'esbuild', 'SWC', 'Babel', 'ESLint', 'Prettier',
-          'Husky', 'lint-staged', 'Commitizen', 'Semantic Release', 'Changesets', 'Lerna',
-          'Rush', 'Nx', 'Turborepo', 'Grunt', 'Gulp', 'Browsersync'
+          'JavaScript', 'TypeScript', 'Python', 'Java', 'C#', 'Go', 'C++',
+          'PHP', 'Ruby', 'Swift', 'Kotlin', 'Shell/Bash', 'SQL'
         ]
       },
       {
         name: 'Game Development',
+        description: 'Creating games is my creative outlet. I love bringing ideas to life through interactive experiences and pushing the boundaries of what games can be.',
         items: [
-          'Unity', 'Unreal Engine', 'Godot', 'GameMaker Studio', 'Construct 3', 'Phaser.js',
-          'PixiJS', 'Babylon.js', 'A-Frame', 'PlayCanvas', 'Cocos2d', 'LibGDX', 'MonoGame',
-          'SDL', 'SFML', 'Allegro', 'OpenGL', 'DirectX', 'Vulkan', 'Metal'
+          'Unity', 'Unreal Engine', 'Godot', 'Phaser.js', 'OpenGL'
         ]
       },
       {
-        name: 'Mobile Development',
+        name: 'Development Tools',
+        description: 'Proficient with the essential development workflow tools. I believe good tooling makes for better code and more enjoyable development.',
         items: [
-          'React Native', 'Flutter', 'Ionic', 'Cordova', 'PhoneGap', 'Xamarin', 'NativeScript',
-          'Swift (iOS)', 'Objective-C', 'Kotlin (Android)', 'Java (Android)', 'Android Studio',
-          'Xcode', 'Expo', 'Capacitor'
-        ]
-      },
-      {
-        name: 'Data Science & AI',
-        items: [
-          'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn',
-          'Jupyter', 'Google Colab', 'Anaconda', 'R', 'RStudio', 'Tableau', 'Power BI',
-          'Apache Spark', 'Hadoop', 'Kafka', 'Airflow', 'MLflow', 'Kubeflow'
-        ]
-      },
-      {
-        name: 'Blockchain & Web3',
-        items: [
-          'Solidity', 'Web3.js', 'Ethers.js', 'Hardhat', 'Truffle', 'Ganache', 'MetaMask',
-          'IPFS', 'The Graph', 'Moralis', 'Alchemy', 'Infura', 'OpenZeppelin', 'Chainlink',
-          'Polygon', 'Binance Smart Chain', 'Avalanche', 'Solana', 'Cardano'
+          'Git', 'GitHub', 'VS Code', 'Postman', 'Figma', 'Unity', 'Unreal Engine',
+          'Vite', 'Webpack', 'Babel', 'ESLint', 'Prettier', 'Jest', 'Cypress'
         ]
       }
     ]
@@ -131,103 +77,130 @@ export const contentData = {
 
 export const projects = [
   {
-    name: 'E-Commerce Site',
-    description: 'A full-stack e-commerce platform with user authentication, product catalog, shopping cart, and payment integration.',
-    techStack: 'React, Node.js, MongoDB, Stripe',
+    name: 'isle of brady',
+    description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
+    techStack: 'Godot, GDScript',
+    status: 'Completed - May 2024',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'video', // 'video', 'gif', 'image', or null
-      url: '/path/to/ecommerce-demo.mp4',
-      poster: '/path/to/ecommerce-thumbnail.jpg' // optional poster image for videos
-    }
+    media: [
+      {
+        type: 'video',
+        url: '/rpg/rpg.mp4'
+      },
+      {
+        type: 'image',
+        url: '/rpg/rpg.mp4'
+      }
+    ]
   },
   {
-    name: 'Chat App',
-    description: 'Real-time chat application with WebSocket connections, user presence, and message history.',
-    techStack: 'React, Socket.io, Express, PostgreSQL',
+    name: 'portmon',
+    description: 'A TUI interface for managing your active ports and services. Clean, efficient port monitoring with real-time updates.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'Completed - March 2024',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/portmon',
+    media: [
+      {
+        type: 'image',
+        url: '/Portmon.png'
+      }
+    ]
+  },
+  {
+    name: 'git-helper',
+    description: 'A TUI interface for managing your git repositories and workflows. Streamlined git operations with real-time feedback.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'Completed - March 2024',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/git-helper',
+    media: [
+      {
+        type: 'image',
+        url: '/GitHelper.png'
+      }
+    ]
+  },
+  {
+    name: 'gator',
+    description: 'RSS feed reader with a clean interface for staying up-to-date with your favorite content sources.',
+    techStack: 'Go, RSS Parser, TUI',
+    status: 'Completed - January 2024',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'gif',
-      url: '/path/to/chat-demo.gif'
-    }
+    media: null
   },
   {
-    name: 'Tetris Clone',
-    description: 'Classic Tetris game implementation with modern graphics, scoring system, and responsive controls.',
-    techStack: 'JavaScript, Canvas API, HTML5',
+    name: 'project-manager',
+    description: 'Full-featured project management web application with task tracking, team collaboration, and progress visualization.',
+    techStack: 'React, Node.js, MongoDB, Express',
+    status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'video',
-      url: '/path/to/tetris-gameplay.mp4',
-      poster: '/path/to/tetris-thumbnail.jpg'
-    }
+    media: null
   },
   {
-    name: 'Portfolio CLI',
-    description: 'Interactive command-line interface portfolio showcasing projects and skills in a terminal environment.',
-    techStack: 'Node.js, Inquirer.js, Chalk',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/cli-portfolio',
-    media: {
-      type: 'gif',
-      url: '/path/to/cli-demo.gif'
-    }
-  },
-  {
-    name: 'Data Visualizer',
-    description: 'Interactive data visualization tool with multiple chart types, filtering, and export capabilities.',
-    techStack: 'React, D3.js, Chart.js, Express',
+    name: 'fresh-notes',
+    description: 'Modern note-taking application with rich text editing, organization features, and cross-platform sync.',
+    techStack: 'React, Electron, SQLite, Markdown',
+    status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'video',
-      url: '/path/to/dataviz-demo.mp4',
-      poster: '/path/to/dataviz-thumbnail.jpg'
-    }
+    media: null
   },
   {
-    name: 'Weather App',
-    description: 'Weather forecast application with location services, interactive maps, and detailed weather data.',
-    techStack: 'React, Weather API, Leaflet.js',
+    name: 'project-launcher',
+    description: 'TUI application for launching and managing personal projects with quick access to tools and resources.',
+    techStack: 'BubbleTea, Go',
+    status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'image',
-      url: '/path/to/weather-screenshot.png'
-    }
+    media: null
   },
   {
-    name: 'Task Manager',
-    description: 'Collaborative task management application with project organization, team features, and progress tracking.',
-    techStack: 'Vue.js, Node.js, MongoDB, Socket.io',
+    name: 'dwight',
+    description: 'Local LLM assistant interface built for Ollama. Terminal-based AI companion for development tasks and queries.',
+    techStack: 'Go, Ollama API, BubbleTea',
+    status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null // No media for this project
+    media: null
   },
   {
-    name: 'Blog Platform',
-    description: 'Content management system with rich text editor, user authentication, and SEO optimization.',
-    techStack: 'Next.js, Prisma, PostgreSQL, Tailwind',
+    name: 'voice memo transcriber',
+    description: 'Records voice audio and converts it to text notes with voice command support for hands-free note-taking.',
+    techStack: 'Python, Speech Recognition, Audio Processing',
+    status: 'Completed - February 2024',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'gif',
-      url: '/path/to/blog-editing.gif'
-    }
+    media: null
   },
   {
-    name: 'Game Engine',
-    description: '2D game engine with physics simulation, sprite animation, and level editor for indie game development.',
-    techStack: 'C++, OpenGL, GLFW, Box2D',
+    name: 'logdog',
+    description: 'TUI/CLI-driven custom logging system designed for personal projects with advanced filtering and analysis.',
+    techStack: 'Go, Log Parsing, TUI',
+    status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: {
-      type: 'video',
-      url: '/path/to/gameengine-demo.mp4',
-      poster: '/path/to/gameengine-thumbnail.jpg'
-    }
+    media: null
+  },
+  {
+    name: 'backup-xd',
+    description: 'TUI application for backing up personal projects, configurations, and important files with automated scheduling.',
+    techStack: 'Go, File System APIs, BubbleTea',
+    status: 'Completed - April 2024',
+    liveDemo: '#',
+    github: '#',
+    media: null
+  },
+  {
+    name: 'lif',
+    description: 'Personal productivity TUI app featuring timers, reminders, glossary, and daily task management.',
+    techStack: 'Go, SQLite, BubbleTea, Cron',
+    status: 'In Development',
+    liveDemo: '#',
+    github: '#',
+    media: null
   }
 ];
