@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { personalInfo, sections, projects, contentData } from './data'
 import StarfieldBackground from './StarfieldBackground'
+import PaperPlanes from './PaperPlanes'
+import { getSkillCategoryIcon } from './SkillIcons'
 import { useStats } from './useStats'
 import './animations.css'
 
@@ -9,6 +11,23 @@ function ConsolePortfolio() {
   const [currentProjectIndex, setCurrentProjectIndex] = useState(2);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [designVariant] = useState('rounded'); // 'rounded' or 'sharp'
+  const [variationCycle, setVariationCycle] = useState(0);
+  
+  // Copy email to clipboard
+  const copyEmailToClipboard = async (email) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      // Could add a toast notification here if desired
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = email;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    }
+  };
   
   // Stats tracking
   const { 
@@ -49,6 +68,15 @@ function ConsolePortfolio() {
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
   }, [currentSection, currentProjectIndex]);
+
+  // Cycle through variations every 8 seconds for dynamic feel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVariationCycle(prev => (prev + 1) % 4);
+    }, 8000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Helper function to get border radius classes based on variant
   const getBorderRadius = (element = 'default') => {
@@ -192,38 +220,98 @@ function ConsolePortfolio() {
         return (
           <div className="w-full max-w-5xl mx-auto">
             <div className="space-y-8">
-              {contentData.skills.categories.map((category, index) => (
-                <div 
-                  key={index} 
-                  className={`group border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:shadow-lg hover:shadow-white/10 ${getBorderRadius('card')}`}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="p-6">
-                    {/* Header */}
-                    <h3 className="text-2xl font-semibold mb-3 group-hover:text-white transition-colors duration-300">
-                      {category.name}
-                    </h3>
+              {contentData.skills.categories.map((category, index) => {
+                // Pre-cached variations for performance with explicit class names
+                const variations = [
+                  {
+                    shadowClass: 'hover:shadow-blue-500/10',
+                    sparkles: [
+                      { classes: 'absolute top-4 right-4 w-2 h-2 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.1s' },
+                      { classes: 'absolute bottom-6 left-6 w-1.5 h-1.5 bg-cyan-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.3s' }
+                    ]
+                  },
+                  {
+                    shadowClass: 'hover:shadow-purple-500/10',
+                    sparkles: [
+                      { classes: 'absolute top-8 right-8 w-1 h-1 bg-purple-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.2s' },
+                      { classes: 'absolute top-6 left-8 w-1 h-1 bg-violet-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.4s' },
+                      { classes: 'absolute bottom-8 right-12 w-1.5 h-1.5 bg-indigo-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.6s' }
+                    ]
+                  },
+                  {
+                    shadowClass: 'hover:shadow-cyan-500/10',
+                    sparkles: [
+                      { classes: 'absolute top-4 right-4 w-2 h-2 bg-cyan-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.15s' },
+                      { classes: 'absolute top-8 left-6 w-1 h-1 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.35s' }
+                    ]
+                  },
+                  {
+                    shadowClass: 'hover:shadow-indigo-500/10',
+                    sparkles: [
+                      { classes: 'absolute top-6 right-6 w-1.5 h-1.5 bg-indigo-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.1s' },
+                      { classes: 'absolute bottom-4 left-4 w-1 h-1 bg-purple-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.3s' },
+                      { classes: 'absolute top-10 left-10 w-1 h-1 bg-violet-400/40 rounded-full opacity-0 group-hover:opacity-100 animate-sparkle', delay: '0.5s' }
+                    ]
+                  }
+                ];
+                
+                const variation = variations[(index + variationCycle) % variations.length];
+                
+                return (
+                  <div 
+                    key={index} 
+                    className={`group border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:shadow-xl ${variation.shadowClass} ${getBorderRadius('card')}`}
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="p-6 relative overflow-hidden">
+                      {/* Cached sparkle effects */}
+                      {variation.sparkles.map((sparkle, sparkleIndex) => (
+                        <div 
+                          key={sparkleIndex}
+                          className={sparkle.classes}
+                          style={{ animationDelay: sparkle.delay }}
+                        ></div>
+                      ))}
+                    
+                    {/* Header with icon */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                        {getSkillCategoryIcon(index)}
+                      </div>
+                      <h3 className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 bg-gradient-to-r from-white to-gray-300 group-hover:from-blue-200 group-hover:to-white bg-clip-text text-transparent">
+                        {category.name}
+                      </h3>
+                    </div>
                     
                     {/* Description */}
-                    <p className="text-base opacity-80 mb-4 leading-relaxed group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-base opacity-80 mb-6 leading-relaxed group-hover:opacity-100 transition-opacity duration-300 text-left">
                       {category.description}
                     </p>
                     
-                    {/* Tech Stack */}
-                    <div className="flex flex-wrap gap-2">
+                    {/* Tech Stack with enhanced animations */}
+                    <div className="flex flex-wrap gap-3">
                       {category.items.map((item, itemIndex) => (
-                        <span 
-                          key={itemIndex} 
-                          className={`px-3 py-1.5 bg-white/10 border border-white/20 text-sm hover:bg-white/20 hover:border-white/40 transition-all duration-200 hover:scale-105 ${getBorderRadius('small')}`}
-                          style={{ animationDelay: `${(index * 0.1) + (itemIndex * 0.02)}s` }}
+                        <div
+                          key={itemIndex}
+                          className={`group/item relative px-3 py-2 bg-white/10 border border-white/20 text-sm hover:bg-white/20 hover:border-blue-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer ${getBorderRadius('small')}`}
                         >
-                          {item}
-                        </span>
+                          {/* Gradient overlay on hover */}
+                          <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-purple-500/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 ${getBorderRadius('small')}`}></div>
+                          
+                          {/* Content */}
+                          <div className="flex items-center justify-center relative z-10">
+                            <span className="font-medium group-hover/item:text-blue-100 transition-colors duration-200">
+                              {item.name}
+                            </span>
+                          </div>
+                          
+                        </div>
                       ))}
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         );
@@ -456,35 +544,107 @@ function ConsolePortfolio() {
 
             {/* Last Visit & Reset */}
             <div className={`p-4 bg-white/5 border border-white/10 text-center ${getBorderRadius('card')}`}>
-              <div className="mb-4 text-sm opacity-80">
+              <div className="mb-0 text-sm opacity-80">
                 {stats.lastVisit && (
                   <span>Last visit: {new Date(stats.lastVisit).toLocaleString()}</span>
                 )}
               </div>
-              <button 
+              {/* <button 
                 onClick={resetStats}
                 className={`px-4 py-2 border border-red-400 text-red-400 hover:bg-red-400 hover:text-black transition-all duration-300 ${getBorderRadius('button')}`}
               >
                 Reset Analytics
-              </button>
+              </button> */}
             </div>
           </div>
         );
 
       case 'contact':
         return (
-          <div className="w-full max-w-5xl mx-auto">
-            {/* First row - 3 items */}
-            <div className="grid grid-cols-3 gap-6 mb-6">
-              {contentData.contact.items.slice(0, 3).map((item, index) => (
-                <a 
-                  key={index} 
-                  href={item.url} 
-                  className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 ${getBorderRadius('card')}`}
-                  target={item.url.startsWith('http') ? '_blank' : '_self'}
-                  rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
+          <div className="w-full max-w-5xl mx-auto space-y-12">
+            {/* Contact Links */}
+            <div>
+              
+              {/* First row - 3 items */}
+              <div className="grid grid-cols-3 gap-6 mb-6">
+                {contentData.contact.items.slice(0, 3).map((item, index) => {
+                  const isEmail = item.url.startsWith('mailto:');
+                  
+                  if (isEmail) {
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => copyEmailToClipboard(item.text)}
+                        className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 cursor-pointer ${getBorderRadius('card')}`}
+                        style={{ animationDelay: `${index * 0.1}s` }}
+                      >
+                        {/* Background gradient overlay */}
+                        <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
+                        
+                        {/* Animated border glow */}
+                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-cyan-500/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
+                        
+                        {/* Content */}
+                        <div className="relative z-10 text-center">
+                          {/* Icon with glow effect */}
+                          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 relative">
+                            <span className="relative z-10">{item.icon}</span>
+                            <div className="absolute inset-0 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 text-4xl">
+                              {item.icon}
+                            </div>
+                          </div>
+                          
+                          {/* Text */}
+                          <h3 className="text-lg font-medium mb-2 group-hover:text-white transition-colors duration-300">
+                            Email (Click to Copy)
+                          </h3>
+                          
+                          {/* URL or description */}
+                          <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
+                            {item.text}
+                          </p>
+                        </div>
+                        
+                        {/* Hover particle effect */}
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                          <div 
+                            className={`absolute w-2 h-2 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping ${getBorderRadius()}`} 
+                            style={{ 
+                              top: `${5 + (index * 7) % 15}%`, 
+                              left: `${10 + (index * 13) % 20}%`,
+                              animationDelay: `${0.1 + (index * 0.05)}s` 
+                            }}
+                          ></div>
+                          <div 
+                            className={`absolute w-1 h-1 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse ${getBorderRadius()}`} 
+                            style={{ 
+                              top: `${30 + (index * 11) % 25}%`, 
+                              right: `${20 + (index * 9) % 15}%`,
+                              animationDelay: `${0.3 + (index * 0.07)}s` 
+                            }}
+                          ></div>
+                          <div 
+                            className={`absolute w-1.5 h-1.5 bg-purple-400/30 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce ${getBorderRadius()}`} 
+                            style={{ 
+                              bottom: `${20 + (index * 17) % 20}%`, 
+                              left: `${25 + (index * 19) % 25}%`,
+                              animationDelay: `${0.5 + (index * 0.09)}s` 
+                            }}
+                          ></div>
+                        </div>
+                      </button>
+                    );
+                  }
+                  
+                  return (
+                    <a 
+                      key={index} 
+                      href={item.url} 
+                      className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 ${getBorderRadius('card')}`}
+                      target={item.url.startsWith('http') ? '_blank' : '_self'}
+                      rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
                   {/* Background gradient overlay */}
                   <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
                   
@@ -545,21 +705,91 @@ function ConsolePortfolio() {
                     ></div>
                   </div>
                 </a>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
             
             {/* Second row - 2 items centered */}
             {contentData.contact.items.length > 3 && (
               <div className="flex justify-center gap-6">
-                {contentData.contact.items.slice(3).map((item, index) => (
-                  <a 
-                    key={index + 3} 
-                    href={item.url} 
-                    className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 w-full max-w-xs ${getBorderRadius('card')}`}
-                    target={item.url.startsWith('http') ? '_blank' : '_self'}
-                    rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    style={{ animationDelay: `${(index + 3) * 0.1}s` }}
-                  >
+                {contentData.contact.items.slice(3).map((item, index) => {
+                  const isEmail = item.url.startsWith('mailto:');
+                  
+                  if (isEmail) {
+                    return (
+                      <button
+                        key={index + 3}
+                        onClick={() => copyEmailToClipboard(item.text)}
+                        className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 w-full max-w-xs cursor-pointer ${getBorderRadius('card')}`}
+                        style={{ animationDelay: `${(index + 3) * 0.1}s` }}
+                      >
+                        {/* Background gradient overlay */}
+                        <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
+                        
+                        {/* Animated border glow */}
+                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-cyan-500/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
+                        
+                        {/* Content */}
+                        <div className="relative z-10 text-center">
+                          {/* Icon with glow effect */}
+                          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 relative">
+                            <span className="relative z-10">{item.icon}</span>
+                            <div className="absolute inset-0 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 text-4xl">
+                              {item.icon}
+                            </div>
+                          </div>
+                          
+                          {/* Text */}
+                          <h3 className="text-lg font-medium mb-2 group-hover:text-white transition-colors duration-300">
+                            Email (Click to Copy)
+                          </h3>
+                          
+                          {/* URL or description */}
+                          <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
+                            {item.text}
+                          </p>
+                        </div>
+                        
+                        {/* Hover particle effect */}
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                          <div 
+                            className={`absolute w-2 h-2 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping ${getBorderRadius()}`} 
+                            style={{ 
+                              top: `${5 + ((index + 3) * 7) % 15}%`, 
+                              left: `${10 + ((index + 3) * 13) % 20}%`,
+                              animationDelay: `${0.1 + ((index + 3) * 0.05)}s` 
+                            }}
+                          ></div>
+                          <div 
+                            className={`absolute w-1 h-1 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse ${getBorderRadius()}`} 
+                            style={{ 
+                              top: `${30 + ((index + 3) * 11) % 25}%`, 
+                              right: `${20 + ((index + 3) * 9) % 15}%`,
+                              animationDelay: `${0.3 + ((index + 3) * 0.07)}s` 
+                            }}
+                          ></div>
+                          <div 
+                            className={`absolute w-1.5 h-1.5 bg-purple-400/30 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce ${getBorderRadius()}`} 
+                            style={{ 
+                              bottom: `${20 + ((index + 3) * 17) % 20}%`, 
+                              left: `${25 + ((index + 3) * 19) % 25}%`,
+                              animationDelay: `${0.5 + ((index + 3) * 0.09)}s` 
+                            }}
+                          ></div>
+                        </div>
+                      </button>
+                    );
+                  }
+                  
+                  return (
+                    <a 
+                      key={index + 3} 
+                      href={item.url} 
+                      className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 w-full max-w-xs ${getBorderRadius('card')}`}
+                      target={item.url.startsWith('http') ? '_blank' : '_self'}
+                      rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{ animationDelay: `${(index + 3) * 0.1}s` }}
+                    >
                     {/* Background gradient overlay */}
                     <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
                     
@@ -620,18 +850,84 @@ function ConsolePortfolio() {
                       ></div>
                     </div>
                   </a>
-                ))}
+                  );
+                })}
               </div>
             )}
             
-            {/* Bottom section with additional info */}
-            <div className={`mt-12 text-center p-6 border border-white/10 bg-white/5 ${getBorderRadius('card')}`}>
-              <h3 className="text-xl font-medium mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                Let's Connect!
+              {/* Bottom section with additional info */}
+              <div className={`mt-12 text-center p-6 border border-white/10 bg-white/5 ${getBorderRadius('card')}`}>
+                <h3 className="text-xl font-medium mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  Let's Connect!
+                </h3>
+                <p className="text-base opacity-80 leading-relaxed max-w-2xl mx-auto">
+                  I'm always excited to discuss new opportunities and collaborate on interesting projects. Feel free to reach out through any of the channels above.
+                </p>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className={`p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
+              <h3 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                Send me a message
               </h3>
-              <p className="text-base opacity-80 leading-relaxed max-w-2xl mx-auto">
-                I'm always excited to discuss new opportunities and collaborate on interesting projects. Feel free to reach out through any of the channels above.
-              </p>
+              <form 
+                action="mailto:lucas.froeschner@gmail.com" 
+                method="post" 
+                encType="text/plain"
+                className="space-y-6"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 opacity-80">Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 opacity-80">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 opacity-80">Subject</label>
+                  <input
+                    type="text"
+                    name="subject"
+                    required
+                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                    placeholder="What's this about?"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-2 opacity-80">Message</label>
+                  <textarea
+                    name="message"
+                    required
+                    rows="6"
+                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 resize-none ${getBorderRadius('button')}`}
+                    placeholder="Tell me about your project, opportunity, or just say hi!"
+                  ></textarea>
+                </div>
+                <div className="text-center">
+                  <button
+                    type="submit"
+                    className={`px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border border-blue-400 hover:border-blue-300 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 font-medium ${getBorderRadius('button')}`}
+                  >
+                    Send Message 📧
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         );
@@ -645,6 +941,8 @@ function ConsolePortfolio() {
     <div className="bg-black text-white min-h-screen font-mono relative overflow-x-hidden">
       {/* Optimized Space Background */}
       <StarfieldBackground />
+      {/* Paper Planes */}
+      <PaperPlanes />
       
       <div className="text-center w-full max-w-4xl relative z-10 mx-auto py-16">
 

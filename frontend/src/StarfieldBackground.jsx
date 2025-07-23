@@ -10,7 +10,7 @@ const StarfieldBackground = () => {
       const x = (i * 37 + 13) % 100;
       const y = (i * 71 + 29) % 100;
       const size = 0.5 + ((i * 11) % 3) * 0.3;
-      const baseOpacity = 0.1 + ((i * 7) % 4) * 0.1;
+      const baseOpacity = 0.15 + ((i * 7) % 4) * 0.1;
       
       return (
         <div
@@ -55,7 +55,7 @@ const StarfieldBackground = () => {
   return (
     <div className="fixed inset-0 pointer-events-none">
       {/* Deep space gradient */}
-      <div className="absolute inset-0 bg-gradient-radial from-indigo-950/10 via-purple-950/5 to-black"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-indigo-950/15 via-purple-950/8 to-black"></div>
       
       {/* Static star field */}
       <div className="absolute inset-0">
@@ -63,7 +63,7 @@ const StarfieldBackground = () => {
       </div>
 
       {/* Static nebula clouds - very subtle */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-8">
         <div
           className="absolute rounded-full blur-3xl"
           style={{
@@ -71,7 +71,7 @@ const StarfieldBackground = () => {
             top: '20%',
             width: '300px',
             height: '150px',
-            background: 'radial-gradient(ellipse, rgba(59, 130, 246, 0.3) 0%, transparent 70%)'
+            background: 'radial-gradient(ellipse, rgba(59, 130, 246, 0.4) 0%, transparent 70%)'
           }}
         />
         <div
@@ -81,7 +81,7 @@ const StarfieldBackground = () => {
             top: '40%',
             width: '200px',
             height: '100px',
-            background: 'radial-gradient(ellipse, rgba(147, 51, 234, 0.2) 0%, transparent 70%)'
+            background: 'radial-gradient(ellipse, rgba(147, 51, 234, 0.3) 0%, transparent 70%)'
           }}
         />
         <div
@@ -91,13 +91,13 @@ const StarfieldBackground = () => {
             top: '70%',
             width: '250px',
             height: '120px',
-            background: 'radial-gradient(ellipse, rgba(168, 85, 247, 0.15) 0%, transparent 70%)'
+            background: 'radial-gradient(ellipse, rgba(168, 85, 247, 0.25) 0%, transparent 70%)'
           }}
         />
       </div>
 
       {/* Minimal floating particles - very subtle */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-15">
         {backgroundElements.particles}
       </div>
 

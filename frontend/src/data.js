@@ -18,48 +18,102 @@ export const contentData = {
         name: 'Frontend Development',
         description: 'I love building interactive, responsive user interfaces. Most comfortable with React ecosystem, but enjoy exploring different frameworks and modern CSS approaches.',
         items: [
-          'JavaScript', 'TypeScript', 'React', 'Vue.js', 'Next.js',
-          'HTML', 'CSS', 'Tailwind CSS', 'Material-UI', 'Chakra UI', 'Vite',
-          'PWA', 'Three.js', 'Framer Motion', 'React Native', 'Electron'
+          { name: 'JavaScript', icon: 'JS' },
+          { name: 'TypeScript', icon: 'TS' },
+          { name: 'React', icon: '⚛' },
+          { name: 'Vue.js', icon: 'V' },
+          { name: 'Next.js', icon: 'N' },
+          { name: 'HTML', icon: '<>' },
+          { name: 'CSS', icon: '#' },
+          { name: 'Tailwind CSS', icon: 'TW' },
+          { name: 'Material-UI', icon: 'MU' },
+          { name: 'Chakra UI', icon: 'CU' },
+          { name: 'Vite', icon: '⚡' },
+          { name: 'PWA', icon: 'PWA' },
+          { name: 'Three.js', icon: '3D' },
+          { name: 'Framer Motion', icon: 'FM' },
+          { name: 'React Native', icon: 'RN' },
+          { name: 'Electron', icon: 'E' }
         ]
       },
       {
         name: 'Backend Development',
         description: 'Experienced in building robust APIs and server-side applications. Particularly enjoy working with Node.js and Python for rapid development and Go for performance.',
         items: [
-          'Node.js', 'Express', 'Python', 'Django', 'Flask', 'FastAPI',
-          'C#', 'Go', 'Gin'
+          { name: 'Node.js', icon: 'NODE' },
+          { name: 'Express', icon: 'EXP' },
+          { name: 'Python', icon: 'PY' },
+          { name: 'Django', icon: 'DJ' },
+          { name: 'Flask', icon: 'FL' },
+          { name: 'FastAPI', icon: 'API' },
+          { name: 'C#', icon: 'C#' },
+          { name: 'Go', icon: 'GO' },
+          { name: 'Gin', icon: 'GIN' }
         ]
       },
       {
         name: 'Database Systems',
         description: 'Comfortable working with both SQL and NoSQL databases. I like choosing the right database for the job and optimizing queries for performance.',
         items: [
-          'MongoDB', 'MySQL', 'PostgreSQL', 'SQLite', 'Redis',
-          'Supabase', 'Prisma', 'Mongoose', 'Drizzle'
+          { name: 'MongoDB', icon: 'MDB' },
+          { name: 'MySQL', icon: 'SQL' },
+          { name: 'PostgreSQL', icon: 'PG' },
+          { name: 'SQLite', icon: 'LITE' },
+          { name: 'Redis', icon: 'RDS' },
+          { name: 'Supabase', icon: 'SB' },
+          { name: 'Prisma', icon: 'PRS' },
+          { name: 'Mongoose', icon: 'MGS' },
+          { name: 'Drizzle', icon: 'DRZ' }
         ]
       },
       {
         name: 'Programming Languages',
         description: 'I enjoy learning new languages and picking the right tool for each project. Always curious about language design and performance characteristics.',
         items: [
-          'JavaScript', 'TypeScript', 'Python', 'Java', 'C#', 'Go', 'C++',
-          'PHP', 'Ruby', 'Swift', 'Kotlin', 'Shell/Bash', 'SQL'
+          { name: 'JavaScript', icon: 'JS' },
+          { name: 'TypeScript', icon: 'TS' },
+          { name: 'Python', icon: 'PY' },
+          { name: 'Java', icon: 'JAVA' },
+          { name: 'C#', icon: 'C#' },
+          { name: 'Go', icon: 'GO' },
+          { name: 'C++', icon: 'C++' },
+          { name: 'PHP', icon: 'PHP' },
+          { name: 'Ruby', icon: 'RB' },
+          { name: 'Swift', icon: 'SW' },
+          { name: 'Kotlin', icon: 'KT' },
+          { name: 'Shell/Bash', icon: 'SH' },
+          { name: 'SQL', icon: 'SQL' }
         ]
       },
       {
         name: 'Game Development',
         description: 'Creating games is my creative outlet. I love bringing ideas to life through interactive experiences and pushing the boundaries of what games can be.',
         items: [
-          'Unity', 'Unreal Engine', 'Godot', 'Phaser.js', 'OpenGL'
+          { name: 'Unity', icon: 'U3D' },
+          { name: 'Unreal Engine', icon: 'UE' },
+          { name: 'Godot', icon: 'GDT' },
+          { name: 'Phaser.js', icon: 'PH' },
+          { name: 'OpenGL', icon: 'GL' }
         ]
       },
       {
         name: 'Development Tools',
         description: 'Proficient with the essential development workflow tools. I believe good tooling makes for better code and more enjoyable development.',
         items: [
-          'Git', 'GitHub', 'VS Code', 'Postman', 'Figma', 'Unity', 'Unreal Engine',
-          'Vite', 'Webpack', 'Babel', 'ESLint', 'Prettier', 'Jest', 'Cypress'
+          { name: 'Git', icon: 'GIT' },
+          { name: 'GitHub', icon: 'GH' },
+          { name: 'VS Code', icon: 'VSC' },
+          { name: 'Postman', icon: 'PM' },
+          { name: 'Figma', icon: 'FIG' },
+          { name: 'Unity', icon: 'U3D' },
+          { name: 'Unreal Engine', icon: 'UE' },
+          { name: 'Vite', icon: 'VT' },
+          { name: 'Webpack', icon: 'WP' },
+          { name: 'Babel', icon: 'BB' },
+          { name: 'ESLint', icon: 'ES' },
+          { name: 'Prettier', icon: 'PR' },
+          { name: 'Jest', icon: 'JST' },
+          { name: 'Cypress', icon: 'CY' }
         ]
       }
     ]
