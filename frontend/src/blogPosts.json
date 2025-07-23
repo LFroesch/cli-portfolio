@@ -1,0 +1,54 @@
+[
+  {
+    "id": "1",
+    "title": "Building a Modern Portfolio with React and Node.js",
+    "date": "2024-01-15",
+    "time": "10:30",
+    "description": "A deep dive into creating a responsive, interactive portfolio website using React for the frontend and Node.js for the backend. We'll explore modern web development practices, database integration, and deployment strategies.",
+    "media": {
+      "type": "image",
+      "url": "/blog/portfolio-preview.png",
+      "alt": "Portfolio website preview"
+    },
+    "tags": ["React", "Node.js", "MongoDB", "Web Development"]
+  },
+  {
+    "id": "2", 
+    "title": "The Art of Clean Code: Lessons from Production",
+    "date": "2024-01-10",
+    "time": "2:30PM",
+    "description": "After years of writing code that others (and future me) have to maintain, I've learned some hard lessons about what makes code truly maintainable. Here are my top principles for writing clean, readable code.",
+    "media": {
+      "type": "image", 
+      "url": "/blog/clean-code.png",
+      "alt": "Code refactoring example"
+    },
+    "tags": ["Best Practices", "Software Engineering", "Code Quality"]
+  },
+  {
+    "id": "3",
+    "title": "Optimizing React Performance: Beyond the Basics", 
+    "date": "2024-01-05",
+    "time": "09:15",
+    "description": "React performance optimization goes far beyond just using memo and useMemo. Let's explore advanced techniques like virtualization, code splitting, and custom hooks that can dramatically improve your app's performance.",
+    "media": {
+      "type": "video",
+      "url": "/blog/react-performance.mp4",
+      "poster": "/blog/react-performance-thumb.png"
+    },
+    "tags": ["React", "Performance", "JavaScript", "Optimization"]
+  },
+  {
+    "id": "4",
+    "title": "Database Design Patterns for Scalable Applications",
+    "date": "2023-12-28", 
+    "time": "16:20",
+    "description": "Scaling a database isn't just about adding more servers. Learn about indexing strategies, denormalization patterns, and when to choose SQL vs NoSQL for maximum performance and maintainability.",
+    "media": {
+      "type": "image",
+      "url": "/blog/database-design.png", 
+      "alt": "Database schema diagram"
+    },
+    "tags": ["Database", "MongoDB", "PostgreSQL", "Architecture"]
+  }
+]

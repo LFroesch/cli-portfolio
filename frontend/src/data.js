@@ -3,7 +3,7 @@ export const personalInfo = {
   title: "Full-Stack Developer & Software Engineer"
 };
 
-export const sections = ['about', 'skills', 'contact', 'stats', 'projects'];
+export const sections = ['about', 'skills', 'blog', 'contact', 'stats', 'projects'];
 
 export const contentData = {
   about: {
@@ -131,7 +131,7 @@ export const contentData = {
 
 export const projects = [
   {
-    name: 'isle of brady',
+    name: 'isle of brynd',
     description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
     techStack: 'Godot, GDScript',
     status: 'Completed - May 2024',
@@ -140,10 +140,6 @@ export const projects = [
     media: [
       {
         type: 'video',
-        url: '/rpg/rpg.mp4'
-      },
-      {
-        type: 'image',
         url: '/rpg/rpg.mp4'
       }
     ]
@@ -158,7 +154,7 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/Portmon.png'
+        url: '/portmon/Portmon.png'
       }
     ]
   },
@@ -172,7 +168,7 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/GitHelper.png'
+        url: '/git-helper/git-helper.png'
       }
     ]
   },
@@ -183,7 +179,12 @@ export const projects = [
     status: 'Completed - January 2024',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/gator/gator.png'
+      }
+    ]
   },
   {
     name: 'project-manager',
@@ -192,7 +193,12 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/project-manager/project-manager.png'
+      }
+    ]
   },
   {
     name: 'fresh-notes',
@@ -201,7 +207,12 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: 'null'
+      }
+    ]
   },
   {
     name: 'project-launcher',
@@ -210,7 +221,12 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/project-launcher/ProjectLauncher.png'
+      }
+    ]
   },
   {
     name: 'dwight',
@@ -219,7 +235,12 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/dwight/dwight.png'
+      }
+    ]
   },
   {
     name: 'voice memo transcriber',
@@ -228,7 +249,12 @@ export const projects = [
     status: 'Completed - February 2024',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: null
+      }
+    ]
   },
   {
     name: 'logdog',
@@ -237,7 +263,16 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/logdog/logdog1.png'
+      },
+      {
+        type: 'image',
+        url: '/logdog/logdog2.png'
+      }
+    ]
   },
   {
     name: 'backup-xd',
@@ -246,7 +281,12 @@ export const projects = [
     status: 'Completed - April 2024',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/backup-xd/backup-xd.png'
+      }
+    ]
   },
   {
     name: 'lif',
@@ -255,6 +295,41 @@ export const projects = [
     status: 'In Development',
     liveDemo: '#',
     github: '#',
-    media: null
+    media: [
+      {
+        type: 'image',
+        url: '/lif/lif.png'
+      }
+    ]
+  },
+  {
+    name: 'tui-games',
+    description: 'Collection of terminal-based games built with Go and BubbleTea.',
+    techStack: 'Go, BubbleTea',
+    status: 'In Development',
+    liveDemo: '#',
+    github: '#',
+    media: [
+      {
+        type: 'image',
+        url: '/tui-games/Blackjack.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-games/Blackjack2.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-games/MiniRoguelike.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-games/SnakeGame.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-games/TUI-Chess.png'
+      }
+    ]
   }
 ];

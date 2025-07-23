@@ -1,17 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { personalInfo, sections, projects, contentData } from './data'
+import blogPosts from './blogPosts.json'
 import StarfieldBackground from './StarfieldBackground'
 import PaperPlanes from './PaperPlanes'
 import { getSkillCategoryIcon } from './SkillIcons'
 import { useStats } from './useStats'
+import { useContactForm } from './hooks/useContactForm'
+import { useGitHubStats } from './hooks/useGitHubStats'
+import TypingEffect from './components/TypingEffect'
+import LoadingSpinner from './components/LoadingSpinner'
+import { StatsCardSkeleton } from './components/SkeletonLoader'
 import './animations.css'
 
 function ConsolePortfolio() {
   const [currentSection, setCurrentSection] = useState('projects');
   const [currentProjectIndex, setCurrentProjectIndex] = useState(2);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
+  const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
   const [designVariant] = useState('rounded'); // 'rounded' or 'sharp'
   const [variationCycle, setVariationCycle] = useState(0);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [mediaLoading, setMediaLoading] = useState(false);
+  const [lastTrackedProject, setLastTrackedProject] = useState(null);
   
   // Copy email to clipboard
   const copyEmailToClipboard = async (email) => {
@@ -19,6 +29,7 @@ function ConsolePortfolio() {
       await navigator.clipboard.writeText(email);
       // Could add a toast notification here if desired
     } catch (err) {
+      console.error('Failed to copy email: ', err);
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = email;
@@ -33,13 +44,68 @@ function ConsolePortfolio() {
   const { 
     stats, 
     trackProjectView, 
-    trackSectionView, 
-    resetStats, 
+    trackSectionView,
     getTopProjects, 
-    getTopSections,
     getTotalProjectViews,
-    getTotalSectionViews 
+    getTotalSectionViews,
+    isOnline
   } = useStats();
+
+  // Contact form
+  const { formData, status, handleInputChange, submitForm } = useContactForm();
+
+  // GitHub stats
+  const { githubData, activity, loading: githubLoading, error: githubError, refresh: refreshGitHub } = useGitHubStats();
+
+  // Navigation functions (defined before useEffect that references them)
+  const navigateMenu = useCallback((direction) => {
+    const currentIndex = sections.indexOf(currentSection);
+    const newIndex = Math.max(0, Math.min(sections.length - 1, currentIndex + direction));
+    const newSection = sections[newIndex];
+    setCurrentSection(newSection);
+    trackSectionView(newSection);
+  }, [currentSection, trackSectionView]);
+
+  const navigateProjects = useCallback((direction) => {
+    setMediaLoading(true);
+    setCurrentProjectIndex(prev => {
+      let newIndex = prev + direction;
+      if (newIndex < 0) {
+        newIndex = projects.length - 1; // Loop to end
+      } else if (newIndex >= projects.length) {
+        newIndex = 0; // Loop to beginning
+      }
+      setCurrentMediaIndex(0); // Reset media index when changing projects
+      return newIndex;
+    });
+    // Clear loading after a short delay
+    setTimeout(() => setMediaLoading(false), 300);
+  }, []);
+
+  // Handle initial load completion
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 1500); // Show loading for 1.5 seconds minimum
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Track project view when section changes to projects or project index changes
+  useEffect(() => {
+    if (currentSection === 'projects' && projects[currentProjectIndex]) {
+      const currentProjectName = projects[currentProjectIndex].name;
+      // Only track if the project actually changed
+      if (lastTrackedProject !== currentProjectName) {
+        trackProjectView(currentProjectName);
+        setLastTrackedProject(currentProjectName);
+      }
+    }
+    // Reset tracking when leaving projects section
+    if (currentSection !== 'projects') {
+      setLastTrackedProject(null);
+    }
+  }, [currentSection, currentProjectIndex, lastTrackedProject, trackProjectView]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -54,12 +120,30 @@ function ConsolePortfolio() {
           if (currentSection === 'projects') {
             e.preventDefault();
             navigateProjects(-1);
+          } else if (currentSection === 'blog') {
+            e.preventDefault();
+            setCurrentBlogIndex(prev => {
+              let newIndex = prev - 1;
+              if (newIndex < 0) {
+                newIndex = blogPosts.length - 1;
+              }
+              return newIndex;
+            });
           }
           break;
         case 'ArrowDown':
           if (currentSection === 'projects') {
             e.preventDefault();
             navigateProjects(1);
+          } else if (currentSection === 'blog') {
+            e.preventDefault();
+            setCurrentBlogIndex(prev => {
+              let newIndex = prev + 1;
+              if (newIndex >= blogPosts.length) {
+                newIndex = 0;
+              }
+              return newIndex;
+            });
           }
           break;
       }
@@ -67,7 +151,7 @@ function ConsolePortfolio() {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [currentSection, currentProjectIndex]);
+  }, [currentSection, currentProjectIndex, currentBlogIndex, navigateMenu, navigateProjects]);
 
   // Cycle through variations every 8 seconds for dynamic feel
   useEffect(() => {
@@ -91,32 +175,12 @@ function ConsolePortfolio() {
     return ''; // Sharp edges - no border radius
   };
 
-  const navigateMenu = (direction) => {
-    const currentIndex = sections.indexOf(currentSection);
-    const newIndex = Math.max(0, Math.min(sections.length - 1, currentIndex + direction));
-    const newSection = sections[newIndex];
-    setCurrentSection(newSection);
-    trackSectionView(newSection);
-  };
-
-  const navigateProjects = (direction) => {
-    setCurrentProjectIndex(prev => {
-      let newIndex = prev + direction;
-      if (newIndex < 0) {
-        newIndex = projects.length - 1; // Loop to end
-      } else if (newIndex >= projects.length) {
-        newIndex = 0; // Loop to beginning
-      }
-      trackProjectView(projects[newIndex].name);
-      setCurrentMediaIndex(0); // Reset media index when changing projects
-      return newIndex;
-    });
-  };
 
   const navigateMedia = (direction) => {
     const currentProject = projects[currentProjectIndex];
     if (!currentProject.media || !Array.isArray(currentProject.media)) return;
     
+    setMediaLoading(true);
     setCurrentMediaIndex(prev => {
       let newIndex = prev + direction;
       if (newIndex < 0) {
@@ -126,6 +190,8 @@ function ConsolePortfolio() {
       }
       return newIndex;
     });
+    // Clear loading after a short delay
+    setTimeout(() => setMediaLoading(false), 200);
   };
 
 
@@ -167,7 +233,6 @@ function ConsolePortfolio() {
           className={className}
           onClick={() => {
             setCurrentProjectIndex(originalIndex);
-            trackProjectView(projects[originalIndex].name);
           }}
         >
           <div className={`absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${getBorderRadius('button')}`}></div>
@@ -410,12 +475,7 @@ function ConsolePortfolio() {
           <div className="w-full">
             {/* Project Card Layout - Vertical Stack */}
             <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
-              {/* Media Section - Full Width */}
-              <div className="relative w-full h-[400px] lg:h-[500px]">
-                {renderProjectMedia()}
-              </div>
-              
-              {/* Content Section - Below Media */}
+              {/* Content Section - Above Media */}
               <div className="p-6 lg:p-8 space-y-6">
                 {/* Header */}
                 <div className="text-center">
@@ -445,25 +505,10 @@ function ConsolePortfolio() {
                   </div>
                 </div>
                 
-                {/* Navigation Controls */}
+                {/* Project Counter and GitHub */}
                 <div className="flex justify-between items-center pt-6 border-t border-white/10">
                   <div className="text-xs opacity-50">
                     {currentProjectIndex + 1} / {projects.length}
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => navigateProjects(-1)}
-                      className={`px-4 py-2 border border-white/20 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-                    >
-                      ← Previous
-                    </button>
-                    <button 
-                      onClick={() => navigateProjects(1)}
-                      className={`px-4 py-2 border border-white/20 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-                    >
-                      Next →
-                    </button>
                   </div>
                   
                   <a 
@@ -474,6 +519,16 @@ function ConsolePortfolio() {
                   </a>
                 </div>
               </div>
+              
+              {/* Media Section - Below Content */}
+              <div className="relative w-full h-[400px] lg:h-[500px]">
+                {renderProjectMedia()}
+                {mediaLoading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                    <LoadingSpinner size="large" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         );
@@ -482,30 +537,155 @@ function ConsolePortfolio() {
       case 'stats':
         return (
           <div className="w-full max-w-4xl mx-auto text-center">
+            {/* Status Indicator */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <div className={`flex items-center gap-2 px-3 py-1 text-xs font-medium border ${getBorderRadius('small')} ${
+                isOnline 
+                  ? 'border-white/40 text-white/80' 
+                  : 'border-white/20 text-white/60'
+              }`}>
+                <div className={`w-2 h-2 ${getBorderRadius()} ${isOnline ? 'bg-white/80' : 'bg-white/40'}`}></div>
+                {isOnline ? 'analytics online' : 'offline mode'}
+              </div>
+              
+              <div className={`flex items-center gap-2 px-3 py-1 text-xs font-medium border ${getBorderRadius('small')} ${
+                githubData && !githubError
+                  ? 'border-white/40 text-white/80' 
+                  : 'border-white/20 text-white/60'
+              }`}>
+                <div className={`w-2 h-2 ${getBorderRadius()} ${githubData && !githubError ? 'bg-white/80' : 'bg-white/40'}`}></div>
+                {githubData && !githubError ? 'github connected' : 'github offline'}
+              </div>
+              
+              <button
+                onClick={refreshGitHub}
+                className={`px-3 py-1 border border-white/40 hover:bg-white/10 transition-all duration-300 text-xs ${getBorderRadius('button')}`}
+                disabled={githubLoading}
+              >
+                {githubLoading ? 'syncing...' : 'refresh'}
+              </button>
+            </div>
+
             {/* Overview Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <div className={`p-4 bg-white/5 border border-white/20 text-center ${getBorderRadius('card')}`}>
-                <div className="text-2xl font-bold text-blue-400">{stats.siteHits}</div>
-                <div className="text-sm opacity-80">Site Visits</div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+              {isInitialLoad || githubLoading ? (
+                <>
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                  <StatsCardSkeleton getBorderRadius={getBorderRadius} />
+                </>
+              ) : (
+                <>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{githubData?.stats?.currentStreak || 0}</div>
+                    <div className="text-sm opacity-80">streak days</div>
+                  </div>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{githubData?.stats?.totalRepos || 0}</div>
+                    <div className="text-sm opacity-80">repositories</div>
+                  </div>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{githubData?.stats?.contributionsLast30Days || 0}</div>
+                    <div className="text-sm opacity-80">contributions</div>
+                  </div>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{stats.siteHits}</div>
+                    <div className="text-sm opacity-80">site visits</div>
+                  </div>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{getTotalProjectViews()}</div>
+                    <div className="text-sm opacity-80">project views</div>
+                  </div>
+                  <div className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}>
+                    <div className="text-2xl font-bold text-white">{githubData?.user?.followers || 0}</div>
+                    <div className="text-sm opacity-80">followers</div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              {/* Recent Commits */}
+              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
+                <h3 className="text-lg font-medium mb-4">Recent Commits</h3>
+                <div className="space-y-3 max-h-64 overflow-y-auto">
+                  {githubLoading ? (
+                    <div className="text-center py-4 opacity-60">Loading...</div>
+                  ) : githubData?.recentCommits?.length > 0 ? (
+                    githubData.recentCommits.slice(0, 5).map((commit, index) => (
+                      <div key={index} className="text-left">
+                        <div className="text-sm truncate mb-1">{commit.message}</div>
+                        <div className="text-xs opacity-60">
+                          <span className="font-mono">{commit.sha}</span> • {commit.repo.split('/')[1]} • {new Date(commit.date).toLocaleDateString()}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 opacity-60">No recent commits</div>
+                  )}
+                </div>
               </div>
-              <div className={`p-4 bg-white/5 border border-white/20 text-center ${getBorderRadius('card')}`}>
-                <div className="text-2xl font-bold text-green-400">{getTotalProjectViews()}</div>
-                <div className="text-sm opacity-80">Project Views</div>
+
+              {/* Language Usage */}
+              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
+                <h3 className="text-lg font-medium mb-4">Language Usage</h3>
+                <div className="space-y-3">
+                  {githubLoading ? (
+                    <div className="text-center py-4 opacity-60">Loading...</div>
+                  ) : githubData?.topLanguages?.length > 0 ? (
+                    githubData.topLanguages.map((lang, index) => (
+                      <div key={index} className="flex justify-between items-center">
+                        <span className="text-sm">{lang.language}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-white/60 transition-all duration-500"
+                              style={{ width: `${lang.percentage}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-xs opacity-80 font-mono w-8 text-right">{lang.percentage}%</span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 opacity-60">No language data</div>
+                  )}
+                </div>
               </div>
-              <div className={`p-4 bg-white/5 border border-white/20 text-center ${getBorderRadius('card')}`}>
-                <div className="text-2xl font-bold text-purple-400">{getTotalSectionViews()}</div>
-                <div className="text-sm opacity-80">Section Views</div>
-              </div>
-              <div className={`p-4 bg-white/5 border border-white/20 text-center ${getBorderRadius('card')}`}>
-                <div className="text-2xl font-bold text-yellow-400">{stats.totalSessions}</div>
-                <div className="text-sm opacity-80">Total Sessions</div>
+
+              {/* Recent Repositories */}
+              <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
+                <h3 className="text-lg font-medium mb-4">Recent Repos</h3>
+                <div className="space-y-3 max-h-64 overflow-y-auto">
+                  {githubLoading ? (
+                    <div className="text-center py-4 opacity-60">Loading...</div>
+                  ) : githubData?.recentRepos?.length > 0 ? (
+                    githubData.recentRepos.slice(0, 4).map((repo, index) => (
+                      <div key={index} className="text-left">
+                        <div className="text-sm truncate mb-1">{repo.name}</div>
+                        <div className="text-xs opacity-60 truncate mb-1">
+                          {repo.description || 'No description'}
+                        </div>
+                        <div className="text-xs opacity-60">
+                          {repo.language && <span>{repo.language} • </span>}
+                          ⭐ {repo.stars} • 🔀 {repo.forks}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 opacity-60">No repositories</div>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* Top Projects */}
               <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4 text-green-400">Most Viewed Projects</h3>
+                <h3 className="text-lg font-medium mb-4">Most Viewed Projects</h3>
                 <div className="space-y-2">
                   {getTopProjects().length > 0 ? (
                     getTopProjects().map((project) => (
@@ -513,7 +693,7 @@ function ConsolePortfolio() {
                         <span className="flex items-center gap-2">
                           <span>{project.name}</span>
                         </span>
-                        <span className="text-green-400 font-mono">{project.views}</span>
+                        <span className="text-white/80 font-mono">{project.views}</span>
                       </div>
                     ))
                   ) : (
@@ -522,42 +702,174 @@ function ConsolePortfolio() {
                 </div>
               </div>
 
-              {/* Top Sections */}
+              {/* Activity Preview */}
               <div className={`p-6 bg-white/5 border border-white/10 ${getBorderRadius('card')}`}>
-                <h3 className="text-lg font-medium mb-4 text-purple-400">Most Visited Sections</h3>
-                <div className="space-y-2">
-                  {getTopSections().length > 0 ? (
-                    getTopSections().map((section) => (
-                      <div key={section.name} className="flex justify-between items-center py-2 border-b border-white/10 last:border-b-0">
-                        <span className="flex items-center gap-2">
-                          <span className="capitalize">{section.name}</span>
-                        </span>
-                        <span className="text-purple-400 font-mono">{section.views}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-4 opacity-60">No section views yet</div>
-                  )}
-                </div>
+                <h3 className="text-lg font-medium mb-4">Recent Activity</h3>
+                {githubLoading ? (
+                  <div className="text-center py-4 opacity-60">Loading...</div>
+                ) : activity && activity.length > 0 ? (
+                  <div>
+                    <div className="grid grid-cols-7 gap-1 mb-4">
+                      {activity.slice(-21).map((day, index) => {
+                        const intensity = Math.min(day.total / 3, 1);
+                        return (
+                          <div
+                            key={index}
+                            className={`w-6 h-6 border border-white/20 ${getBorderRadius('small')}`}
+                            style={{
+                              backgroundColor: intensity > 0 
+                                ? `rgba(255, 255, 255, ${0.1 + intensity * 0.4})`
+                                : 'rgba(255, 255, 255, 0.05)'
+                            }}
+                            title={`${day.date}: ${day.total} events`}
+                          ></div>
+                        );
+                      })}
+                    </div>
+                    <div className="text-xs opacity-60 text-center">
+                      last 3 weeks
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-4 opacity-60">No activity data</div>
+                )}
               </div>
             </div>
 
-            {/* Last Visit & Reset */}
+            {/* Last Updated */}
             <div className={`p-4 bg-white/5 border border-white/10 text-center ${getBorderRadius('card')}`}>
-              <div className="mb-0 text-sm opacity-80">
-                {stats.lastVisit && (
-                  <span>Last visit: {new Date(stats.lastVisit).toLocaleString()}</span>
+              <div className="text-sm opacity-80">
+                <span>Site last visit: {stats.lastVisit ? new Date(stats.lastVisit).toLocaleString() : 'Never'}</span>
+                {githubData && (
+                  <>
+                    <span className="mx-2">•</span>
+                    <span>GitHub data updated: {new Date().toLocaleString()}</span>
+                  </>
                 )}
               </div>
-              {/* <button 
-                onClick={resetStats}
-                className={`px-4 py-2 border border-red-400 text-red-400 hover:bg-red-400 hover:text-black transition-all duration-300 ${getBorderRadius('button')}`}
-              >
-                Reset Analytics
-              </button> */}
             </div>
           </div>
         );
+
+      case 'blog': {
+        const sortedBlogPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const currentPost = sortedBlogPosts[currentBlogIndex];
+        
+        const navigateBlogPosts = (direction) => {
+          setCurrentBlogIndex(prev => {
+            let newIndex = prev + direction;
+            if (newIndex < 0) {
+              newIndex = sortedBlogPosts.length - 1;
+            } else if (newIndex >= sortedBlogPosts.length) {
+              newIndex = 0;
+            }
+            return newIndex;
+          });
+        };
+
+        const renderBlogMedia = () => {
+          if (!currentPost.media) return null;
+          
+          const { type, url, poster, alt } = currentPost.media;
+          
+          if (type === 'video') {
+            return (
+              <video
+                className="w-full h-full object-contain bg-black"
+                controls
+                muted
+                loop
+                poster={poster}
+                preload="metadata"
+              >
+                <source src={url} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            );
+          }
+          
+          if (type === 'image') {
+            return (
+              <img
+                src={url}
+                alt={alt || `${currentPost.title} preview`}
+                className="max-w-full max-h-full object-contain"
+                loading="lazy"
+              />
+            );
+          }
+          
+          return null;
+        };
+
+        return (
+          <div className="w-full max-w-4xl mx-auto text-center">
+            {/* Navigation */}
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <button
+                onClick={() => navigateBlogPosts(-1)}
+                className={`px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+              >
+                ← prev
+              </button>
+              <span className="text-sm opacity-60">
+                {currentBlogIndex + 1} / {sortedBlogPosts.length}
+              </span>
+              <button
+                onClick={() => navigateBlogPosts(1)}
+                className={`px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+              >
+                next →
+              </button>
+            </div>
+
+            {/* Blog Post */}
+            <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
+              <div className="p-6 lg:p-8 space-y-6">
+                {/* Title & Date */}
+                <div>
+                  <h2 className="text-2xl font-bold mb-2">{currentPost.title}</h2>
+                  <div className="text-sm opacity-60">
+                    {new Date(currentPost.date).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })} • {currentPost.time}
+                  </div>
+                </div>
+                
+                {/* Description */}
+                <p className="text-base opacity-80 leading-relaxed">
+                  {currentPost.description}
+                </p>
+                
+                {/* Tags */}
+                {currentPost.tags && (
+                  <div>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {currentPost.tags.map((tag, index) => (
+                        <span 
+                          key={index}
+                          className={`px-2 py-1 bg-white/5 border border-white/20 text-xs opacity-80 ${getBorderRadius('small')}`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Media */}
+              {currentPost.media && (
+                <div className="relative w-full h-[400px] lg:h-[500px]">
+                  {renderBlogMedia()}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
 
       case 'contact':
         return (
@@ -868,23 +1180,42 @@ function ConsolePortfolio() {
 
             {/* Contact Form */}
             <div className={`p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
-              <h3 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                Send me a message
-              </h3>
-              <form 
-                action="mailto:lucas.froeschner@gmail.com" 
-                method="post" 
-                encType="text/plain"
-                className="space-y-6"
-              >
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <h3 className="text-2xl font-semibold text-center bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  Send me a message
+                </h3>
+                {!isOnline && (
+                  <div className="px-2 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded text-xs text-yellow-300">
+                    Offline Mode
+                  </div>
+                )}
+              </div>
+              
+              {/* Status Messages */}
+              {status.message && (
+                <div className={`mb-6 p-4 rounded-lg border text-center ${
+                  status.isSuccess 
+                    ? 'bg-green-500/20 border-green-500/40 text-green-300' 
+                    : status.isError 
+                      ? 'bg-red-500/20 border-red-500/40 text-red-300'
+                      : 'bg-blue-500/20 border-blue-500/40 text-blue-300'
+                }`}>
+                  {status.message}
+                </div>
+              )}
+              
+              <form onSubmit={submitForm} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium mb-2 opacity-80">Name</label>
                     <input
                       type="text"
-                      name="name"
+                      value={formData.name}
+                      onChange={(e) => handleInputChange('name', e.target.value)}
                       required
-                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                      maxLength={100}
+                      disabled={status.isSubmitting}
+                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 disabled:opacity-50 disabled:cursor-not-allowed ${getBorderRadius('button')}`}
                       placeholder="Your name"
                     />
                   </div>
@@ -892,9 +1223,11 @@ function ConsolePortfolio() {
                     <label className="block text-sm font-medium mb-2 opacity-80">Email</label>
                     <input
                       type="email"
-                      name="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       required
-                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                      disabled={status.isSubmitting}
+                      className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 disabled:opacity-50 disabled:cursor-not-allowed ${getBorderRadius('button')}`}
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -903,30 +1236,52 @@ function ConsolePortfolio() {
                   <label className="block text-sm font-medium mb-2 opacity-80">Subject</label>
                   <input
                     type="text"
-                    name="subject"
+                    value={formData.subject}
+                    onChange={(e) => handleInputChange('subject', e.target.value)}
                     required
-                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 ${getBorderRadius('button')}`}
+                    maxLength={200}
+                    disabled={status.isSubmitting}
+                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 disabled:opacity-50 disabled:cursor-not-allowed ${getBorderRadius('button')}`}
                     placeholder="What's this about?"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2 opacity-80">Message</label>
+                  <label className="block text-sm font-medium mb-2 opacity-80">
+                    Message <span className="text-xs opacity-60">({formData.message.length}/2000)</span>
+                  </label>
                   <textarea
-                    name="message"
+                    value={formData.message}
+                    onChange={(e) => handleInputChange('message', e.target.value)}
                     required
                     rows="6"
-                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 resize-none ${getBorderRadius('button')}`}
+                    maxLength={2000}
+                    disabled={status.isSubmitting}
+                    className={`w-full px-4 py-3 bg-white/10 border border-white/20 focus:border-blue-400 focus:bg-white/15 transition-all duration-300 text-white placeholder-white/40 resize-none disabled:opacity-50 disabled:cursor-not-allowed ${getBorderRadius('button')}`}
                     placeholder="Tell me about your project, opportunity, or just say hi!"
-                  ></textarea>
+                  />
                 </div>
                 <div className="text-center">
                   <button
                     type="submit"
-                    className={`px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border border-blue-400 hover:border-blue-300 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 font-medium ${getBorderRadius('button')}`}
+                    disabled={status.isSubmitting}
+                    className={`px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 border border-blue-400 hover:border-blue-300 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25 font-medium disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${getBorderRadius('button')}`}
                   >
-                    Send Message 📧
+                    {status.isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <LoadingSpinner size="small" />
+                        Sending...
+                      </span>
+                    ) : (
+                      <>Send Message 📧</>
+                    )}
                   </button>
                 </div>
+                
+                {!isOnline && (
+                  <div className="text-center text-sm opacity-60">
+                    Backend offline - using email fallback
+                  </div>
+                )}
               </form>
             </div>
           </div>
@@ -949,10 +1304,22 @@ function ConsolePortfolio() {
         {/* Header */}
         <div className="mb-16 animate-fade-in">
           <h1 className="text-5xl font-bold mb-4 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            {personalInfo.name}
+            <TypingEffect 
+              text={personalInfo.name}
+              speed={120}
+              delay={500}
+              cursor={false}
+            />
           </h1>
           <div className="relative inline-block">
-            <p className="text-xl opacity-90 font-light tracking-wider">{personalInfo.title}</p>
+            <p className="text-xl opacity-90 font-light tracking-wider">
+              <TypingEffect 
+                text={personalInfo.title}
+                speed={80}
+                delay={2000}
+                cursor={false}
+              />
+            </p>
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
           </div>
         </div>
@@ -996,7 +1363,7 @@ function ConsolePortfolio() {
         {/* Content Area - Dynamic Height */}
         <div className="flex justify-center relative w-full">
           <div className="w-full max-w-6xl relative z-10 animate-slide-in">
-            <div className={`backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl shadow-black/50 p-8 w-full ${getBorderRadius('card')}`}>
+            <div className={`backdrop-blur-sm bg-white/5 border border-white/10 shadow-2xl shadow-black/50 p-8 w-full transition-all duration-500 hover:bg-white/8 hover:border-white/20 ${getBorderRadius('card')}`}>
               {renderContent()}
             </div>
           </div>
