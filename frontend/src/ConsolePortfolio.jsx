@@ -505,18 +505,30 @@ function ConsolePortfolio() {
                   </div>
                 </div>
                 
-                {/* Project Counter and GitHub */}
+                {/* Project Counter and Buttons */}
                 <div className="flex justify-between items-center pt-6 border-t border-white/10">
                   <div className="text-xs opacity-50">
                     {currentProjectIndex + 1} / {projects.length}
                   </div>
                   
-                  <a 
-                    href={currentProject.github}
-                    className={`px-3 py-1.5 border border-white/40 hover:bg-white hover:text-black transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-                  >
-                    GitHub
-                  </a>
+                  <div className="flex items-center gap-2">
+                    {currentProject.liveDemo && currentProject.liveDemo !== '#' && (
+                      <a 
+                        href={currentProject.liveDemo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`px-3 py-1.5 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+                      >
+                        More Info
+                      </a>
+                    )}
+                    <a 
+                      href={currentProject.github}
+                      className={`px-3 py-1.5 border border-white/40 hover:bg-white hover:text-black transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+                    >
+                      GitHub
+                    </a>
+                  </div>
                 </div>
               </div>
               
@@ -664,7 +676,7 @@ function ConsolePortfolio() {
                 className={`p-6 bg-white/5 border border-white/10 h-[360px] flex flex-col ${getBorderRadius('card')}`}
               >
                 <h3 className="text-lg font-medium mb-4">Recent Repos</h3>
-                <div className="flex-1 space-y-2 overflow-y-auto">
+                <div className="flex-1 space-y-8 overflow-y-auto">
                   {githubLoading ? (
                     <div className="text-center py-4 opacity-60">Loading...</div>
                   ) : githubData?.recentRepos?.length > 0 ? (
@@ -695,7 +707,7 @@ function ConsolePortfolio() {
               ) : activity && activity.length > 0 ? (
                 <div>
                   <div className="grid grid-cols-7 gap-1 mb-4">
-                    {activity.slice(-21).map((day, index) => {
+                    {activity.map((day, index) => {
                       const intensity = Math.min(day.total / 3, 1);
                       return (
                         <div
@@ -712,7 +724,7 @@ function ConsolePortfolio() {
                     })}
                   </div>
                   <div className="text-xs opacity-60 text-center">
-                    last 3 weeks
+                    last 2 weeks
                   </div>
                 </div>
               ) : (

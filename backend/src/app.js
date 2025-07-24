@@ -20,7 +20,7 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'production' ? 100 : 1000 // More lenient in development
+  max: process.env.NODE_ENV === 'production' ? 500 : 1000 // Increased for production
 });
 app.use(limiter);
 
@@ -60,7 +60,7 @@ if (process.env.NODE_ENV === 'production') {
   
   // Handle React routing, return index.html for non-API routes
   app.get('*', (req, res) => {
-    if (req.path.startsWith('/api/') || req.path.startsWith('/health')) {
+    if (req.path.startsWith('/api/') || req.path.startsWith('/health') || req.path.startsWith('/assets/')) {
       return res.status(404).json({ error: 'API route not found' });
     }
     res.sendFile(path.join(frontendPath, 'index.html'));

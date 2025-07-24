@@ -232,7 +232,7 @@ let activityCache = {
   data: null
 };
 
-// Get coding activity for the last 30 days
+// Get coding activity for the last 28 days using GraphQL API for better data
 router.get('/activity', async (req, res) => {
   try {
     // Check cache first
@@ -243,6 +243,70 @@ router.get('/activity', async (req, res) => {
 
     console.log('Fetching fresh activity data...');
     
+    // Try GraphQL API first for better commit data
+    if (process.env.GITHUB_TOKEN) {
+      try {
+        const graphqlQuery = {
+          query: `
+            query($username: String!) {
+              user(login: $username) {
+                contributionsCollection {
+                  contributionCalendar {
+                    weeks {
+                      contributionDays {
+                        date
+                        contributionCount
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `,
+          variables: { username: GITHUB_USERNAME }
+        };
+
+        const graphqlResponse = await fetch('https://api.github.com/graphql', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(graphqlQuery)
+        });
+
+        const graphqlData = await graphqlResponse.json();
+
+        if (graphqlData.data?.user?.contributionsCollection) {
+          // Process GraphQL contribution data
+          const contributions = graphqlData.data.user.contributionsCollection.contributionCalendar.weeks
+            .flatMap(week => week.contributionDays)
+            .slice(-14); // Get last 14 days
+
+          const activityArray = contributions.map(day => ({
+            date: new Date(day.date).toDateString(),
+            commits: day.contributionCount,
+            prs: 0, // GraphQL doesn't separate these, so we'll use REST API events for additional context
+            issues: 0,
+            total: day.contributionCount
+          }));
+
+          const result = { activity: activityArray };
+          
+          // Cache the result
+          activityCache = {
+            lastUpdated: Date.now(),
+            data: result
+          };
+          
+          return res.json(result);
+        }
+      } catch (graphqlError) {
+        console.log('GraphQL failed, falling back to REST API:', graphqlError.message);
+      }
+    }
+
+    // Fallback to REST API if GraphQL fails or no token
     const headers = {};
     if (process.env.GITHUB_TOKEN) {
       headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
@@ -259,10 +323,10 @@ router.get('/activity', async (req, res) => {
 
     // Group events by date for activity chart
     const activityMap = {};
-    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
 
     events
-      .filter(event => new Date(event.created_at) > thirtyDaysAgo)
+      .filter(event => new Date(event.created_at) > fourteenDaysAgo)
       .forEach(event => {
         const date = new Date(event.created_at).toDateString();
         if (!activityMap[date]) {
@@ -279,9 +343,9 @@ router.get('/activity', async (req, res) => {
         activityMap[date].total += 1;
       });
 
-    // Convert to array and fill missing dates
+    // Convert to array and fill missing dates for the last 14 days
     const activityArray = [];
-    for (let i = 29; i >= 0; i--) {
+    for (let i = 13; i >= 0; i--) {
       const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
       const dateStr = date.toDateString();
       activityArray.push({
