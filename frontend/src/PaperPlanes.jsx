@@ -15,13 +15,13 @@ const PaperPlanes = () => {
       direction: direction,
       turnTimer: 0,
       nextTurn: 60 + Math.random() * 120, // Turn every 3-9 seconds (at 20fps)
-      opacity: 0.5 + Math.random() * 0.3, // Random opacity between 0.5 and 0.8
+      opacity: 0.3 + Math.random() * 0.3, // Random opacity between 0.4 and 0.7
     };
   };
 
   useEffect(() => {
-    // Initialize 15 planes
-    const initialPlanes = Array.from({ length: 15 }, createPlane);
+    // Initialize 10 planes
+    const initialPlanes = Array.from({ length: 10 }, createPlane);
     setPlanes(initialPlanes);
 
     const animationFrame = () => {

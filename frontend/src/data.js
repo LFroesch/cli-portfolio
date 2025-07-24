@@ -125,7 +125,8 @@ export const projects = [
     media: [
       {
         type: 'video',
-        url: '/rpg/rpg.mp4'
+        url: '/rpg/rpg.mp4',
+        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
       }
     ]
   },

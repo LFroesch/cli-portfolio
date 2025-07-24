@@ -22,6 +22,7 @@ function ConsolePortfolio() {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [mediaLoading, setMediaLoading] = useState(false);
   const [lastTrackedProject, setLastTrackedProject] = useState(null);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   
   // Copy email to clipboard
   const copyEmailToClipboard = async (email) => {
@@ -533,13 +534,25 @@ function ConsolePortfolio() {
               </div>
               
               {/* Media Section - Below Content */}
-              <div className="relative w-full h-[400px] lg:h-[500px]">
-                {renderProjectMedia()}
-                {mediaLoading && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                    <LoadingSpinner size="large" />
-                  </div>
-                )}
+              <div className="w-full">
+                <div className="relative w-full h-[400px] lg:h-[500px] mb-3">
+                  {renderProjectMedia()}
+                  {mediaLoading && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
+                      <LoadingSpinner size="large" />
+                    </div>
+                  )}
+                </div>
+                {/* Media Caption */}
+                {(() => {
+                  const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
+                  const currentMedia = mediaArray[currentMediaIndex] || mediaArray[0];
+                  return currentMedia?.caption && (
+                    <p className="text-sm text-white/60 italic text-center px-4">
+                      {currentMedia.caption}
+                    </p>
+                  );
+                })()}
               </div>
             </div>
           </div>
@@ -858,8 +871,28 @@ function ConsolePortfolio() {
               
               {/* Media */}
               {currentPost.media && (
-                <div className="relative w-full h-[400px] lg:h-[500px]">
-                  {renderBlogMedia()}
+                <div className="w-full">
+                  <div className="relative w-full h-[400px] lg:h-[500px] mb-3">
+                    {renderBlogMedia()}
+                  </div>
+                  {currentPost.media.caption && (
+                    <p className="text-sm text-white/60 italic text-center mb-6">
+                      {currentPost.media.caption}
+                    </p>
+                  )}
+                </div>
+              )}
+              
+              {/* Blog Body */}
+              {currentPost.body && (
+                <div className="mt-8 text-left max-w-3xl mx-auto">
+                  <div className="prose prose-invert max-w-none">
+                    {currentPost.body.split('\n\n').map((paragraph, index) => (
+                      <p key={index} className="mb-4 text-white/80 leading-relaxed">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -1162,32 +1195,22 @@ function ConsolePortfolio() {
                 })}
               </div>
             )}
-            
-              {/* Bottom section with additional info */}
-              <div className={`mt-12 text-center p-6 border border-white/10 bg-white/5 ${getBorderRadius('card')}`}>
-                <h3 className="text-xl font-medium mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  Let's Connect!
-                </h3>
-                <p className="text-base opacity-80 leading-relaxed max-w-2xl mx-auto">
-                  I'm always excited to discuss new opportunities and collaborate on interesting projects. Feel free to reach out through any of the channels above.
-                </p>
-              </div>
             </div>
 
             {/* Contact Form */}
-            <div className={`p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <h3 className="text-2xl font-semibold text-center bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  Send me a message
-                </h3>
-                {!isOnline && (
-                  <div className="px-2 py-1 bg-yellow-500/20 border border-yellow-500/40 rounded text-xs text-yellow-300">
-                    Offline Mode
-                  </div>
-                )}
-              </div>
-              
-              {/* Status Messages */}
+                  <div className={`p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                    <h3 className="text-xl font-medium mb-0 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                      Let's Connect!
+                    </h3>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 mb-6">
+                    <p className="text-base opacity-80 leading-relaxed max-w-2xl mx-auto">
+                      I'm always excited to discuss new opportunities and collaborate on interesting projects. Feel free to reach out through any of the channels above.
+                    </p>
+                    </div>
+                    
+                    {/* Status Messages */}
               {status.message && (
                 <div className={`mb-6 p-4 rounded-lg border text-center ${
                   status.isSuccess 
@@ -1298,8 +1321,8 @@ function ConsolePortfolio() {
       <div className="text-center w-full max-w-4xl relative z-10 mx-auto py-16">
 
         {/* Header */}
-        <div className="mb-16 animate-fade-in">
-          <h1 className="text-5xl font-bold mb-4 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+        <div className="mb-12 animate-fade-in">
+          <h1 className="text-5xl font-bold mb-2 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
             <TypingEffect 
               text={personalInfo.name}
               speed={120}
@@ -1316,12 +1339,78 @@ function ConsolePortfolio() {
                 cursor={false}
               />
             </p>
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
+          </div>
+          
+          {/* Available to Work Tag */}
+          <div className="flex items-center justify-center mt-2 animate-fade-in" style={{animationDelay: '3s'}}>
+            <div className="flex items-center bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
+              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+              <span className="text-green-300 text-sm font-medium tracking-wide">Available to work</span>
+            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
+            </div>
           </div>
         </div>
 
-        {/* Main Menu - Fixed Height */}
-        <div className="flex items-center justify-center gap-4 mb-16 h-16 relative">
+        {/* Navigation Container */}
+        <div className="mb-16">
+          {/* Mobile Navigation */}
+          <div className="lg:hidden flex flex-col items-center">
+          {/* Mobile Nav Button */}
+          <button 
+            className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-3 mb-4 hover:bg-white/20 transition-all"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+          >
+            <span className="text-white font-medium">{sections[currentSection]}</span>
+            <div className={`w-4 h-4 border-l-2 border-b-2 border-white/60 transform transition-transform ${showMobileMenu ? 'rotate-135' : '-rotate-45'}`}></div>
+          </button>
+          
+          {/* Mobile Menu */}
+          {showMobileMenu && (
+            <div className="w-full max-w-sm bg-black/80 border border-white/20 rounded-lg p-4 backdrop-blur-sm">
+              {sections.map((section) => (
+                <button
+                  key={section}
+                  className={`w-full text-left p-3 rounded-lg mb-2 transition-all ${
+                    currentSection === section 
+                      ? 'bg-white/20 text-white' 
+                      : 'text-white/70 hover:bg-white/10 hover:text-white'
+                  }`}
+                  onClick={() => {
+                    setCurrentSection(section);
+                    setShowMobileMenu(false);
+                    trackSectionView(section);
+                  }}
+                >
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </button>
+              ))}
+            </div>
+          )}
+          
+          {/* Mobile Projects Navigation */}
+          {currentSection === 'projects' && (
+            <div className="flex items-center gap-4 mt-4">
+              <button 
+                className="bg-white/10 border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all"
+                onClick={() => navigateProjects(-1)}
+              >
+                <div className="w-4 h-4 border-l-2 border-t-2 border-white/60 transform -rotate-45"></div>
+              </button>
+              <span className="text-white/70 text-sm">
+                {currentProjectIndex + 1} / {projects.length}
+              </span>
+              <button 
+                className="bg-white/10 border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all"
+                onClick={() => navigateProjects(1)}
+              >
+                <div className="w-4 h-4 border-r-2 border-t-2 border-white/60 transform rotate-45"></div>
+              </button>
+            </div>
+          )}
+          </div>
+
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative">
           <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 ${getBorderRadius()}`}></div>
           {sections.map((section, index) => (
             <React.Fragment key={section}>
@@ -1354,6 +1443,7 @@ function ConsolePortfolio() {
               )}
             </React.Fragment>
           ))}
+          </div>
         </div>
 
         {/* Content Area - Dynamic Height */}

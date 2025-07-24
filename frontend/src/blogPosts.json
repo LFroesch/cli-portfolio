@@ -8,8 +8,10 @@
     "media": {
       "type": "image",
       "url": "/blog/portfolio-preview.png",
-      "alt": "Portfolio website preview"
+      "alt": "Portfolio website preview",
+      "caption": "Screenshot of the completed portfolio website showcasing responsive design and interactive elements"
     },
+    "body": "When I set out to build a modern portfolio in 2025, I wanted to create something that not only showcased my skills but also demonstrated the latest web development practices. This project became an exploration of cutting-edge React patterns, Node.js backend architecture, and MongoDB integration.\n\nThe frontend leverages React 18's concurrent features and Suspense for seamless user experiences. I implemented custom hooks for state management and created reusable components that follow atomic design principles. The responsive design adapts beautifully across devices, from mobile to ultra-wide monitors.\n\nOn the backend, I built a RESTful API using Node.js and Express, with JWT authentication and rate limiting for security. The MongoDB database stores project data, blog posts, and analytics, with optimized queries and proper indexing for performance.\n\nDeployment was handled through modern CI/CD pipelines, with automated testing and deployment to cloud infrastructure. The result is a fast, secure, and maintainable portfolio that serves as both a showcase and a learning platform.",
     "tags": ["React", "Node.js", "MongoDB", "Web Development"]
   },
   {
@@ -21,8 +23,10 @@
     "media": {
       "type": "image", 
       "url": "/blog/clean-code.png",
-      "alt": "Code refactoring example"
+      "alt": "Code refactoring example",
+      "caption": "Before and after comparison showing code refactoring for better readability"
     },
+    "body": "Clean code isn't just about following syntax rules—it's about creating code that tells a story. After maintaining legacy systems and watching brilliant developers struggle with poorly written codebases, I've distilled my learnings into practical principles.\n\nFirst, clarity over cleverness. That one-liner you're proud of? If it takes more than 10 seconds to understand, it's probably too clever. Second, consistent naming conventions create mental shortcuts that make code scanning effortless.\n\nComment the why, not the what. Your code should explain what it does; comments should explain business logic and decisions. Finally, the boy scout rule: always leave code cleaner than you found it.",
     "tags": ["Best Practices", "Software Engineering", "Code Quality"]
   },
   {
@@ -34,8 +38,10 @@
     "media": {
       "type": "video",
       "url": "/blog/react-performance.mp4",
-      "poster": "/blog/react-performance-thumb.png"
+      "poster": "/blog/react-performance-thumb.png",
+      "caption": "Live demonstration of React performance optimization techniques and their impact"
     },
+    "body": "React performance optimization is an art that goes far beyond the basic hooks everyone talks about. While useMemo and useCallback are great starting points, the real performance gains come from understanding how React works under the hood.\n\nVirtualization transforms how we handle large lists. Instead of rendering thousands of DOM nodes, libraries like react-window render only what's visible. Code splitting with React.lazy and Suspense reduces initial bundle sizes dramatically.\n\nCustom hooks can encapsulate expensive operations and provide clean APIs. Profiling with React DevTools reveals the real bottlenecks, not just the ones we think exist. The key is measuring first, optimizing second.",
     "tags": ["React", "Performance", "JavaScript", "Optimization"]
   },
   {
@@ -47,8 +53,10 @@
     "media": {
       "type": "image",
       "url": "/blog/database-design.png", 
-      "alt": "Database schema diagram"
+      "alt": "Database schema diagram",
+      "caption": "Entity relationship diagram showing normalized and denormalized data patterns"
     },
+    "body": "Database design is where many applications either thrive or die. I've seen beautiful frontend applications crippled by poor database architecture, and simple interfaces powered by brilliant data modeling.\n\nThe key insight: normalization and denormalization aren't opposing forces—they're tools for different use cases. Normalize for data integrity, denormalize for read performance. Understanding when to choose SQL vs NoSQL isn't about trends; it's about data relationships and query patterns.\n\nIndexing strategy can make or break performance at scale. But remember: every index speeds up reads and slows down writes. Connection pooling, query optimization, and proper caching layers complete the picture for truly scalable database design.",
     "tags": ["Database", "MongoDB", "PostgreSQL", "Architecture"]
   }
 ]
