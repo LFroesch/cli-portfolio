@@ -30,7 +30,6 @@ export const contentData = {
           { name: 'Chakra UI', icon: 'CU' },
           { name: 'Vite', icon: '⚡' },
           { name: 'PWA', icon: 'PWA' },
-          { name: 'Three.js', icon: '3D' },
           { name: 'Framer Motion', icon: 'FM' },
           { name: 'React Native', icon: 'RN' },
           { name: 'Electron', icon: 'E' }
@@ -76,11 +75,6 @@ export const contentData = {
           { name: 'Java', icon: 'JAVA' },
           { name: 'C#', icon: 'C#' },
           { name: 'Go', icon: 'GO' },
-          { name: 'C++', icon: 'C++' },
-          { name: 'PHP', icon: 'PHP' },
-          { name: 'Ruby', icon: 'RB' },
-          { name: 'Swift', icon: 'SW' },
-          { name: 'Kotlin', icon: 'KT' },
           { name: 'Shell/Bash', icon: 'SH' },
           { name: 'SQL', icon: 'SQL' }
         ]
@@ -92,28 +86,19 @@ export const contentData = {
           { name: 'Unity', icon: 'U3D' },
           { name: 'Unreal Engine', icon: 'UE' },
           { name: 'Godot', icon: 'GDT' },
-          { name: 'Phaser.js', icon: 'PH' },
-          { name: 'OpenGL', icon: 'GL' }
         ]
       },
       {
         name: 'Development Tools',
-        description: 'Proficient with the essential development workflow tools. I believe good tooling makes for better code and more enjoyable development.',
+        description: 'Proficient with the essential development workflow tools. I believe good tooling makes for better code and more enjoyable development. All listed below and more are used daily.',
         items: [
           { name: 'Git', icon: 'GIT' },
           { name: 'GitHub', icon: 'GH' },
           { name: 'VS Code', icon: 'VSC' },
           { name: 'Postman', icon: 'PM' },
-          { name: 'Figma', icon: 'FIG' },
-          { name: 'Unity', icon: 'U3D' },
-          { name: 'Unreal Engine', icon: 'UE' },
           { name: 'Vite', icon: 'VT' },
-          { name: 'Webpack', icon: 'WP' },
-          { name: 'Babel', icon: 'BB' },
           { name: 'ESLint', icon: 'ES' },
           { name: 'Prettier', icon: 'PR' },
-          { name: 'Jest', icon: 'JST' },
-          { name: 'Cypress', icon: 'CY' }
         ]
       }
     ]
@@ -124,7 +109,7 @@ export const contentData = {
       { icon: '🎮', text: 'Game Projects', url: 'https://lfroesch.itch.io/' },
       { icon: '💼', text: 'LinkedIn', url: 'https://www.linkedin.com/in/lucas-froeschner-938886114/' },
       { icon: '📝', text: 'Resume / CV', url: '#' }, // this will be a page on this site
-      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' } // make this copy the email
+      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' }
     ]
   }
 };
@@ -135,40 +120,12 @@ export const projects = [
     description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
     techStack: 'Godot, GDScript',
     status: 'Completed - May 2024',
-    liveDemo: '#',
-    github: '#',
+    liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
+    github: 'https://github.com/LFroesch/3d-rpg',
     media: [
       {
         type: 'video',
         url: '/rpg/rpg.mp4'
-      }
-    ]
-  },
-  {
-    name: 'portmon',
-    description: 'A TUI interface for managing your active ports and services. Clean, efficient port monitoring with real-time updates.',
-    techStack: 'Go, BubbleTea, Lipgloss',
-    status: 'Completed - March 2024',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/portmon',
-    media: [
-      {
-        type: 'image',
-        url: '/portmon/Portmon.png'
-      }
-    ]
-  },
-  {
-    name: 'git-helper',
-    description: 'A TUI interface for managing your git repositories and workflows. Streamlined git operations with real-time feedback.',
-    techStack: 'Go, BubbleTea, Lipgloss',
-    status: 'Completed - March 2024',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/git-helper',
-    media: [
-      {
-        type: 'image',
-        url: '/git-helper/git-helper.png'
       }
     ]
   },
@@ -178,7 +135,7 @@ export const projects = [
     techStack: 'Go, RSS Parser, TUI',
     status: 'Completed - January 2024',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/Gator',
     media: [
       {
         type: 'image',
@@ -192,7 +149,7 @@ export const projects = [
     techStack: 'React, Node.js, MongoDB, Express',
     status: 'In Development',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/project-management',
     media: [
       {
         type: 'image',
@@ -203,10 +160,10 @@ export const projects = [
   {
     name: 'fresh-notes',
     description: 'Modern note-taking application with rich text editing, organization features, and cross-platform sync.',
-    techStack: 'React, Electron, SQLite, Markdown',
+    techStack: 'React, MongoDB, Express, Node.js, Tailwind CSS',
     status: 'In Development',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/FreshNotes',
     media: [
       {
         type: 'image',
@@ -215,12 +172,96 @@ export const projects = [
     ]
   },
   {
+    name: 'event-chat',
+    description: 'Real-time chat application for events with features like user authentication, event creation and invitation, and geoposition-based event and post discovery.',
+    techStack: 'React, Node.js, MongdoDB, Express, Socket.IO',
+    status: 'In Development',
+    liveDemo: 'https://event-chat.onrender.com/',
+    github: 'https://github.com/LFroesch/event-chat',
+    media: [
+      {
+        type: 'image',
+        url: 'null'
+      }
+    ]
+  },
+  {
+    name: 'ecommerce platform',
+    description: 'Full-featured e-commerce platform with product listings, shopping cart functionality, and user authentication.',
+    techStack: 'React, Node.js, MongoDB, Express, Stripe API',
+    status: 'In Development',
+    liveDemo: 'https://e-commerce-store-9t97.onrender.com/',
+    github: 'https://github.com/LFroesch/ecommerce-platform',
+    media: [
+      {
+        type: 'image',
+        url: 'null'
+      }
+    ]
+  },
+  {
+    name: 'voice memo transcriber',
+    description: 'Records voice audio and converts it to text notes with voice command support for hands-free note-taking.',
+    techStack: 'Python, Speech Recognition, Audio Processing',
+    status: 'Completed - February 2024',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/voice-memo-transcriber',
+    media: [
+      {
+        type: 'image',
+        url: null
+      }
+    ]
+  },
+  {
+    name: 'window manager',
+    description: 'Manages and organizes application windows in a user-friendly interface.',
+    techStack: 'Python, Tkinter',
+    status: 'Completed - June 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/window_manager',
+    media: [
+      {
+        type: 'image',
+        url: null
+      }
+    ]
+  },
+  {
+    name: 'portmon',
+    description: 'A TUI interface for managing your active ports and services. Clean, efficient port monitoring with real-time updates.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'Completed - July 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/portmon',
+    media: [
+      {
+        type: 'image',
+        url: '/portmon/Portmon.png'
+      }
+    ]
+  },
+  {
+    name: 'git-helper',
+    description: 'A TUI interface for managing your git repositories and workflows. Streamlined git operations with real-time feedback.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'In Development - July 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/git-helper',
+    media: [
+      {
+        type: 'image',
+        url: '/git-helper/git-helper.png'
+      }
+    ]
+  },
+  {
     name: 'project-launcher',
     description: 'TUI application for launching and managing personal projects with quick access to tools and resources.',
     techStack: 'BubbleTea, Go',
-    status: 'In Development',
+    status: 'Completed - July 2025',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/project-launcher',
     media: [
       {
         type: 'image',
@@ -234,25 +275,11 @@ export const projects = [
     techStack: 'Go, Ollama API, BubbleTea',
     status: 'In Development',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/dwight',
     media: [
       {
         type: 'image',
         url: '/dwight/dwight.png'
-      }
-    ]
-  },
-  {
-    name: 'voice memo transcriber',
-    description: 'Records voice audio and converts it to text notes with voice command support for hands-free note-taking.',
-    techStack: 'Python, Speech Recognition, Audio Processing',
-    status: 'Completed - February 2024',
-    liveDemo: '#',
-    github: '#',
-    media: [
-      {
-        type: 'image',
-        url: null
       }
     ]
   },
@@ -262,7 +289,7 @@ export const projects = [
     techStack: 'Go, Log Parsing, TUI',
     status: 'In Development',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/logdog',
     media: [
       {
         type: 'image',
@@ -280,7 +307,7 @@ export const projects = [
     techStack: 'Go, File System APIs, BubbleTea',
     status: 'Completed - April 2024',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/backup-xd',
     media: [
       {
         type: 'image',
@@ -294,7 +321,7 @@ export const projects = [
     techStack: 'Go, SQLite, BubbleTea, Cron',
     status: 'In Development',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/lif',
     media: [
       {
         type: 'image',
@@ -330,6 +357,20 @@ export const projects = [
         type: 'image',
         url: '/tui-games/TUI-Chess.png'
       }
+    ]
+  },
+  {
+    name: 'asteroids',
+    description: 'Basic pygame implementation of Asteroids, my first venture into coding, ever.',
+    techStack: 'Python, Pygame',
+    status: 'Completed - Late 2024',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/asteroids',
+    media: [
+      {
+        type: 'image',
+        url: '/asteroids/asteroids.png'
+      },
     ]
   }
 ];
