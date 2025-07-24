@@ -10,6 +10,7 @@ import { useGitHubStats } from './hooks/useGitHubStats'
 import TypingEffect from './components/TypingEffect'
 import LoadingSpinner from './components/LoadingSpinner'
 import { StatsCardSkeleton } from './components/SkeletonLoader'
+import JumpToTop from './components/JumpToTop'
 import './animations.css'
 
 function ConsolePortfolio() {
@@ -493,6 +494,8 @@ function ConsolePortfolio() {
                 </div>
               )}
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
@@ -680,6 +683,8 @@ function ConsolePortfolio() {
                 );
               })}
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
@@ -927,6 +932,8 @@ function ConsolePortfolio() {
                 </div>
               </div>
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       }
@@ -1116,6 +1123,8 @@ function ConsolePortfolio() {
                 <div className="text-center py-4 opacity-60">No activity data</div>
               )}
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
 
@@ -1255,6 +1264,8 @@ function ConsolePortfolio() {
                 </div>
               )}
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       }
@@ -1533,6 +1544,8 @@ function ConsolePortfolio() {
                 )}
               </form>
             </div>
+            
+            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
