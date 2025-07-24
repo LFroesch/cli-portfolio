@@ -23,6 +23,17 @@ function ConsolePortfolio() {
   const [mediaLoading, setMediaLoading] = useState(false);
   const [lastTrackedProject, setLastTrackedProject] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [collapsedSections, setCollapsedSections] = useState({});
+  const [certGalleryIndex, setCertGalleryIndex] = useState(0);
+  const [showCertGallery, setShowCertGallery] = useState(false);
+  
+  // Toggle section collapse
+  const toggleSection = (sectionKey) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [sectionKey]: !prev[sectionKey]
+    }));
+  };
   
   // Copy email to clipboard
   const copyEmailToClipboard = async (email) => {
@@ -250,34 +261,237 @@ function ConsolePortfolio() {
       case 'about':
         return (
           <div className="w-full max-w-4xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-              {/* Profile Image */}
-              <div className="flex-shrink-0">
-                <div className={`w-48 h-48 lg:w-56 lg:h-56 border-2 border-white/20 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center ${getBorderRadius('card')}`}>
-                  <img
-                    src="/profile.jpg"
-                    alt="Lucas Froeschner"
-                    className={`w-full h-full object-cover ${getBorderRadius('card')}`}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                  <div className="hidden w-full h-full flex-col items-center justify-center text-white/40">
-                    <div className="text-6xl mb-2">👨‍💻</div>
-                    <div className="text-sm">Lucas F.</div>
+            {/* About Header */}
+            <div className="mb-12">
+              <button
+                onClick={() => toggleSection('about-bio')}
+                className="w-full group flex items-center gap-4 mb-8 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
+              >
+                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-bio'] ? 'bg-white/20' : ''}`}>
+                  <div className={`transition-transform duration-300 ${collapsedSections['about-bio'] ? 'rotate-180' : ''}`}>
+                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </div>
                 </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
+                  About
+                </h3>
+              </button>
+              {!collapsedSections['about-bio'] && (
+                <div className="animate-fade-in">
+                  <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                    {/* Profile Image */}
+                    <div className="flex-shrink-0">
+                      <div className={`w-48 h-48 lg:w-56 lg:h-56 border-2 border-white/20 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center ${getBorderRadius('card')}`}>
+                        <img
+                          src="/profile.jpg"
+                          alt="Lucas Froeschner"
+                          className={`w-full h-full object-cover ${getBorderRadius('card')}`}
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <div className="hidden w-full h-full flex-col items-center justify-center text-white/40">
+                          <div className="text-6xl mb-2">👨‍💻</div>
+                          <div className="text-sm">Lucas F.</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Text Content */}
+                    <div className="flex-1 text-center lg:text-left">
+                      {contentData.about.paragraphs.map((paragraph, index) => (
+                        <p key={index} className="mb-6 text-xl lg:text-2xl opacity-90 leading-relaxed">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Learning Timeline */}
+            <div className="mt-16">
+              <button
+                onClick={() => toggleSection('about-timeline')}
+                className="w-full group flex items-center gap-4 mb-12 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
+              >
+                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-timeline'] ? 'bg-white/20' : ''}`}>
+                  <div className={`transition-transform duration-300 ${collapsedSections['about-timeline'] ? 'rotate-180' : ''}`}>
+                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
+                  Learning Journey
+                </h3>
+              </button>
+              {!collapsedSections['about-timeline'] && (
+                <div className="animate-fade-in">
+                  <div className="relative max-w-4xl mx-auto">
+                {/* Desktop Timeline Line */}
+                <div className="hidden md:block absolute left-1/2 transform -translate-x-0.5 w-0.5 h-full bg-gradient-to-b from-white/20 via-white/40 to-white/20"></div>
+                
+                {/* Mobile Timeline Line */}
+                <div className="md:hidden absolute left-6 top-0 w-0.5 h-full bg-gradient-to-b from-white/20 via-white/40 to-white/20"></div>
+                
+                {/* Timeline Items */}
+                <div className="space-y-8 md:space-y-12">
+                  {contentData.about.timeline.map((item, index) => (
+                    <div key={index} className={`flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                      {/* Mobile Timeline Dot */}
+                      <div className="md:hidden flex-shrink-0 w-12 flex justify-center">
+                        <div className="w-3 h-3 bg-white/60 rounded-full border-2 border-black z-10 relative">
+                          <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className={`w-full md:w-6/12 text-left ${index % 2 === 0 ? 'md:text-right md:pr-6' : 'md:text-left md:pl-6'}`}>
+                        <div className={`p-4 md:p-6 bg-white/5 border border-white/20 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')} ml-2 md:ml-0`}>
+                          <div className="text-sm opacity-60 mb-2">{item.period}</div>
+                          <h4 className="text-lg font-semibold mb-3 hyphens-auto">{item.title}</h4>
+                          <p className="text-sm opacity-80 mb-4 leading-relaxed hyphens-auto">{item.description}</p>
+                          <div className="flex flex-wrap gap-2 justify-start">
+                            {item.tech.map((tech, techIndex) => (
+                              <span 
+                                key={techIndex}
+                                className={`px-2 py-1 bg-white/10 border border-white/20 text-xs opacity-80 ${getBorderRadius('small')}`}
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Desktop Timeline Dot */}
+                      <div className="hidden md:flex w-2/12 justify-center">
+                        <div className="w-4 h-4 bg-white/60 rounded-full border-4 border-black z-10 relative">
+                          <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
+                      
+                      {/* Empty space for alignment - Hidden on mobile */}
+                      <div className="hidden md:block w-6/12"></div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              
-              {/* Text Content */}
-              <div className="flex-1 text-center lg:text-left">
-                {contentData.about.paragraphs.map((paragraph, index) => (
-                  <p key={index} className="mb-6 text-xl lg:text-2xl opacity-90 leading-relaxed">
-                    {paragraph}
+                </div>
+              )}
+            </div>
+            
+            {/* FAQ Section */}
+            <div className="mt-16">
+              <button
+                onClick={() => toggleSection('about-faq')}
+                className="w-full group flex items-center gap-4 mb-12 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
+              >
+                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-faq'] ? 'bg-white/20' : ''}`}>
+                  <div className={`transition-transform duration-300 ${collapsedSections['about-faq'] ? 'rotate-180' : ''}`}>
+                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
+                  {contentData.about.faq.title}
+                </h3>
+              </button>
+              {!collapsedSections['about-faq'] && (
+                <div className="animate-fade-in">
+                  <p className="text-center text-lg opacity-80 leading-relaxed mb-12">
+                    {contentData.about.faq.description}
                   </p>
+              
+              <div className="space-y-8">
+                {contentData.about.faq.sections.map((section, sectionIndex) => (
+                  <div key={sectionIndex} className={`border border-white/20 bg-white/5 ${getBorderRadius('card')}`}>
+                    <div className="p-6">
+                      <h4 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+                        {section.category}
+                      </h4>
+                      
+                      <div className="space-y-6">
+                        {section.questions.map((qa, qaIndex) => (
+                          <div key={qaIndex} className="text-left">
+                            <h5 className="text-base lg:text-lg font-medium mb-3 text-white/90">
+                              Q: {qa.question}
+                            </h5>
+                            <p className="text-sm lg:text-base opacity-80 leading-relaxed pl-4 border-l-2 border-white/20">
+                              {qa.answer}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Recommendations Section */}
+            <div className="mt-16">
+              <button
+                onClick={() => toggleSection('about-recommendations')}
+                className="w-full group flex items-center gap-4 mb-8 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
+              >
+                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-recommendations'] ? 'bg-white/20' : ''}`}>
+                  <div className={`transition-transform duration-300 ${collapsedSections['about-recommendations'] ? 'rotate-180' : ''}`}>
+                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
+                  {contentData.about.recommendations.title}
+                </h3>
+              </button>
+              {!collapsedSections['about-recommendations'] && (
+                <div className="animate-fade-in">
+                  <p className="text-center text-base lg:text-lg opacity-80 leading-relaxed mb-12">
+                    {contentData.about.recommendations.description}
+                  </p>
+              
+              <div className="space-y-8">
+                {contentData.about.recommendations.categories.map((category, categoryIndex) => (
+                  <div key={categoryIndex}>
+                    {/* Category Header */}
+                    <div className="flex items-center justify-center gap-3 mb-6">
+                      <div className="text-xl lg:text-2xl">{category.icon}</div>
+                      <h4 className="text-lg lg:text-xl font-bold">{category.name}</h4>
+                    </div>
+                    
+                    {/* Tools Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {category.items.map((tool, toolIndex) => (
+                        <div 
+                          key={toolIndex}
+                          className={`group border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:shadow-lg text-center ${getBorderRadius('card')}`}
+                        >
+                          <div className="p-4">
+                            <h5 className="text-sm lg:text-base font-semibold mb-2 group-hover:text-white transition-colors duration-300">
+                              {tool.name}
+                            </h5>
+                            <p className="text-xs lg:text-sm opacity-80 leading-relaxed">
+                              {tool.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+                </div>
+              )}
             </div>
           </div>
         );
@@ -339,41 +553,128 @@ function ConsolePortfolio() {
                         ></div>
                       ))}
                     
-                    {/* Header with icon */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="text-white/80 group-hover:text-white group-hover:scale-110 transition-all duration-300">
-                        {getSkillCategoryIcon(index)}
-                      </div>
-                      <h3 className="text-2xl font-semibold group-hover:text-white transition-colors duration-300 bg-gradient-to-r from-white to-gray-300 group-hover:from-blue-200 group-hover:to-white bg-clip-text text-transparent">
-                        {category.name}
-                      </h3>
-                    </div>
+                      {/* Header with icon - Clickable */}
+                      <button
+                        onClick={() => toggleSection(`skills-${index}`)}
+                        className="w-full group/header mb-4 flex items-center gap-4 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
+                      >
+                        <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover/header:border-white/80 group-hover/header:bg-white/10 transition-all duration-300 ${collapsedSections[`skills-${index}`] ? 'bg-white/20' : ''}`}>
+                          <div className={`transition-transform duration-300 ${collapsedSections[`skills-${index}`] ? 'rotate-180' : ''}`}>
+                            <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <div className="text-white/80 group-hover/header:text-white group-hover/header:scale-110 transition-all duration-300">
+                            {getSkillCategoryIcon(index)}
+                          </div>
+                          <h3 className="text-2xl font-semibold group-hover/header:text-white transition-colors duration-300 bg-gradient-to-r from-white to-gray-300 group-hover/header:from-blue-200 group-hover/header:to-white bg-clip-text text-transparent text-left">
+                            {category.name}
+                          </h3>
+                        </div>
+                      </button>
                     
-                    {/* Description */}
-                    <p className="text-base opacity-80 mb-6 leading-relaxed group-hover:opacity-100 transition-opacity duration-300 text-left">
-                      {category.description}
-                    </p>
-                    
-                    {/* Tech Stack with enhanced animations */}
-                    <div className="flex flex-wrap gap-3">
-                      {category.items.map((item, itemIndex) => (
-                        <div
-                          key={itemIndex}
-                          className={`group/item relative px-3 py-2 bg-white/10 border border-white/20 text-sm hover:bg-white/20 hover:border-blue-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer ${getBorderRadius('small')}`}
-                        >
-                          {/* Gradient overlay on hover */}
-                          <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-purple-500/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 ${getBorderRadius('small')}`}></div>
+                      {/* Collapsible Content */}
+                      {!collapsedSections[`skills-${index}`] && (
+                        <div className="animate-fade-in">
+                          {/* Description */}
+                          <p className="text-base opacity-80 mb-6 leading-relaxed group-hover:opacity-100 transition-opacity duration-300 text-left">
+                            {category.description}
+                          </p>
                           
-                          {/* Content */}
-                          <div className="flex items-center justify-center relative z-10">
-                            <span className="font-medium group-hover/item:text-blue-100 transition-colors duration-200">
-                              {item.name}
-                            </span>
+                          {/* Tech Stack with enhanced animations */}
+                          <div className="flex flex-wrap gap-3">
+                            {category.items.map((item, itemIndex) => (
+                              <div
+                                key={itemIndex}
+                                className={`group/item relative px-3 py-2 bg-white/10 border border-white/20 text-sm hover:bg-white/20 hover:border-blue-400/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 cursor-pointer ${getBorderRadius('small')}`}
+                              >
+                                {/* Gradient overlay on hover */}
+                                <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/10 to-purple-500/0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 ${getBorderRadius('small')}`}></div>
+                                
+                                {/* Content */}
+                                <div className="flex items-center justify-center relative z-10">
+                                  <span className="font-medium group-hover/item:text-blue-100 transition-colors duration-200">
+                                    {item.name}
+                                  </span>
+                                </div>
+                                
+                              </div>
+                            ))}
                           </div>
                           
+                          {/* Gallery for Certifications & Learning */}
+                          {category.gallery && (
+                            <div className="mt-8">
+                              <button 
+                                onClick={() => setShowCertGallery(!showCertGallery)}
+                                className={`w-full p-3 border border-white/30 hover:border-white/50 bg-white/5 hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2 ${getBorderRadius('button')}`}
+                              >
+                                <span className="text-sm font-medium">
+                                  {showCertGallery ? 'Hide Gallery' : 'View Learning Gallery'}
+                                </span>
+                                <svg className={`w-4 h-4 transition-transform duration-300 ${showCertGallery ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </button>
+                              
+                              {showCertGallery && (
+                                <div className="mt-6 animate-fade-in">
+                                  <div className={`border border-white/20 bg-black overflow-hidden ${getBorderRadius('card')}`}>
+                                    <div className="relative h-[400px] flex items-center justify-center">
+                                      <img
+                                        src={category.gallery[certGalleryIndex]?.url}
+                                        alt={category.gallery[certGalleryIndex]?.title}
+                                        className="max-w-full max-h-full object-contain"
+                                        loading="lazy"
+                                      />
+                                      
+                                      {/* Gallery Navigation */}
+                                      {category.gallery.length > 1 && (
+                                        <>
+                                          <button
+                                            onClick={() => setCertGalleryIndex(prev => 
+                                              prev > 0 ? prev - 1 : category.gallery.length - 1
+                                            )}
+                                            className={`absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 border border-white/20 transition-all duration-300 ${getBorderRadius('button')}`}
+                                          >
+                                            ←
+                                          </button>
+                                          <button
+                                            onClick={() => setCertGalleryIndex(prev => 
+                                              prev < category.gallery.length - 1 ? prev + 1 : 0
+                                            )}
+                                            className={`absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 border border-white/20 transition-all duration-300 ${getBorderRadius('button')}`}
+                                          >
+                                            →
+                                          </button>
+                                          
+                                          {/* Gallery Counter */}
+                                          <div className="absolute bottom-4 right-4 px-2 py-1 bg-black/70 text-white/80 text-xs rounded">
+                                            {certGalleryIndex + 1} / {category.gallery.length}
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                    
+                                    {/* Caption */}
+                                    {category.gallery[certGalleryIndex]?.caption && (
+                                      <div className="p-4 border-t border-white/20">
+                                        <p className="text-sm text-white/80 text-center">
+                                          <strong>{category.gallery[certGalleryIndex]?.title}</strong>
+                                          {category.gallery[certGalleryIndex]?.title && ' - '}
+                                          {category.gallery[certGalleryIndex]?.caption}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
+                      )}
                   </div>
                 </div>
                 );
@@ -474,68 +775,112 @@ function ConsolePortfolio() {
 
         return (
           <div className="w-full">
-            {/* Project Card Layout - Vertical Stack */}
+            {/* Project Card Layout - Restructured */}
             <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
-              {/* Content Section - Above Media */}
-              <div className="p-6 lg:p-8 space-y-6">
-                {/* Header */}
-                <div className="text-center">
-                  <h2 className="text-2xl lg:text-3xl font-bold mb-2">{currentProject.name}</h2>
-                  <p className="text-sm opacity-60">{currentProject.status || 'Completed'}</p>
-                </div>
-                
-                {/* Description */}
-                <div className="text-center">
-                  <p className="text-base opacity-80 leading-relaxed">
-                    {currentProject.description}
-                  </p>
-                </div>
-                
-                {/* Tech Stack */}
-                <div className="text-center">
-                  <p className="text-sm opacity-60 mb-3">Stack</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {currentProject.techStack.split(', ').map((tech, index) => (
-                      <span 
-                        key={index}
-                        className={`px-3 py-1 bg-white/5 border border-white/20 text-xs opacity-80 hover:opacity-100 hover:bg-white/10 transition-all duration-200 ${getBorderRadius('small')}`}
-                      >
-                        {tech.trim()}
+              {/* Top Bar - Header with Project Info and Actions */}
+              <div className="border-b border-white/10 bg-white/5">
+                {/* Mobile Layout */}
+                <div className="block lg:hidden">
+                  {/* First Row: Title and Status */}
+                  <div className="p-4 border-b border-white/5">
+                    <div className="flex items-center justify-between gap-3">
+                      <h2 className="text-lg font-bold truncate flex-1">{currentProject.name}</h2>
+                      <span className="text-xs opacity-60 bg-white/10 px-2 py-1 rounded-full whitespace-nowrap">
+                        {currentProject.status || 'Completed'}
                       </span>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Project Counter and Buttons */}
-                <div className="flex justify-between items-center pt-6 border-t border-white/10">
-                  <div className="text-xs opacity-50">
-                    {currentProjectIndex + 1} / {projects.length}
+                    </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
-                    {currentProject.liveDemo && currentProject.liveDemo !== '#' && (
+                  {/* Second Row: Action Buttons */}
+                  <div className="p-4">
+                    <div className="flex items-center gap-2">
+                      {currentProject.liveDemo && currentProject.liveDemo !== '#' && (
+                        <a 
+                          href={currentProject.liveDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex-1 px-3 py-2 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm text-center ${getBorderRadius('button')}`}
+                        >
+                          Info
+                        </a>
+                      )}
                       <a 
-                        href={currentProject.liveDemo}
+                        href={currentProject.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`px-3 py-1.5 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+                        className={`flex-1 px-3 py-2 border border-white/40 hover:bg-white hover:text-black transition-all duration-300 text-sm text-center ${getBorderRadius('button')}`}
                       >
-                        More Info
+                        GitHub
                       </a>
-                    )}
-                    <a 
-                      href={currentProject.github}
-                      className={`px-3 py-1.5 border border-white/40 hover:bg-white hover:text-black transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-                    >
-                      GitHub
-                    </a>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Desktop Layout */}
+                <div className="hidden lg:flex justify-between items-center p-4 lg:p-6">
+                  <div className="flex items-center gap-4">
+                    {/* Navigation Arrows */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => navigateProjects(-1)}
+                        className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
+                        title="Previous project"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => navigateProjects(1)}
+                        className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
+                        title="Next project"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
+                    
+                    <h2 className="text-xl lg:text-2xl font-bold">{currentProject.name}</h2>
+                    <span className="text-sm opacity-60 bg-white/10 px-2 py-1 rounded-full">
+                      {currentProject.status || 'Completed'}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    {/* Project Counter */}
+                    <div className="text-sm opacity-60">
+                      {currentProjectIndex + 1} / {projects.length}
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2">
+                      {currentProject.liveDemo && currentProject.liveDemo !== '#' && (
+                        <a 
+                          href={currentProject.liveDemo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`px-3 py-1.5 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+                        >
+                          Info
+                        </a>
+                      )}
+                      <a 
+                        href={currentProject.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`px-3 py-1.5 border border-white/40 hover:bg-white hover:text-black transition-all duration-300 text-sm ${getBorderRadius('button')}`}
+                      >
+                        GitHub
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              {/* Media Section - Below Content */}
+              {/* Media Section - Prominent Display */}
               <div className="w-full">
-                <div className="relative w-full h-[400px] lg:h-[500px] mb-3">
+                <div className="relative w-full h-[400px] lg:h-[500px]">
                   {renderProjectMedia()}
                   {mediaLoading && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
@@ -548,11 +893,38 @@ function ConsolePortfolio() {
                   const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
                   const currentMedia = mediaArray[currentMediaIndex] || mediaArray[0];
                   return currentMedia?.caption && (
-                    <p className="text-sm text-white/60 italic text-center px-4">
-                      {currentMedia.caption}
-                    </p>
+                    <div className="px-4 py-2 bg-black/20 border-t border-white/10">
+                      <p className="text-sm text-white/60 italic text-center">
+                        {currentMedia.caption}
+                      </p>
+                    </div>
                   );
                 })()}
+              </div>
+              
+              {/* Content Section - Below Media */}
+              <div className="p-6 lg:p-8 space-y-6">
+                {/* Description */}
+                <div>
+                  <p className="text-base opacity-80 leading-relaxed text-center">
+                    {currentProject.description}
+                  </p>
+                </div>
+                
+                {/* Tech Stack */}
+                <div className="text-center">
+                  <p className="text-sm opacity-60 mb-3">Tech Stack</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {currentProject.techStack.split(', ').map((tech, index) => (
+                      <span 
+                        key={index}
+                        className={`px-3 py-1 bg-white/5 border border-white/20 text-xs opacity-80 hover:opacity-100 hover:bg-white/10 transition-all duration-200 ${getBorderRadius('small')}`}
+                      >
+                        {tech.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -744,18 +1116,6 @@ function ConsolePortfolio() {
                 <div className="text-center py-4 opacity-60">No activity data</div>
               )}
             </div>
-
-            {/* Footer */}
-            <div className={`p-4 bg-white/5 border border-white/10 text-center ${getBorderRadius('card')}`}>
-              <div className="text-sm opacity-80 space-x-4">
-                {githubData && (
-                  <>
-                    <span className="opacity-40">•</span>
-                    <span>Data refreshed: {new Date().toLocaleString()}</span>
-                  </>
-                )}
-              </div>
-            </div>
           </div>
         );
 
@@ -901,13 +1261,13 @@ function ConsolePortfolio() {
 
       case 'contact':
         return (
-          <div className="w-full max-w-5xl mx-auto space-y-12">
+          <div className="w-full max-w-5xl mx-auto space-y-8">
             {/* Contact Links */}
+            
             <div>
-              
-              {/* First row - 3 items */}
-              <div className="grid grid-cols-3 gap-6 mb-6">
-                {contentData.contact.items.slice(0, 3).map((item, index) => {
+              {/* All contact items in one grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                {contentData.contact.items.map((item, index) => {
                   const isEmail = item.url.startsWith('mailto:');
                   
                   if (isEmail) {
@@ -915,7 +1275,7 @@ function ConsolePortfolio() {
                       <button
                         key={index}
                         onClick={() => copyEmailToClipboard(item.text)}
-                        className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 cursor-pointer ${getBorderRadius('card')}`}
+                        className={`group relative block p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 cursor-pointer ${getBorderRadius('card')}`}
                         style={{ animationDelay: `${index * 0.1}s` }}
                       >
                         {/* Background gradient overlay */}
@@ -940,7 +1300,7 @@ function ConsolePortfolio() {
                           </h3>
                           
                           {/* URL or description */}
-                          <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
+                          <p className="hidden lg:block text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
                             {item.text}
                           </p>
                         </div>
@@ -980,7 +1340,7 @@ function ConsolePortfolio() {
                     <a 
                       key={index} 
                       href={item.url} 
-                      className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 ${getBorderRadius('card')}`}
+                      className={`group relative block p-4 lg:p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 ${getBorderRadius('card')}`}
                       target={item.url.startsWith('http') ? '_blank' : '_self'}
                       rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                       style={{ animationDelay: `${index * 0.1}s` }}
@@ -1007,7 +1367,7 @@ function ConsolePortfolio() {
                     </h3>
                     
                     {/* URL or description */}
-                    <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
+                    <p className="hidden lg:block text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
                       {item.url.startsWith('mailto:') 
                         ? item.text 
                         : item.url.startsWith('http') 
@@ -1048,165 +1408,36 @@ function ConsolePortfolio() {
                   );
                 })}
               </div>
-            
-            {/* Second row - 2 items centered */}
-            {contentData.contact.items.length > 3 && (
-              <div className="flex justify-center gap-6">
-                {contentData.contact.items.slice(3).map((item, index) => {
-                  const isEmail = item.url.startsWith('mailto:');
-                  
-                  if (isEmail) {
-                    return (
-                      <button
-                        key={index + 3}
-                        onClick={() => copyEmailToClipboard(item.text)}
-                        className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 w-full max-w-xs cursor-pointer ${getBorderRadius('card')}`}
-                        style={{ animationDelay: `${(index + 3) * 0.1}s` }}
-                      >
-                        {/* Background gradient overlay */}
-                        <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
-                        
-                        {/* Animated border glow */}
-                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-cyan-500/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
-                        
-                        {/* Content */}
-                        <div className="relative z-10 text-center">
-                          {/* Icon with glow effect */}
-                          <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                            <span className="relative z-10">{item.icon}</span>
-                            <div className="absolute inset-0 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 text-4xl">
-                              {item.icon}
+            </div>
+            {/* Available to Work Tag */}
+            <div className="flex items-center justify-center animate-fade-in my-0">
+              <div className="flex items-center bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                <span className="text-green-300 text-sm font-medium tracking-wide">Available to work</span>
+              </div>
+            </div>
+            {/* Contact Form */}
+                  <div className={`p-6 lg:p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
+                    <div className="text-center mb-8">
+                      
+                      {/* Available for Hire Cards */}
+                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-8">
+                        {contentData.contact.services.items.map((service, index) => (
+                          <div 
+                            key={index}
+                            className={`group border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:shadow-lg text-center ${getBorderRadius('card')}`}
+                          >
+                            <div className="p-3 lg:p-4">
+                              <h4 className="text-xs lg:text-sm font-semibold mb-2 group-hover:text-white transition-colors duration-300">
+                                {service.name}
+                              </h4>
+                              <p className="text-xs opacity-80 leading-relaxed">
+                                {service.description}
+                              </p>
                             </div>
                           </div>
-                          
-                          {/* Text */}
-                          <h3 className="text-lg font-medium mb-2 group-hover:text-white transition-colors duration-300">
-                            Email (Click to Copy)
-                          </h3>
-                          
-                          {/* URL or description */}
-                          <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
-                            {item.text}
-                          </p>
-                        </div>
-                        
-                        {/* Hover particle effect */}
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                          <div 
-                            className={`absolute w-2 h-2 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping ${getBorderRadius()}`} 
-                            style={{ 
-                              top: `${5 + ((index + 3) * 7) % 15}%`, 
-                              left: `${10 + ((index + 3) * 13) % 20}%`,
-                              animationDelay: `${0.1 + ((index + 3) * 0.05)}s` 
-                            }}
-                          ></div>
-                          <div 
-                            className={`absolute w-1 h-1 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse ${getBorderRadius()}`} 
-                            style={{ 
-                              top: `${30 + ((index + 3) * 11) % 25}%`, 
-                              right: `${20 + ((index + 3) * 9) % 15}%`,
-                              animationDelay: `${0.3 + ((index + 3) * 0.07)}s` 
-                            }}
-                          ></div>
-                          <div 
-                            className={`absolute w-1.5 h-1.5 bg-purple-400/30 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce ${getBorderRadius()}`} 
-                            style={{ 
-                              bottom: `${20 + ((index + 3) * 17) % 20}%`, 
-                              left: `${25 + ((index + 3) * 19) % 25}%`,
-                              animationDelay: `${0.5 + ((index + 3) * 0.09)}s` 
-                            }}
-                          ></div>
-                        </div>
-                      </button>
-                    );
-                  }
-                  
-                  return (
-                    <a 
-                      key={index + 3} 
-                      href={item.url} 
-                      className={`group relative block p-6 border border-white/20 hover:border-white/40 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-white/10 w-full max-w-xs ${getBorderRadius('card')}`}
-                      target={item.url.startsWith('http') ? '_blank' : '_self'}
-                      rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      style={{ animationDelay: `${(index + 3) * 0.1}s` }}
-                    >
-                    {/* Background gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br from-white/0 via-white/5 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
-                    
-                    {/* Animated border glow */}
-                    <div className={`absolute inset-0 bg-gradient-to-r from-blue-500/0 via-purple-500/20 to-cyan-500/0 opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-500 ${getBorderRadius('card')}`}></div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10 text-center">
-                      {/* Icon with glow effect */}
-                      <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300 relative">
-                        <span className="relative z-10">{item.icon}</span>
-                        <div className="absolute inset-0 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 text-4xl">
-                          {item.icon}
-                        </div>
+                        ))}
                       </div>
-                      
-                      {/* Text */}
-                      <h3 className="text-lg font-medium mb-2 group-hover:text-white transition-colors duration-300">
-                        {item.text.includes('@') ? 'Email' : item.text}
-                      </h3>
-                      
-                      {/* URL or description */}
-                      <p className="text-sm opacity-60 group-hover:opacity-80 transition-opacity duration-300">
-                        {item.url.startsWith('mailto:') 
-                          ? item.text 
-                          : item.url.startsWith('http') 
-                            ? new URL(item.url).hostname.replace('www.', '')
-                            : 'Click to visit'
-                        }
-                      </p>
-                    </div>
-                    
-                    {/* Hover particle effect */}
-                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                      <div 
-                        className={`absolute w-2 h-2 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-ping ${getBorderRadius()}`} 
-                        style={{ 
-                          top: `${5 + ((index + 3) * 7) % 15}%`, 
-                          left: `${10 + ((index + 3) * 13) % 20}%`,
-                          animationDelay: `${0.1 + ((index + 3) * 0.05)}s` 
-                        }}
-                      ></div>
-                      <div 
-                        className={`absolute w-1 h-1 bg-blue-400/40 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-pulse ${getBorderRadius()}`} 
-                        style={{ 
-                          top: `${30 + ((index + 3) * 11) % 25}%`, 
-                          right: `${20 + ((index + 3) * 9) % 15}%`,
-                          animationDelay: `${0.3 + ((index + 3) * 0.07)}s` 
-                        }}
-                      ></div>
-                      <div 
-                        className={`absolute w-1.5 h-1.5 bg-purple-400/30 rounded-full opacity-0 group-hover:opacity-100 group-hover:animate-bounce ${getBorderRadius()}`} 
-                        style={{ 
-                          bottom: `${20 + ((index + 3) * 17) % 20}%`, 
-                          left: `${25 + ((index + 3) * 19) % 25}%`,
-                          animationDelay: `${0.5 + ((index + 3) * 0.09)}s` 
-                        }}
-                      ></div>
-                    </div>
-                  </a>
-                  );
-                })}
-              </div>
-            )}
-            </div>
-
-            {/* Contact Form */}
-                  <div className={`p-8 border border-white/20 bg-white/5 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')}`}>
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                    <h3 className="text-xl font-medium mb-0 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                      Let's Connect!
-                    </h3>
-                    </div>
-                    <div className="flex items-center justify-center gap-3 mb-6">
-                    <p className="text-base opacity-80 leading-relaxed max-w-2xl mx-auto">
-                      I'm always excited to discuss new opportunities and collaborate on interesting projects. Feel free to reach out through any of the channels above.
-                    </p>
                     </div>
                     
                     {/* Status Messages */}
@@ -1317,7 +1548,7 @@ function ConsolePortfolio() {
       {/* Paper Planes */}
       <PaperPlanes />
       
-      <div className="text-center w-full max-w-4xl relative z-10 mx-auto py-16">
+      <div className="text-center w-full max-w-4xl relative z-10 mx-auto py-8">
 
         {/* Header */}
         <div className="mb-12 animate-fade-in">
@@ -1339,15 +1570,6 @@ function ConsolePortfolio() {
               />
             </p>
           </div>
-          
-          {/* Available to Work Tag */}
-          <div className="flex items-center justify-center mt-2 animate-fade-in">
-            <div className="flex items-center bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
-              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-              <span className="text-green-300 text-sm font-medium tracking-wide">Available to work</span>
-            <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
-            </div>
-          </div>
         </div>
 
         {/* Navigation Container */}
@@ -1356,11 +1578,11 @@ function ConsolePortfolio() {
           <div className="lg:hidden flex flex-col items-center">
           {/* Mobile Nav Button */}
           <button 
-            className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-3 mb-4 hover:bg-white/20 transition-all"
+            className="flex items-center justify-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-3 mb-4 hover:bg-white/20 transition-all relative"
             onClick={() => setShowMobileMenu(!showMobileMenu)}
           >
             <span className="text-white font-medium">{sections[currentSection]}</span>
-            <div className={`w-4 h-4 border-l-2 border-b-2 border-white/60 transform transition-transform ${showMobileMenu ? 'rotate-135' : '-rotate-45'}`}></div>
+            <div className={`w-4 h-4 border-l-2 border-b-2 border-white/60 transform transition-transform ${showMobileMenu ? 'rotate-135' : '-rotate-45'} relative top-[-2px] left-[-4px]`}></div>
           </button>
           
           {/* Mobile Menu */}
@@ -1420,7 +1642,7 @@ function ConsolePortfolio() {
                 </div>
               ) : (
                 <div 
-                  className={`relative text-lg font-light tracking-wider py-3 px-6 transition-all duration-500 cursor-pointer border min-w-[100px] text-center group ${getBorderRadius('button')} ${
+                  className={`relative text-lg font-light tracking-wider py-3 px-4 transition-all duration-500 cursor-pointer border min-w-[120px] text-center group ${getBorderRadius('button')} ${
                     currentSection === section 
                       ? 'border-white/80 font-normal shadow-lg shadow-white/20 bg-white/5' 
                       : 'border-white/20 hover:border-white/60 hover:bg-white/5 hover:shadow-md hover:shadow-white/10'

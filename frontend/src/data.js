@@ -10,7 +10,129 @@ export const contentData = {
     paragraphs: [
       "I'm a full-stack developer passionate about creating clean & efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme.",
       "When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech in other fields, I love a good info rabbithole."
-    ]
+    ],
+    timeline: [
+      {
+        period: "2021",
+        title: "Started Programming",
+        description: "First lines of Python in CS class. Built basic games with Pygame.",
+        tech: ["Python", "Pygame"]
+      },
+      {
+        period: "2022",
+        title: "Web Development",
+        description: "Discovered HTML/CSS/JS. Built first websites and fell in love with interactive UIs.",
+        tech: ["HTML", "CSS", "JavaScript"]
+      },
+      {
+        period: "2023",
+        title: "Full-Stack Focus",
+        description: "Learned React, Node.js, and databases. Started building complete applications.",
+        tech: ["React", "Node.js", "MongoDB", "Express"]
+      },
+      {
+        period: "2024",
+        title: "Systems & Performance",
+        description: "Deep dive into Go, TUI development, and performance optimization. Built CLI tools and RPG games.",
+        tech: ["Go", "BubbleTea", "Godot", "GDScript"]
+      },
+      {
+        period: "2025",
+        title: "Advanced Architecture",
+        description: "Currently exploring distributed systems, cloud infrastructure, and advanced React patterns.",
+        tech: ["TypeScript", "Cloud Services", "Microservices"]
+      }
+    ],
+    faq: {
+      title: "How I Work & FAQs",
+      description: "Common questions about my working approach and tools I trust",
+      sections: [
+        {
+          category: "Working Style",
+          questions: [
+            {
+              question: "What's your development approach?",
+              answer: "I believe in clean, maintainable code and agile development. I start with understanding requirements, create prototypes, gather feedback, and iterate. I prioritize communication and documentation throughout the process."
+            },
+            {
+              question: "How do you handle project timelines?",
+              answer: "I break projects into manageable milestones with regular check-ins. I'm transparent about progress and any potential delays, and I always build in buffer time for testing and refinement."
+            },
+            {
+              question: "What tools do you use for collaboration?",
+              answer: "I'm flexible with tools - Slack, Discord, or email for communication. GitHub for code collaboration, Figma for design reviews, and various project management tools like Trello or Linear."
+            }
+          ]
+        },
+        {
+          category: "Technical Questions",
+          questions: [
+            {
+              question: "Which technologies do you prefer?",
+              answer: "I'm technology-agnostic and choose the best tool for each project. That said, I'm most comfortable with React/Node.js for web apps, Go for CLI tools, and Godot for games."
+            },
+            {
+              question: "Do you work with existing codebases?",
+              answer: "Absolutely! I enjoy diving into existing code, understanding architecture, and making improvements. I'm experienced with legacy code refactoring and modernization."
+            },
+            {
+              question: "How do you ensure code quality?",
+              answer: "I use linting, testing frameworks, code reviews, and follow established style guides. I believe in writing self-documenting code and comprehensive documentation."
+            }
+          ]
+        },
+        {
+          category: "Business & Availability",
+          questions: [
+            {
+              question: "What are your availability hours?",
+              answer: "I'm generally available Monday-Friday, 9 AM - 6 PM EST, but I'm flexible for different time zones and urgent issues. I respond to messages within 24 hours."
+            },
+            {
+              question: "How do you handle project pricing?",
+              answer: "I offer both hourly rates and project-based pricing depending on scope. I provide detailed estimates upfront and track time transparently for hourly work."
+            },
+            {
+              question: "Do you offer ongoing maintenance?",
+              answer: "Yes! I provide post-launch support, bug fixes, feature additions, and general maintenance. I believe in long-term partnerships with clients."
+            }
+          ]
+        }
+      ]
+    },
+    recommendations: {
+      title: "My Recommended Tools",
+      description: "Tools and libraries I trust and use regularly",
+      categories: [
+        {
+          name: "Development Environment",
+          icon: "💻",
+          items: [
+            { name: "VS Code", description: "Great debugging and Git integration" },
+            { name: "Warp Terminal", description: "Smart completion and productivity features" },
+            { name: "GitHub Desktop", description: "Simplifies complex Git operations" }
+          ]
+        },
+        {
+          name: "Frontend Development",
+          icon: "🎨",
+          items: [
+            { name: "Vite", description: "Fast dev server and optimized builds" },
+            { name: "Tailwind CSS", description: "Consistent design system and fast development" },
+            { name: "Framer Motion", description: "Intuitive API for smooth animations" }
+          ]
+        },
+        {
+          name: "Backend & CLI",
+          icon: "⚙️",
+          items: [
+            { name: "Drizzle ORM", description: "Excellent TypeScript support and performance" },
+            { name: "Hono", description: "Ultra-fast web framework for the edge" },
+            { name: "BubbleTea", description: "Elm-inspired TUI framework for Go" }
+          ]
+        }
+      ]
+    }
   },
   skills: {
     categories: [
@@ -100,6 +222,40 @@ export const contentData = {
           { name: 'ESLint', icon: 'ES' },
           { name: 'Prettier', icon: 'PR' },
         ]
+      },
+      {
+        name: 'Certifications & Learning',
+        description: 'Current certifications and active learning goals. Always expanding my knowledge through structured learning paths and industry-recognized credentials.',
+        items: [
+          { name: 'AWS Solutions Architect (Learning)', icon: 'AWS' },
+          { name: 'Google Cloud Professional (Learning)', icon: 'GCP' },
+          { name: 'MongoDB Certified Developer (Learning)', icon: 'MDB' },
+          { name: 'React Advanced Patterns', icon: '⚛' },
+          { name: 'TypeScript Advanced', icon: 'TS' },
+          { name: 'Rust Programming', icon: 'RS' },
+          { name: 'Machine Learning Basics', icon: 'ML' },
+          { name: 'DevOps & CI/CD', icon: 'DEV' }
+        ],
+        gallery: [
+          {
+            type: 'image',
+            url: '/certs/aws-learning.png',
+            caption: 'AWS Solutions Architect learning progress - studying cloud architecture patterns',
+            title: 'AWS Studies'
+          },
+          {
+            type: 'image', 
+            url: '/certs/react-patterns.png',
+            caption: 'Advanced React patterns and performance optimization techniques',
+            title: 'React Mastery'
+          },
+          {
+            type: 'image',
+            url: '/certs/typescript-advanced.png', 
+            caption: 'TypeScript advanced types, generics, and type-safe application development',
+            title: 'TypeScript Deep Dive'
+          }
+        ]
       }
     ]
   },
@@ -109,9 +265,19 @@ export const contentData = {
       { icon: '🎮', text: 'Game Projects', url: 'https://lfroesch.itch.io/' },
       { icon: '💼', text: 'LinkedIn', url: 'https://www.linkedin.com/in/lucas-froeschner-938886114/' },
       { icon: '📝', text: 'Resume / CV', url: '#' }, // this will be a page on this site
-      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' }
-    ]
-  }
+      { icon: '📧', text: 'lucas.froeschner@gmail.com', url: 'mailto:lucas.froeschner@gmail.com' },
+      { icon: '🌐', text: 'Contact Form Below', url: '#' }
+    ],
+    services: {
+      title: "Available for Hire",
+      items: [
+        { name: "Employment", description: "You want me on your team!" },
+        { name: "Web Development", description: "Full-stack apps and websites." },
+        { name: "Game Development", description: "2D/3D game development/more." },
+        { name: "Consulting", description: "Code review and technical guidance." }
+      ]
+    }
+  },
 };
 
 export const projects = [
