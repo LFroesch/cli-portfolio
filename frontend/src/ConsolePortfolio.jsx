@@ -748,7 +748,6 @@ function ConsolePortfolio() {
             {/* Footer */}
             <div className={`p-4 bg-white/5 border border-white/10 text-center ${getBorderRadius('card')}`}>
               <div className="text-sm opacity-80 space-x-4">
-                <span>Last visit: {stats.lastVisit ? new Date(stats.lastVisit).toLocaleString() : 'Never'}</span>
                 {githubData && (
                   <>
                     <span className="opacity-40">•</span>
@@ -1342,7 +1341,7 @@ function ConsolePortfolio() {
           </div>
           
           {/* Available to Work Tag */}
-          <div className="flex items-center justify-center mt-2 animate-fade-in" style={{animationDelay: '3s'}}>
+          <div className="flex items-center justify-center mt-2 animate-fade-in">
             <div className="flex items-center bg-green-500/20 border border-green-500/30 rounded-full px-4 py-2 backdrop-blur-sm">
               <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
               <span className="text-green-300 text-sm font-medium tracking-wide">Available to work</span>
