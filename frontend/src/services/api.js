@@ -112,7 +112,8 @@ class APIService {
   // Health check
   async healthCheck() {
     try {
-      const response = await fetch(`${API_BASE_URL.replace('/api', '')}/health`);
+      // Use stats endpoint instead of /health since /health doesn't exist in production
+      const response = await fetch(`${API_BASE_URL}/analytics/stats`);
       return response.ok;
     } catch (error) {
       console.error('Health check failed:', error);

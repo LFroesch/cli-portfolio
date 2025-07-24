@@ -671,12 +671,9 @@ function ConsolePortfolio() {
                     githubData.recentRepos.slice(0, 4).map((repo, index) => (
                       <div key={index} className="text-left">
                         <div className="text-sm truncate mb-1">{repo.name}</div>
-                        <div className="text-xs opacity-60 truncate mb-1">
-                          {repo.description || 'No description'}
-                        </div>
                         <div className="text-xs opacity-60">
                           {repo.language && <span>{repo.language} • </span>}
-                          ⭐ {repo.stars} • 🔀 {repo.forks}
+                          ⭐ {repo.stars}
                         </div>
                       </div>
                     ))
