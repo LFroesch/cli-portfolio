@@ -7,60 +7,106 @@ export const sections = ['about', 'skills', 'blog', 'contact', 'stats', 'project
 
 export const contentData = {
   about: {
-    paragraphs: [
-      "I'm a full-stack developer passionate about creating clean & efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme.",
-      "When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech in other fields, I love a good info rabbithole."
+    sections: [
+      {
+        paragraphs: [
+          "I'm a full-stack developer passionate about creating clean and efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme."
+        ],
+        photo: {
+          src: "/profile.jpg",
+          alt: "Lucas Froeschner",
+          caption: "Full-Stack Developer"
+        }
+      },
+      {
+        paragraphs: [
+          "I love building things that solve real problems and make life easier, as well as working on creative projects that push the boundaries of what's possible."
+        ],
+        photo: {
+          src: "/profile.jpg",
+          alt: "Lucas Froeschner at work",
+          caption: "Building efficient solutions"
+        }
+      },
+      {
+        paragraphs: [
+          "I have a wonderful and supportive fiance, Sarah, as well as a rascal of a dog, Brady. When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech/trivia. I love a good info rabbit hole."
+        ],
+        photo: {
+          src: "/profile.jpg",
+          alt: "Lucas Froeschner with family",
+          caption: "My family"
+        }
+      }
     ],
     timeline: [
       {
-        period: "2021",
+        period: "Early Summer 2024",
         title: "Started Programming",
-        description: "First lines of Python in CS class. Built basic games with Pygame.",
+        description: "First hello world while enrolled in Boot.dev, best decision I've ever made! Learned terminal and programming language basics.",
+        tech: ["Shell", "Bash", "Git", "GitHub", "JavaScript", "Python", "Go"]
+      },
+      {
+        period: "Late Summer 2024",
+        title: "Learning Python and Pygame",
+        description: "First game project, a simple Asteroids clone. Learned the basics of game development and programming concepts. This really hooked me, and I started researching how to make more professional games.",
         tech: ["Python", "Pygame"]
       },
       {
-        period: "2022",
-        title: "Web Development",
-        description: "Discovered HTML/CSS/JS. Built first websites and fell in love with interactive UIs.",
-        tech: ["HTML", "CSS", "JavaScript"]
+        period: "Fall 2024",
+        title: "Learning Fundamentals",
+        description: "Learned OOP, data structures, algorithms, and more advanced concepts. Built several projects to solidify understanding.",
+        tech: ["OOP", "Data Structures", "Algorithms", "Functional Programming"]
       },
       {
-        period: "2023",
-        title: "Full-Stack Focus",
-        description: "Learned React, Node.js, and databases. Started building complete applications.",
-        tech: ["React", "Node.js", "MongoDB", "Express"]
+        period: "Winter 2024",
+        title: "Godot Game Development",
+        description: "Found Godot and learned 2D, then 3D game development. Built several games with thousands of total downloads on Itch.io",
+        tech: ["Godot", "GDScript"]
       },
       {
-        period: "2024",
+        period: "Spring 2025",
+        title: "Full-Stack Web Development",
+        description: "Discovered 'the frontend'. Built first websites and fell in love with interactive UIs, APIs, and full-stack development. This also led me to trying to maximize the efficiency of the code I write to make it easier to maintain and scale.",
+        tech: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "Vite", "React Native"]
+      },
+      {
+        period: "Summer 2025",
         title: "Systems & Performance",
-        description: "Deep dive into Go, TUI development, and performance optimization. Built CLI tools and RPG games.",
-        tech: ["Go", "BubbleTea", "Godot", "GDScript"]
+        description: "Deep dive into Go, TUI development, and performance optimization. Built CLI/TUI tools and games.",
+        tech: ["Go", "BubbleTea", "Lipgloss", "Gin"]
       },
       {
-        period: "2025",
-        title: "Advanced Architecture",
-        description: "Currently exploring distributed systems, cloud infrastructure, and advanced React patterns.",
-        tech: ["TypeScript", "Cloud Services", "Microservices"]
+        period: "Summer 2025",
+        title: "Portfolio Development",
+        description: "Tuned up my portfolio with new projects and improved designs of old ones.",
+        tech: ["React", "Tailwind CSS", "Vite"]
+      },
+      {
+        period: "Summer to Fall 2025",
+        title: "The Great Beyond",
+        description: "Currently applying for jobs and continuing to learn. Excited for the next chapter in my career! Currently excited about LLMs, Kubernetes, Rust & cloud technologies.",
+        tech: ["LLMs", "Kubernetes", "Rust", "Cloud Services", "Microservices"]
       }
     ],
     faq: {
       title: "How I Work & FAQs",
-      description: "Common questions about my working approach and tools I trust",
+      description: "Get to know my working style and approach.",
       sections: [
         {
           category: "Working Style",
           questions: [
             {
               question: "What's your development approach?",
-              answer: "I believe in clean, maintainable code and agile development. I start with understanding requirements, create prototypes, gather feedback, and iterate. I prioritize communication and documentation throughout the process."
+              answer: "I believe in clean, maintainable code, full stop. I start by looking at the problem from all angles, and designing a modular architecture that can evolve and be pruned at will. I create prototypes, gather feedback, and iterate. I prioritize communication and documentation throughout the process."
             },
             {
               question: "How do you handle project timelines?",
-              answer: "I break projects into manageable milestones with regular check-ins. I'm transparent about progress and any potential delays, and I always build in buffer time for testing and refinement."
+              answer: "I break projects into manageable milestones with regular check-ins. I'm very transparent about progress or status and any potential delays, and I always build in buffer time for testing and refinement. I typically work in sessions of about 12 hours, but adjust based on project needs."
             },
             {
               question: "What tools do you use for collaboration?",
-              answer: "I'm flexible with tools - Slack, Discord, or email for communication. GitHub for code collaboration, Figma for design reviews, and various project management tools like Trello or Linear."
+              answer: "I'm flexible with tools - Slack, Discord, or email for communication. GitHub for code collaboration, Figma for design reviews, and various project management tools like Trello or Linear. I am a quick learner for any other tools you prefer."
             }
           ]
         },
@@ -69,15 +115,15 @@ export const contentData = {
           questions: [
             {
               question: "Which technologies do you prefer?",
-              answer: "I'm technology-agnostic and choose the best tool for each project. That said, I'm most comfortable with React/Node.js for web apps, Go for CLI tools, and Godot for games."
+              answer: "My favorite is always the most efficient for the task at hand, I say it a lot, but efficiency is the name of the game. I do not mind refactoring to a different language in the name of efficiency. I love tools and languages that help me write clean, maintainable code with minimal overhead. I am partial to Go, JavaScript/Typescript and React, but I enjoy learning new languages and frameworks. I also love working with databases like MongoDB and PostgreSQL."
             },
             {
               question: "Do you work with existing codebases?",
-              answer: "Absolutely! I enjoy diving into existing code, understanding architecture, and making improvements. I'm experienced with legacy code refactoring and modernization."
+              answer: "Absolutely! I enjoy diving into existing code, understanding architecture, and making improvements. I also work well with adapting to different coding practices."
             },
             {
               question: "How do you ensure code quality?",
-              answer: "I use linting, testing frameworks, code reviews, and follow established style guides. I believe in writing self-documenting code and comprehensive documentation."
+              answer: "I use linting, testing frameworks, code reviews, and follow established style guides. I believe in writing self-documenting code and comprehensive documentation. I make sure tests are written for critical paths and edge cases, and I use CI/CD pipelines to automate testing and deployment."
             }
           ]
         },
@@ -86,7 +132,7 @@ export const contentData = {
           questions: [
             {
               question: "What are your availability hours?",
-              answer: "I'm generally available Monday-Friday, 9 AM - 6 PM EST, but I'm flexible for different time zones and urgent issues. I respond to messages within 24 hours."
+              answer: "I'm generally available Monday-Friday, 9 AM - 6 PM PST, but I'm flexible for different time zones and urgent issues. I respond to messages within 24 hours."
             },
             {
               question: "How do you handle project pricing?",
@@ -94,7 +140,7 @@ export const contentData = {
             },
             {
               question: "Do you offer ongoing maintenance?",
-              answer: "Yes! I provide post-launch support, bug fixes, feature additions, and general maintenance. I believe in long-term partnerships with clients."
+              answer: "Yes! I provide post-launch support, bug fixes, feature additions, and general maintenance. I believe in long-term partnerships with clients, and I'm always here to help."
             }
           ]
         }
@@ -118,8 +164,7 @@ export const contentData = {
           icon: "🎨",
           items: [
             { name: "Vite", description: "Fast dev server and optimized builds" },
-            { name: "Tailwind CSS", description: "Consistent design system and fast development" },
-            { name: "Framer Motion", description: "Intuitive API for smooth animations" }
+            { name: "Tailwind CSS", description: "Consistent design system and fast development" }
           ]
         },
         {
@@ -285,7 +330,7 @@ export const projects = [
     name: 'isle of brynd',
     description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
     techStack: 'Godot, GDScript',
-    status: 'Completed - May 2024',
+    status: 'Demo Completed - May 2025',
     liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
     github: 'https://github.com/LFroesch/3d-rpg',
     media: [
@@ -300,7 +345,7 @@ export const projects = [
     name: 'gator',
     description: 'RSS feed reader with a clean interface for staying up-to-date with your favorite content sources.',
     techStack: 'Go, RSS Parser, TUI',
-    status: 'Completed - January 2024',
+    status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/Gator',
     media: [
@@ -314,7 +359,7 @@ export const projects = [
     name: 'project-manager',
     description: 'Full-featured project management web application with task tracking, team collaboration, and progress visualization.',
     techStack: 'React, Node.js, MongoDB, Express',
-    status: 'In Development',
+    status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/project-management',
     media: [
@@ -328,7 +373,7 @@ export const projects = [
     name: 'fresh-notes',
     description: 'Modern note-taking application with rich text editing, organization features, and cross-platform sync.',
     techStack: 'React, MongoDB, Express, Node.js, Tailwind CSS',
-    status: 'In Development',
+    status: 'Completed - May 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/FreshNotes',
     media: [
@@ -342,7 +387,7 @@ export const projects = [
     name: 'event-chat',
     description: 'Real-time chat application for events with features like user authentication, event creation and invitation, and geoposition-based event and post discovery.',
     techStack: 'React, Node.js, MongdoDB, Express, Socket.IO',
-    status: 'In Development',
+    status: 'Completed - May 2025',
     liveDemo: 'https://event-chat.onrender.com/',
     github: 'https://github.com/LFroesch/event-chat',
     media: [
@@ -356,7 +401,7 @@ export const projects = [
     name: 'ecommerce platform',
     description: 'Full-featured e-commerce platform with product listings, shopping cart functionality, and user authentication.',
     techStack: 'React, Node.js, MongoDB, Express, Stripe API',
-    status: 'In Development',
+    status: 'Completed - May 2025',
     liveDemo: 'https://e-commerce-store-9t97.onrender.com/',
     github: 'https://github.com/LFroesch/ecommerce-platform',
     media: [
@@ -369,8 +414,8 @@ export const projects = [
   {
     name: 'voice memo transcriber',
     description: 'Records voice audio and converts it to text notes with voice command support for hands-free note-taking.',
-    techStack: 'Python, Speech Recognition, Audio Processing',
-    status: 'Completed - February 2024',
+    techStack: 'Python, Google Speech API, Tkinter',
+    status: 'Completed - June 2024',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/voice-memo-transcriber',
     media: [
@@ -440,7 +485,7 @@ export const projects = [
     name: 'dwight',
     description: 'Local LLM assistant interface built for Ollama. Terminal-based AI companion for development tasks and queries.',
     techStack: 'Go, Ollama API, BubbleTea',
-    status: 'In Development',
+    status: 'In Development - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/dwight',
     media: [
@@ -454,7 +499,7 @@ export const projects = [
     name: 'logdog',
     description: 'TUI/CLI-driven custom logging system designed for personal projects with advanced filtering and analysis.',
     techStack: 'Go, Log Parsing, TUI',
-    status: 'In Development',
+    status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/logdog',
     media: [
@@ -472,7 +517,7 @@ export const projects = [
     name: 'backup-xd',
     description: 'TUI application for backing up personal projects, configurations, and important files with automated scheduling.',
     techStack: 'Go, File System APIs, BubbleTea',
-    status: 'Completed - April 2024',
+    status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/backup-xd',
     media: [
@@ -486,7 +531,7 @@ export const projects = [
     name: 'lif',
     description: 'Personal productivity TUI app featuring timers, reminders, glossary, and daily task management.',
     techStack: 'Go, SQLite, BubbleTea, Cron',
-    status: 'In Development',
+    status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/lif',
     media: [
@@ -500,7 +545,7 @@ export const projects = [
     name: 'tui-games',
     description: 'Collection of terminal-based games built with Go and BubbleTea.',
     techStack: 'Go, BubbleTea',
-    status: 'In Development',
+    status: 'In Development - Summer 2025',
     liveDemo: '#',
     github: '#',
     media: [

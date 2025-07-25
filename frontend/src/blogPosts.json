@@ -2,61 +2,16 @@
   {
     "id": "1",
     "title": "Building a Modern Portfolio in 2025",
-    "date": "2024-01-15",
-    "time": "10:30",
-    "description": "A deep dive into creating a responsive, interactive portfolio website using React for the frontend and Node.js for the backend. We'll explore modern web development practices, database integration, and deployment strategies.",
+    "date": "2025-07-23",
+    "time": "4:30 PM PST",
+    "description": "Building my portfolio after a year and a half of studying in preparation for a career change!",
     "media": {
       "type": "image",
       "url": "/blog/portfolio-preview.png",
       "alt": "Portfolio website preview",
       "caption": "Screenshot of the completed portfolio website showcasing responsive design and interactive elements"
     },
-    "body": "So I finally decided to build my portfolio! \n\nI went with React because, honestly, it's what I know best. The hardest part wasn't the code - it was deciding on a design that didn't look like every other developer portfolio out there.\n\nThe backend is pretty straightforward Node.js with MongoDB. Nothing fancy, just stores my projects and blog posts. I did spend way too much time on the animations though. There's something satisfying about smooth transitions that I can't resist.\n\nNow I just need to actually write some blog posts to fill this thing up. Future me problem, I guess.",
+    "body": "So I finally decided to build my portfolio! \n\nI went with React because it's what I've had the most experience with. The hardest part was deciding on a design that really made me feel proud to call it my own.\n\nThe backend is pretty straightforward Node.js with MongoDB. Nothing fancy, just stores/fetches stats. For the frontend I started with a Terminal based interface, but I wanted to make it more accessible to all users, my family, friends etc.\n\nSo I thought about what made me excited about a user interface, and for me it is the smoothness and the interactivity. So I focused on the menu to start, adding in sort of a playstation / gamecube style project wheel and keyboard enabled navigation.\n\nNow I just need to actually write some blog posts to fill this thing up. \n\nOverall, I'm really happy with how it turned out. It's a work in progress, but I feel like it represents me well and shows off my skills while still keeping to my minimalist aesthetic. \n\nIf you're looking to build your own portfolio, my advice is to just start. Don't overthink it! You will start to find your style / what you like as you go. Progress over perfection is the key. And remember, it's okay to iterate and improve over time. Your portfolio is a reflection of you and should evolve with you.",
     "tags": ["React", "Node.js", "MongoDB", "Web Development"]
-  },
-  {
-    "id": "2", 
-    "title": "The Art of Clean Code: Lessons from Production",
-    "date": "2024-01-10",
-    "time": "2:30PM",
-    "description": "After years of writing code that others (and future me) have to maintain, I've learned some hard lessons about what makes code truly maintainable. Here are my top principles for writing clean, readable code.",
-    "media": {
-      "type": "image", 
-      "url": "/blog/clean-code.png",
-      "alt": "Code refactoring example",
-      "caption": "Before and after comparison showing code refactoring for better readability"
-    },
-    "body": "I've been thinking a lot about code quality lately, especially after inheriting a codebase that made me question my career choices. You know the type - the kind where every function is a mystery novel and variable names are apparently chosen by rolling dice.\n\nThe thing is, we all write bad code sometimes. I definitely have my share of \"what was I thinking\" moments when looking at old projects. But I've learned a few things that actually help:\n\nWrite code like you're explaining it to your past self from 6 months ago. That person was smart but has completely forgotten the context. Also, if you find yourself writing a comment that just repeats what the code does, delete it. Comments should explain the weird business logic, not that you're incrementing a counter.\n\nMostly though, just try to leave things a tiny bit better than you found them. Even small improvements add up.",
-    "tags": ["Best Practices", "Software Engineering", "Code Quality"]
-  },
-  {
-    "id": "3",
-    "title": "Optimizing React Performance: Beyond the Basics", 
-    "date": "2024-01-05",
-    "time": "09:15",
-    "description": "React performance optimization goes far beyond just using memo and useMemo. Let's explore advanced techniques like virtualization, code splitting, and custom hooks that can dramatically improve your app's performance.",
-    "media": {
-      "type": "video",
-      "url": "/blog/react-performance.mp4",
-      "poster": "/blog/react-performance-thumb.png",
-      "caption": "Live demonstration of React performance optimization techniques and their impact"
-    },
-    "body": "Okay, so my React app was getting slow. Like, embarrassingly slow. Users were probably wondering if their internet died every time they clicked something.\n\nI started with the usual suspects - threw some useMemo and useCallback around like performance fairy dust. Helped a little, but not enough. Then I actually opened the React DevTools profiler and holy shit, I was rendering way more stuff than I thought.\n\nTurns out I had this massive list that was rendering 1000+ items even though only like 20 were visible. react-window saved my life there. Also learned that my \"clever\" component structure was causing cascade re-renders everywhere.\n\nThe real lesson? Measure first, then optimize. My gut feeling about what was slow was completely wrong.",
-    "tags": ["React", "Performance", "JavaScript", "Optimization"]
-  },
-  {
-    "id": "4",
-    "title": "Database Design Patterns for Scalable Applications",
-    "date": "2023-12-28", 
-    "time": "16:20",
-    "description": "Scaling a database isn't just about adding more servers. Learn about indexing strategies, denormalization patterns, and when to choose SQL vs NoSQL for maximum performance and maintainability.",
-    "media": {
-      "type": "image",
-      "url": "/blog/database-design.png", 
-      "alt": "Database schema diagram",
-      "caption": "Entity relationship diagram showing normalized and denormalized data patterns"
-    },
-    "body": "I used to think database design was just \"make tables, add foreign keys, done.\" Then I had to scale an app that was taking 30 seconds to load a simple page. Turns out there's a bit more to it.\n\nThe weirdest thing I learned is that sometimes you want to break the rules on purpose. Like, normalization is great until your joins are so complex they make the database cry. Sometimes you just duplicate some data and call it a day.\n\nSQL vs NoSQL isn't really about which one is \"better\" - it's about what your data actually looks like. If everything is connected to everything else, SQL probably makes sense. If you're just storing JSON blobs that don't really relate to each other, maybe MongoDB is fine.\n\nAlso, indexes are magic but they're not free. Every index you add makes writes slower. It's like a tradeoff you actually have to think about.",
-    "tags": ["Database", "MongoDB", "PostgreSQL", "Architecture"]
   }
 ]

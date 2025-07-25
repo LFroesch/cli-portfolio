@@ -280,36 +280,47 @@ function ConsolePortfolio() {
                 </h3>
               </button>
               {!collapsedSections['about-bio'] && (
-                <div className="animate-fade-in">
-                  <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-                    {/* Profile Image */}
-                    <div className="flex-shrink-0">
-                      <div className={`w-48 h-48 lg:w-56 lg:h-56 border-2 border-white/20 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center ${getBorderRadius('card')}`}>
-                        <img
-                          src="/profile.jpg"
-                          alt="Lucas Froeschner"
-                          className={`w-full h-full object-cover ${getBorderRadius('card')}`}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                        <div className="hidden w-full h-full flex-col items-center justify-center text-white/40">
-                          <div className="text-6xl mb-2">👨‍💻</div>
-                          <div className="text-sm">Lucas F.</div>
+                <div className="animate-fade-in space-y-12">
+                  {/* Photo and Text Sections */}
+                  {contentData.about.sections.map((section, index) => {
+                    const isLeftPhoto = index % 2 === 0; // Left for even indices (0, 2), Right for odd indices (1)
+                    
+                    return (
+                      <div key={index} className={`flex flex-col ${isLeftPhoto ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-8 lg:gap-12`}>
+                        {/* Photo */}
+                        <div className="flex-shrink-0">
+                          <div className={`w-48 h-48 lg:w-56 lg:h-56 border-2 border-white/20 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center ${getBorderRadius('card')}`}>
+                            <img
+                              src={section.photo.src}
+                              alt={section.photo.alt}
+                              className={`w-full h-full object-cover ${getBorderRadius('card')}`}
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                            <div className="hidden w-full h-full flex-col items-center justify-center text-white/40">
+                              <div className="text-6xl mb-2">👨‍💻</div>
+                              <div className="text-sm">Lucas F.</div>
+                            </div>
+                          </div>
+                          {/* Photo Caption */}
+                          <p className="text-center text-sm opacity-60 mt-2">
+                            {section.photo.caption}
+                          </p>
+                        </div>
+                        
+                        {/* Text Content */}
+                        <div className={`flex-1 text-center ${isLeftPhoto ? 'lg:text-left' : 'lg:text-right'}`}>
+                          {section.paragraphs.map((paragraph, paragraphIndex) => (
+                            <p key={paragraphIndex} className="text-xl lg:text-2xl opacity-90 leading-relaxed mb-6 last:mb-0">
+                              {paragraph}
+                            </p>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                    
-                    {/* Text Content */}
-                    <div className="flex-1 text-center lg:text-left">
-                      {contentData.about.paragraphs.map((paragraph, index) => (
-                        <p key={index} className="mb-6 text-xl lg:text-2xl opacity-90 leading-relaxed">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -439,7 +450,7 @@ function ConsolePortfolio() {
             </div>
             
             {/* Recommendations Section */}
-            <div className="mt-16">
+            {/* <div className="mt-16">
               <button
                 onClick={() => toggleSection('about-recommendations')}
                 className="w-full group flex items-center gap-4 mb-8 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
@@ -465,13 +476,13 @@ function ConsolePortfolio() {
                 {contentData.about.recommendations.categories.map((category, categoryIndex) => (
                   <div key={categoryIndex}>
                     {/* Category Header */}
-                    <div className="flex items-center justify-center gap-3 mb-6">
+                    {/* <div className="flex items-center justify-center gap-3 mb-6">
                       <div className="text-xl lg:text-2xl">{category.icon}</div>
                       <h4 className="text-lg lg:text-xl font-bold">{category.name}</h4>
                     </div>
                     
                     {/* Tools Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {category.items.map((tool, toolIndex) => (
                         <div 
                           key={toolIndex}
@@ -493,7 +504,7 @@ function ConsolePortfolio() {
               </div>
                 </div>
               )}
-            </div>
+            </div> */}
             
             <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
@@ -749,7 +760,7 @@ function ConsolePortfolio() {
           };
           
           return (
-            <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center p-1">
+            <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center">
               {renderMediaContent()}
               
               {/* Media Navigation Arrows */}
@@ -1129,7 +1140,13 @@ function ConsolePortfolio() {
         );
 
       case 'blog': {
-        const sortedBlogPosts = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sortedBlogPosts = [...blogPosts].sort((a, b) => {
+          const parseDate = (dateStr) => {
+            const [year, month, day] = dateStr.split('-');
+            return new Date(year, month - 1, day);
+          };
+          return parseDate(b.date) - parseDate(a.date);
+        });
         const currentPost = sortedBlogPosts[currentBlogIndex];
         
         const navigateBlogPosts = (direction) => {
@@ -1180,86 +1197,174 @@ function ConsolePortfolio() {
         };
 
         return (
-          <div className="w-full max-w-4xl mx-auto text-center">
-            {/* Navigation */}
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <button
-                onClick={() => navigateBlogPosts(-1)}
-                className={`px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-              >
-                ← prev
-              </button>
-              <span className="text-sm opacity-60">
-                {currentBlogIndex + 1} / {sortedBlogPosts.length}
-              </span>
-              <button
-                onClick={() => navigateBlogPosts(1)}
-                className={`px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm ${getBorderRadius('button')}`}
-              >
-                next →
-              </button>
-            </div>
-
-            {/* Blog Post */}
+          <div className="w-full">
+            {/* Blog Post Card Layout - Matching Project Card Structure */}
             <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
-              <div className="p-6 lg:p-8 space-y-6">
-                {/* Title & Date */}
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">{currentPost.title}</h2>
-                  <div className="text-sm opacity-60">
-                    {new Date(currentPost.date).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })} • {currentPost.time}
+              {/* Top Bar - Header with Blog Info and Navigation */}
+              <div className="border-b border-white/10 bg-white/5">
+                {/* Mobile Layout */}
+                <div className="block lg:hidden">
+                  {/* First Row: Date */}
+                  <div className="p-4 pb-2 border-b border-white/5">
+                    <div className="flex items-center justify-center">
+                      <span className="text-xs opacity-60 bg-white/10 px-2 py-1 rounded-full whitespace-nowrap">
+                        {(() => {
+                          const [year, month, day] = currentPost.date.split('-');
+                          const date = new Date(year, month - 1, day);
+                          return date.toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric' 
+                          });
+                        })()}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Second Row: Title */}
+                  <div className="p-4 pt-2 border-b border-white/5">
+                    <h2 className="text-lg font-bold text-center">{currentPost.title}</h2>
+                  </div>
+                  
+                  {/* Third Row: Navigation Buttons */}
+                  <div className="p-4">
+                    <div className="flex items-center justify-center gap-4">
+                      <button
+                        onClick={() => navigateBlogPosts(-1)}
+                        className={`flex-1 px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm text-center ${getBorderRadius('button')}`}
+                      >
+                        ← Previous
+                      </button>
+                      <span className="text-sm opacity-60 px-3">
+                        {currentBlogIndex + 1} / {sortedBlogPosts.length}
+                      </span>
+                      <button
+                        onClick={() => navigateBlogPosts(1)}
+                        className={`flex-1 px-3 py-2 border border-white/40 hover:bg-white/10 transition-all duration-300 text-sm text-center ${getBorderRadius('button')}`}
+                      >
+                        Next →
+                      </button>
+                    </div>
                   </div>
                 </div>
                 
-                {/* Description */}
-                <p className="text-base opacity-80 leading-relaxed">
-                  {currentPost.description}
-                </p>
-                
-                {/* Tags */}
-                {currentPost.tags && (
-                  <div>
-                    <div className="flex flex-wrap gap-2 justify-center">
-                      {currentPost.tags.map((tag, index) => (
-                        <span 
-                          key={index}
-                          className={`px-2 py-1 bg-white/5 border border-white/20 text-xs opacity-80 ${getBorderRadius('small')}`}
+                {/* Desktop Layout */}
+                <div className="hidden lg:block">
+                  {/* First Row: Navigation and Counters */}
+                  <div className="flex justify-between items-center p-4 lg:p-6 border-b border-white/5">
+                    <div className="flex items-center gap-4">
+                      {/* Navigation Arrows */}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => navigateBlogPosts(-1)}
+                          className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
+                          title="Previous blog post"
                         >
-                          {tag}
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => navigateBlogPosts(1)}
+                          className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
+                          title="Next blog post"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </button>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm opacity-60 bg-white/10 px-2 py-1 rounded-full">
+                          {(() => {
+                            const [year, month, day] = currentPost.date.split('-');
+                            const date = new Date(year, month - 1, day);
+                            return date.toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric', 
+                              year: 'numeric' 
+                            });
+                          })()}
                         </span>
-                      ))}
+                        {/* Reading Time next to date */}
+                        {currentPost.time && (
+                          <span className="text-sm opacity-60 bg-white/10 px-2 py-1 rounded-full">
+                            {currentPost.time}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                      {/* Blog Counter */}
+                      <div className="text-sm opacity-60">
+                        {currentBlogIndex + 1} / {sortedBlogPosts.length}
+                      </div>
                     </div>
                   </div>
-                )}
+                  
+                  {/* Second Row: Title */}
+                  <div className="p-4 lg:p-6 pt-4">
+                    <h2 className="text-xl lg:text-2xl font-bold text-center">{currentPost.title}</h2>
+                  </div>
+                </div>
               </div>
               
-              {/* Media */}
+              {/* Media Section with Caption - One unified section */}
               {currentPost.media && (
-                <div className="w-full">
-                  <div className="relative w-full h-[400px] lg:h-[500px] mb-3">
-                    {renderBlogMedia()}
+                <div className="w-full border-b border-white/10">
+                  <div className="relative w-full h-[400px] lg:h-[500px]">
+                    <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center p-1">
+                      {renderBlogMedia()}
+                    </div>
                   </div>
+                  {/* Media Caption */}
                   {currentPost.media.caption && (
-                    <p className="text-sm text-white/60 italic text-center mb-6">
-                      {currentPost.media.caption}
-                    </p>
+                    <div className="px-4 py-2 bg-white/5 border-t border-white/10">
+                      <p className="text-sm text-white/60 italic text-center">
+                        {currentPost.media.caption}
+                      </p>
+                    </div>
                   )}
                 </div>
               )}
               
-              {/* Blog Body */}
+              {/* Content Section - Compact Description & Tags (separate section with gap) */}
+              <div className="bg-white/5 p-4 lg:p-6 mt-4">
+                <div className="max-w-4xl mx-auto">
+                  {/* Description */}
+                  <p className="text-sm lg:text-base opacity-80 leading-relaxed text-center mb-4">
+                    {currentPost.description}
+                  </p>
+                  
+                  {/* Tags */}
+                  {currentPost.tags && (
+                    <div className="text-center">
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {currentPost.tags.map((tag, index) => (
+                          <span 
+                            key={index}
+                            className={`px-2 py-1 bg-white/10 border border-white/20 text-xs opacity-80 hover:opacity-100 hover:bg-white/10 transition-all duration-200 ${getBorderRadius('small')}`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Blog Body Section */}
               {currentPost.body && (
-                <div className="mt-8 text-left max-w-3xl mx-auto">
-                  <div className="prose prose-invert max-w-none">
-                    {currentPost.body.split('\n\n').map((paragraph, index) => (
-                      <p key={index} className="mb-4 text-white/80 leading-relaxed">
-                        {paragraph}
-                      </p>
-                    ))}
+                <div className="p-6 lg:p-8">
+                  <div className="text-left max-w-3xl mx-auto">
+                    <div className="prose prose-invert max-w-none">
+                      {currentPost.body.split('\n\n').map((paragraph, index) => (
+                        <p key={index} className="mb-4 text-white/80 leading-relaxed">
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}

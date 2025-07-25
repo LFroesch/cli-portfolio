@@ -102,7 +102,7 @@ const StarfieldBackground = () => {
       </div>
 
       {/* Deep space vignette */}
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black opacity-40"></div>
     </div>
   );
 };
