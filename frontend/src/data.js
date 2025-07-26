@@ -250,9 +250,10 @@ export const contentData = {
         name: 'Game Development',
         description: 'Creating games is my creative outlet. I love bringing ideas to life through interactive experiences and pushing the boundaries of what games can be.',
         items: [
+          { name: 'Godot', icon: 'GDT' },
           { name: 'Unity', icon: 'U3D' },
           { name: 'Unreal Engine', icon: 'UE' },
-          { name: 'Godot', icon: 'GDT' },
+          { name: 'PyGame', icon: 'CE' }
         ]
       },
       {
@@ -275,30 +276,118 @@ export const contentData = {
           { name: 'AWS Solutions Architect (Learning)', icon: 'AWS' },
           { name: 'Google Cloud Professional (Learning)', icon: 'GCP' },
           { name: 'MongoDB Certified Developer (Learning)', icon: 'MDB' },
-          { name: 'React Advanced Patterns', icon: '⚛' },
-          { name: 'TypeScript Advanced', icon: 'TS' },
-          { name: 'Rust Programming', icon: 'RS' },
-          { name: 'Machine Learning Basics', icon: 'ML' },
-          { name: 'DevOps & CI/CD', icon: 'DEV' }
+          { name: 'Algorithms', icon: 'ALG' },
+          { name: 'Backend Development', icon: 'BE' },
+          { name: 'CI/CD', icon: 'CI' },
+          { name: 'Data Structures', icon: 'DS' },
+          { name: 'Docker', icon: 'DOC' },
+          { name: 'File Servers & CDN', icon: 'CDN' },
+          { name: 'Functional Programming', icon: 'FP' },
+          { name: 'Git', icon: 'GIT' },
+          { name: 'Go Programming', icon: 'GO' },
+          { name: 'HTTP Clients', icon: 'HC' },
+          { name: 'HTTP Servers', icon: 'HS' },
+          { name: 'JavaScript', icon: 'JS' },
+          { name: 'Memory Management', icon: 'MEM' },
+          { name: 'Object-Oriented Programming', icon: 'OOP' },
+          { name: 'Multiplayer Game Development', icon: 'MGD' },
+          { name: '3D Game Development', icon: '3D' }
         ],
         gallery: [
           {
             type: 'image',
-            url: '/certs/aws-learning.png',
-            caption: 'AWS Solutions Architect learning progress - studying cloud architecture patterns',
-            title: 'AWS Studies'
-          },
-          {
-            type: 'image', 
-            url: '/certs/react-patterns.png',
-            caption: 'Advanced React patterns and performance optimization techniques',
-            title: 'React Mastery'
+            url: '/section_skills/sql.png',
+caption: 'Fundamentals and advanced query optimization techniques'
           },
           {
             type: 'image',
-            url: '/certs/typescript-advanced.png', 
-            caption: 'TypeScript advanced types, generics, and type-safe application development',
-            title: 'TypeScript Deep Dive'
+            url: '/section_skills/shells_and_terminals.png',
+caption: 'Intermediate shell scripting and terminal usage techniques'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/algorithms.png',
+caption: 'Sorting, searching, and optimization techniques'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/backend.png',
+caption: 'Development fundamentals and server architecture patterns'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/cicd.png',
+caption: 'Continuous integration and deployment workflows with automated testing'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/data_structures.png',
+caption: 'Arrays, trees, graphs, and hash tables fundamentals'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/docker.png',
+caption: 'Containerization: building, deploying, and orchestrating containers'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/file_servers_CDN.png',
+caption: 'Server architecture and content delivery network optimization'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/fp.png',
+caption: 'Immutability, pure functions, and higher-order functions'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/git.png',
+caption: 'Advanced workflows: branching strategies, merging, and collaboration techniques'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/go.png',
+caption: 'Concurrency, performance, and systems programming'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/http_clients_go.png',
+caption: 'Building robust clients with error handling and middleware'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/http_servers_go.png',
+caption: 'Creating scalable servers with routing and middleware patterns'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/javascript.png',
+caption: 'Modern ES6+, async programming, and best practices'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/memory_management.png',
+caption: 'Garbage collection, allocation strategies, and optimization techniques'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/oop.png',
+caption: 'Design patterns, inheritance, and polymorphism concepts'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/python.png',
+caption: 'Programming fundamentals and best practices'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/3d_rpg.jpg',
+caption: 'Game development concepts and best practices'
+          },
+          {
+            type: 'image',
+            url: '/section_skills/multiplayer_fps.jpg',
+caption: 'Game development concepts and best practices'
           }
         ]
       }
@@ -379,7 +468,21 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: 'null'
+        url: '/fresh-notes/fresh-notes.png'
+      }
+    ]
+  },
+  {
+    name: 'template-hub',
+    description: 'Centralized hub + social media platform for managing and sharing code templates across various languages.',
+    techStack: 'React, MongoDB, Express, Node.js, Tailwind CSS',
+    status: 'Completed - May 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/template_hub',
+    media: [
+      {
+        type: 'image',
+        url: '/template-hub/template-hub.png'
       }
     ]
   },
@@ -454,6 +557,20 @@ export const projects = [
     ]
   },
   {
+    name: 'zap',
+    description: 'A TUI interface for managing your file registries and their contents.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'Completed - July 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/zap',
+    media: [
+      {
+        type: 'image',
+        url: '/zap/Zap.png'
+      }
+    ]
+  },
+  {
     name: 'git-helper',
     description: 'A TUI interface for managing your git repositories and workflows. Streamlined git operations with real-time feedback.',
     techStack: 'Go, BubbleTea, Lipgloss',
@@ -524,6 +641,20 @@ export const projects = [
       {
         type: 'image',
         url: '/backup-xd/backup-xd.png'
+      }
+    ]
+  },
+  {
+    name: 'scriptgodx',
+    description: 'TUI application for managing and automating scripts and tasks.',
+    techStack: 'Go, File System APIs, BubbleTea',
+    status: 'Completed - June 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/scriptgodx',
+    media: [
+      {
+        type: 'image',
+        url: '/scriptgodx/scriptgodx.png'
       }
     ]
   },

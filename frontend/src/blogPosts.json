@@ -1,13 +1,13 @@
 [
   {
     "id": "1",
-    "title": "Building a Modern Portfolio in 2025",
+    "title": "Building My First Dev Portfolio",
     "date": "2025-07-23",
     "time": "4:30 PM PST",
     "description": "Building my portfolio after a year and a half of studying in preparation for a career change!",
     "media": {
       "type": "image",
-      "url": "/blog/portfolio-preview.png",
+      "url": "section_blog/1.png",
       "alt": "Portfolio website preview",
       "caption": "Screenshot of the completed portfolio website showcasing responsive design and interactive elements"
     },

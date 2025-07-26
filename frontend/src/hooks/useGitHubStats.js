@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5011/api';
 
 export const useGitHubStats = () => {
   const [githubData, setGithubData] = useState(null);
