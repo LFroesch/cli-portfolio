@@ -440,7 +440,8 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/gator/gator.png'
+        url: '/gator/gator.png',
+        caption: 'RSS feed reader interface showing recent articles and categories'
       }
     ]
   },

@@ -27,6 +27,9 @@ function ConsolePortfolio() {
   const [collapsedSections, setCollapsedSections] = useState({});
   const [certGalleryIndex, setCertGalleryIndex] = useState(0);
   const [showCertGallery, setShowCertGallery] = useState(false);
+  const [showLightbox, setShowLightbox] = useState(false);
+  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
+  const [lightboxImages, setLightboxImages] = useState([]);
   
   // Toggle section collapse
   const toggleSection = (sectionKey) => {
@@ -122,6 +125,25 @@ function ConsolePortfolio() {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
+      // Handle lightbox navigation first
+      if (showLightbox) {
+        switch(e.key) {
+          case 'Escape':
+            closeLightbox();
+            break;
+          case 'ArrowLeft':
+            e.preventDefault();
+            navigateLightbox(-1);
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            navigateLightbox(1);
+            break;
+        }
+        return; // Don't handle other navigation when lightbox is open
+      }
+
+      // Normal navigation when lightbox is closed
       switch(e.key) {
         case 'ArrowLeft':
           navigateMenu(-1);
@@ -164,7 +186,7 @@ function ConsolePortfolio() {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [currentSection, currentProjectIndex, currentBlogIndex, navigateMenu, navigateProjects]);
+  }, [currentSection, currentProjectIndex, currentBlogIndex, showLightbox, lightboxImages.length, navigateMenu, navigateProjects]);
 
   // Cycle through variations every 8 seconds for dynamic feel
   useEffect(() => {
@@ -205,6 +227,74 @@ function ConsolePortfolio() {
     });
     // Clear loading after a short delay
     setTimeout(() => setMediaLoading(false), 200);
+  };
+
+  // Lightbox functions - Updated to work with different image sources
+  const openLightbox = (imageSource, imageIndex = 0, contextTitle = '') => {
+    let imageArray = [];
+    
+    // Handle different image sources
+    if (Array.isArray(imageSource)) {
+      // Direct array of images (e.g., certificates)
+      imageArray = imageSource.filter(item => 
+        item.url && (item.type === 'image' || item.type === 'gif' || !item.type)
+      );
+    } else if (imageSource && typeof imageSource === 'object') {
+      // Single image object (e.g., blog media)
+      if (imageSource.type === 'image' && imageSource.url) {
+        imageArray = [imageSource];
+      }
+    } else {
+      // Project media (existing functionality)
+      const currentProject = projects[currentProjectIndex];
+      if (!currentProject.media) return;
+      
+      // Handle both single media objects and arrays of media
+      const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
+      
+      // Filter to only include images (exclude videos)
+      imageArray = mediaArray.filter(media => 
+        media.type === 'image' || media.type === 'gif'
+      );
+      
+      // Find the corresponding image index for the given media index
+      let correctedIndex = 0;
+      let imageCount = 0;
+      for (let i = 0; i <= imageSource && i < mediaArray.length; i++) {
+        if (mediaArray[i].type === 'image' || mediaArray[i].type === 'gif') {
+          if (i === imageSource) {
+            correctedIndex = imageCount;
+            break;
+          }
+          imageCount++;
+        }
+      }
+      imageIndex = correctedIndex;
+    }
+    
+    if (imageArray.length === 0) return;
+    
+    setLightboxImages(imageArray);
+    setLightboxImageIndex(Math.min(imageIndex, imageArray.length - 1));
+    setShowLightbox(true);
+  };
+
+  const closeLightbox = () => {
+    setShowLightbox(false);
+    setLightboxImages([]);
+    setLightboxImageIndex(0);
+  };
+
+  const navigateLightbox = (direction) => {
+    setLightboxImageIndex(prev => {
+      let newIndex = prev + direction;
+      if (newIndex < 0) {
+        newIndex = lightboxImages.length - 1;
+      } else if (newIndex >= lightboxImages.length) {
+        newIndex = 0;
+      }
+      return newIndex;
+    });
   };
 
 
@@ -640,8 +730,10 @@ function ConsolePortfolio() {
                                       <img
                                         src={category.gallery[certGalleryIndex]?.url}
                                         alt={category.gallery[certGalleryIndex]?.title}
-                                        className="max-w-full max-h-full object-contain"
+                                        className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-90 transition-opacity duration-200"
                                         loading="lazy"
+                                        onClick={() => openLightbox(category.gallery, certGalleryIndex)}
+                                        title="Click to enlarge"
                                       />
                                       
                                       {/* Gallery Navigation */}
@@ -746,8 +838,10 @@ function ConsolePortfolio() {
                   <img
                     src={url}
                     alt={`${currentProject.name} preview ${currentMediaIndex + 1}`}
-                    className="max-w-full max-h-full object-contain"
+                    className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-90 transition-opacity duration-200"
                     loading="lazy"
+                    onClick={() => openLightbox(currentMediaIndex)}
+                    title="Click to enlarge"
                   />
                 );
               default:
@@ -817,7 +911,7 @@ function ConsolePortfolio() {
                           rel="noopener noreferrer"
                           className={`flex-1 px-3 py-2 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm text-center ${getBorderRadius('button')}`}
                         >
-                          Info
+                          Live Demo
                         </a>
                       )}
                       <a 
@@ -878,7 +972,7 @@ function ConsolePortfolio() {
                           rel="noopener noreferrer"
                           className={`px-3 py-1.5 border border-purple-400/60 hover:bg-purple-500 hover:text-white transition-all duration-300 text-sm ${getBorderRadius('button')}`}
                         >
-                          Info
+                          Live Demo
                         </a>
                       )}
                       <a 
@@ -1187,8 +1281,10 @@ function ConsolePortfolio() {
               <img
                 src={url}
                 alt={alt || `${currentPost.title} preview`}
-                className="max-w-full max-h-full object-contain"
+                className="max-w-full max-h-full object-contain cursor-pointer hover:opacity-90 transition-opacity duration-200"
                 loading="lazy"
+                onClick={() => openLightbox(currentPost.media, 0)}
+                title="Click to enlarge"
               />
             );
           }
@@ -1666,7 +1762,75 @@ function ConsolePortfolio() {
       {/* Paper Planes */}
       <PaperPlanes />
       
-      <div className="text-center w-full max-w-4xl relative z-10 mx-auto py-8">
+      {/* Lightbox Modal */}
+      {showLightbox && lightboxImages.length > 0 && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          {/* Close button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-6 right-6 w-10 h-10 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300 z-10"
+            title="Close (ESC)"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          {/* Image container */}
+          <div className="relative w-full h-full flex items-center justify-center">
+            <img
+              src={lightboxImages[lightboxImageIndex]?.url}
+              alt={lightboxImages[lightboxImageIndex]?.alt || `Image ${lightboxImageIndex + 1}`}
+              className="max-w-full max-h-full object-contain select-none"
+              onClick={(e) => e.stopPropagation()}
+            />
+            
+            {/* Navigation arrows */}
+            {lightboxImages.length > 1 && (
+              <>
+                <button
+                  onClick={() => navigateLightbox(-1)}
+                  className="absolute left-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
+                  title="Previous image (←)"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => navigateLightbox(1)}
+                  className="absolute right-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
+                  title="Next image (→)"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                
+                {/* Image counter */}
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-black/70 text-white/90 text-sm rounded-full border border-white/20">
+                  {lightboxImageIndex + 1} / {lightboxImages.length}
+                </div>
+              </>
+            )}
+          </div>
+          
+          {/* Caption */}
+          {lightboxImages[lightboxImageIndex]?.caption && (
+            <div className="absolute bottom-6 right-6 max-w-md p-3 bg-black/70 text-white/80 text-sm rounded-lg border border-white/20">
+              {lightboxImages[lightboxImageIndex].caption}
+            </div>
+          )}
+          
+          {/* Click outside to close */}
+          <div 
+            className="absolute inset-0 -z-10" 
+            onClick={closeLightbox}
+          />
+        </div>
+      )}
+      
+      <div className="text-center w-full max-w-5xl relative z-10 mx-auto py-8">
 
         {/* Header */}
         <div className="mb-12 animate-fade-in">
