@@ -416,17 +416,16 @@ caption: 'Game development concepts and best practices'
 
 export const projects = [
   {
-    name: 'isle of brynd',
-    description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
-    techStack: 'Godot, GDScript',
-    status: 'Demo Completed - May 2025',
-    liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
-    github: 'https://github.com/LFroesch/3d-rpg',
+    name: 'project-manager',
+    description: 'Full-featured project management web application with task tracking, team collaboration, and progress visualization.',
+    techStack: 'React, Node.js, MongoDB, Express',
+    status: 'Completed - June 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/project-management',
     media: [
       {
-        type: 'video',
-        url: '/rpg/rpg.mp4',
-        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
+        type: 'image',
+        url: '/project-manager/project-manager.png'
       }
     ]
   },
@@ -442,20 +441,6 @@ export const projects = [
         type: 'image',
         url: '/gator/gator.png',
         caption: 'RSS feed reader interface showing recent articles and categories'
-      }
-    ]
-  },
-  {
-    name: 'project-manager',
-    description: 'Full-featured project management web application with task tracking, team collaboration, and progress visualization.',
-    techStack: 'React, Node.js, MongoDB, Express',
-    status: 'Completed - June 2025',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/project-management',
-    media: [
-      {
-        type: 'image',
-        url: '/project-manager/project-manager.png'
       }
     ]
   },
@@ -554,6 +539,20 @@ export const projects = [
       {
         type: 'image',
         url: '/portmon/Portmon.png'
+      }
+    ]
+  },
+  {
+    name: 'scout',
+    description: 'A TUI fuzzy search tool for quickly finding files and directories in your system. Fast, efficient file searching with a clean interface.',
+    techStack: 'Go, BubbleTea, Lipgloss',
+    status: 'Completed - July 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/scout',
+    media: [
+      {
+        type: 'image',
+        url: '/scout/Scout.png'
       }
     ]
   },
@@ -700,6 +699,21 @@ export const projects = [
       {
         type: 'image',
         url: '/tui-games/TUI-Chess.png'
+      }
+    ]
+  },
+  {
+    name: 'isle of brynd',
+    description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
+    techStack: 'Godot, GDScript',
+    status: 'Demo Completed - May 2025',
+    liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
+    github: 'https://github.com/LFroesch/3d-rpg',
+    media: [
+      {
+        type: 'video',
+        url: '/rpg/rpg.mp4',
+        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
       }
     ]
   },

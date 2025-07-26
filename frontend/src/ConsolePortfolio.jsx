@@ -155,30 +155,12 @@ function ConsolePortfolio() {
           if (currentSection === 'projects') {
             e.preventDefault();
             navigateProjects(-1);
-          } else if (currentSection === 'blog') {
-            e.preventDefault();
-            setCurrentBlogIndex(prev => {
-              let newIndex = prev - 1;
-              if (newIndex < 0) {
-                newIndex = blogPosts.length - 1;
-              }
-              return newIndex;
-            });
           }
           break;
         case 'ArrowDown':
           if (currentSection === 'projects') {
             e.preventDefault();
             navigateProjects(1);
-          } else if (currentSection === 'blog') {
-            e.preventDefault();
-            setCurrentBlogIndex(prev => {
-              let newIndex = prev + 1;
-              if (newIndex >= blogPosts.length) {
-                newIndex = 0;
-              }
-              return newIndex;
-            });
           }
           break;
       }
@@ -893,8 +875,8 @@ function ConsolePortfolio() {
                 <div className="block lg:hidden">
                   {/* First Row: Title and Status */}
                   <div className="p-4 border-b border-white/5">
-                    <div className="flex items-center justify-between gap-3">
-                      <h2 className="text-lg font-bold truncate flex-1">{currentProject.name}</h2>
+                    <h2 className="text-lg font-bold mb-2">{currentProject.name}</h2>
+                    <div className="flex justify-center">
                       <span className="text-xs opacity-60 bg-white/10 px-2 py-1 rounded-full whitespace-nowrap">
                         {currentProject.status || 'Completed'}
                       </span>
@@ -990,7 +972,7 @@ function ConsolePortfolio() {
               
               {/* Media Section - Prominent Display */}
               <div className="w-full">
-                <div className="relative w-full h-[400px] lg:h-[500px]">
+                <div className="relative w-full h-[500px] lg:h-[600px]">
                   {renderProjectMedia()}
                   {mediaLoading && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
