@@ -212,7 +212,7 @@ function ConsolePortfolio() {
   };
 
   // Lightbox functions - Updated to work with different image sources
-  const openLightbox = (imageSource, imageIndex = 0, contextTitle = '') => {
+  const openLightbox = (imageSource, imageIndex = 0) => {
     let imageArray = [];
     
     // Handle different image sources

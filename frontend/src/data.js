@@ -13,7 +13,7 @@ export const contentData = {
           "I'm a full-stack developer passionate about creating clean and efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme."
         ],
         photo: {
-          src: "/profile.jpg",
+          src: "/general_icons/profile.jpg",
           alt: "Lucas Froeschner",
           caption: "Full-Stack Developer"
         }
@@ -23,7 +23,7 @@ export const contentData = {
           "I love building things that solve real problems and make life easier, as well as working on creative projects that push the boundaries of what's possible."
         ],
         photo: {
-          src: "/profile.jpg",
+          src: "/general_icons/profile.jpg",
           alt: "Lucas Froeschner at work",
           caption: "Building efficient solutions"
         }
@@ -33,7 +33,7 @@ export const contentData = {
           "I have a wonderful and supportive fiance, Sarah, as well as a rascal of a dog, Brady. When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech/trivia. I love a good info rabbit hole."
         ],
         photo: {
-          src: "/profile.jpg",
+          src: "/general_icons/profile.jpg",
           alt: "Lucas Froeschner with family",
           caption: "My family"
         }
@@ -482,7 +482,38 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: 'null'
+        url: '/event-chat/event-chat.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat4.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat5.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat6.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/event-chat/event-chat7.png',
+        caption: ''
       }
     ]
   },
@@ -496,7 +527,48 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: 'null'
+        url: '/e-commerce/e-commerce.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce4.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce5.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce6.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce7.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce8.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/e-commerce/e-commerce9.png',
+        caption: ''
       }
     ]
   },
@@ -510,7 +582,13 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: null
+        url: '/voice-memo/voice-memo.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/voice-memo/voice-memo2.png',
+        caption: ''
       }
     ]
   },
@@ -524,7 +602,18 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: null
+        url: '/window_manager/window-manager.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/window_manager/window-manager2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/window_manager/window-manager3.png',
+        caption: ''
       }
     ]
   },
@@ -552,7 +641,13 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/scout/Scout.png'
+        url: '/scout/scout.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/scout/scout2.png',
+        caption: ''
       }
     ]
   },
@@ -566,7 +661,8 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/zap/Zap.png'
+        url: '/zap/zap.png',
+        caption: ''
       }
     ]
   },
@@ -580,7 +676,23 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/git-helper/git-helper.png'
+        url: '/git-helper/git-helper.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/git-helper/git-helper2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/git-helper/git-helper3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/git-helper/git-helper4.png',
+        caption: ''
       }
     ]
   },
@@ -608,7 +720,43 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/dwight/dwight.png'
+        url: '/dwight/dwight.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight4.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight5.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight6.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight7.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight8.png',
+        caption: ''
       }
     ]
   },
@@ -640,7 +788,18 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/backup-xd/backup-xd.png'
+        url: '/backup-xd/backup-xd.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/backup-xd/backup-xd2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/backup-xd/backup-xd3.png',
+        caption: ''
       }
     ]
   },
@@ -668,7 +827,23 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/lif/lif.png'
+        url: '/lif/lif.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/lif/lif2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/lif/lif3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/lif/lif4.png',
+        caption: ''
       }
     ]
   },
@@ -703,6 +878,31 @@ export const projects = [
     ]
   },
   {
+    name: 'z-chat',
+    description: 'Real-time chat application with modern UI and messaging features.',
+    techStack: 'React, Node.js, Socket.IO',
+    status: 'Completed - 2025',
+    liveDemo: '#',
+    github: '#',
+    media: [
+      {
+        type: 'image',
+        url: '/z-chat/z-chat.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/z-chat/z-chat2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/z-chat/z-chat3.png',
+        caption: ''
+      }
+    ]
+  },
+  {
     name: 'isle of brynd',
     description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
     techStack: 'Godot, GDScript',
@@ -714,6 +914,36 @@ export const projects = [
         type: 'video',
         url: '/rpg/rpg.mp4',
         caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo4.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo5.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo6.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo7.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo8.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/rpg/promo9.png',
+        caption: ''
       }
     ]
   },
@@ -727,8 +957,14 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/asteroids/asteroids.png'
+        url: '/asteroids/asteroids.png',
+        caption: ''
       },
+      {
+        type: 'image',
+        url: '/asteroids/asteroids2.png',
+        caption: ''
+      }
     ]
   }
 ];
