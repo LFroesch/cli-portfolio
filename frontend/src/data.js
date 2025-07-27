@@ -417,8 +417,8 @@ caption: 'Game development concepts and best practices'
 export const projects = [
   {
     name: 'project-manager',
-    description: 'Full-featured project management web application with task tracking, team collaboration, and progress visualization.',
-    techStack: 'React, Node.js, MongoDB, Express',
+    description: 'A comprehensive full-stack project management application designed for developers and teams to organize, track, and document their projects with todo management, notes system, development logs, and documentation templates.',
+    techStack: 'React, TypeScript, Node.js, Express, MongoDB, Mongoose, Vite, Tailwind CSS',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/project-management',
@@ -431,8 +431,8 @@ export const projects = [
   },
   {
     name: 'gator',
-    description: 'RSS feed reader with a clean interface for staying up-to-date with your favorite content sources.',
-    techStack: 'Go, RSS Parser, TUI',
+    description: 'A web-based RSS feed aggregator/reader with a React frontend and Go backend API featuring user authentication, real-time feed aggregation, and post browsing with filtering.',
+    techStack: 'Go, React, PostgreSQL, Vite, Tailwind CSS, React Router',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/Gator',
@@ -446,10 +446,10 @@ export const projects = [
   },
   {
     name: 'fresh-notes',
-    description: 'Modern note-taking application with rich text editing, organization features, and cross-platform sync.',
-    techStack: 'React, MongoDB, Express, Node.js, Tailwind CSS',
+    description: 'Simple Markdown note-taking app with React frontend and Node.js backend.',
+    techStack: 'React, Node.js, Express, MongoDB, Redis, Tailwind CSS',
     status: 'Completed - May 2025',
-    liveDemo: '#',
+    liveDemo: 'https://fresh-notes.up.railway.app/',
     github: 'https://github.com/LFroesch/FreshNotes',
     media: [
       {
@@ -460,8 +460,8 @@ export const projects = [
   },
   {
     name: 'template-hub',
-    description: 'Centralized hub + social media platform for managing and sharing code templates across various languages.',
-    techStack: 'React, MongoDB, Express, Node.js, Tailwind CSS',
+    description: 'A full-stack MERN application for developers to share, discover, and manage reusable code templates and snippets with authentication, search & filter, star system, and dark mode support.',
+    techStack: 'React, Express.js, MongoDB, Mongoose, Tailwind CSS, Vite, JWT, Prism.js',
     status: 'Completed - May 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/template_hub',
@@ -474,8 +474,8 @@ export const projects = [
   },
   {
     name: 'event-chat',
-    description: 'Real-time chat application for events with features like user authentication, event creation and invitation, and geoposition-based event and post discovery.',
-    techStack: 'React, Node.js, MongdoDB, Express, Socket.IO',
+    description: 'A location-based social platform featuring real-time messaging, event creation, and social networking capabilities with geolocation-based discovery and RSVP system.',
+    techStack: 'React, Node.js, MongoDB, Express, Socket.IO, Tailwind CSS, DaisyUI, Zustand, Cloudinary, JWT',
     status: 'Completed - May 2025',
     liveDemo: 'https://event-chat.onrender.com/',
     github: 'https://github.com/LFroesch/event-chat',
@@ -519,11 +519,11 @@ export const projects = [
   },
   {
     name: 'ecommerce platform',
-    description: 'Full-featured e-commerce platform with product listings, shopping cart functionality, and user authentication.',
-    techStack: 'React, Node.js, MongoDB, Express, Stripe API',
+    description: 'A full-stack e-commerce platform with React frontend and Node.js backend featuring user authentication, shopping cart, Stripe payments, admin dashboard, and coupon system.',
+    techStack: 'React, Node.js, Express, MongoDB, Stripe, Tailwind CSS, Zustand, Cloudinary, Redis',
     status: 'Completed - May 2025',
     liveDemo: 'https://e-commerce-store-9t97.onrender.com/',
-    github: 'https://github.com/LFroesch/ecommerce-platform',
+    github: 'https://github.com/LFroesch/e-commerce-store',
     media: [
       {
         type: 'image',
@@ -573,9 +573,34 @@ export const projects = [
     ]
   },
   {
+    name: 'z-chat',
+    description: 'A social media app built with React and Node.js featuring real-time messaging, user authentication, image uploads, and modern social networking capabilities with a clean, responsive interface.',
+    techStack: 'React, Tailwind CSS, DaisyUI, TanStack Query, React Router, Node.js, Express, MongoDB, JWT, Cloudinary, bcrypt',
+    status: 'Completed - 2025',
+    liveDemo: 'https://zchat-u64e.onrender.com/',
+    github: 'https://github.com/LFroesch/social-media-demo',
+    media: [
+      {
+        type: 'image',
+        url: '/z-chat/z-chat.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/z-chat/z-chat2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/z-chat/z-chat3.png',
+        caption: ''
+      }
+    ]
+  },
+  {
     name: 'voice memo transcriber',
-    description: 'Records voice audio and converts it to text notes with voice command support for hands-free note-taking.',
-    techStack: 'Python, Google Speech API, Tkinter',
+    description: 'A desktop application that uses global hotkeys to capture audio from your microphone and transcribe it to text using speech recognition. Features a dark mode UI for easy note management, voice command functionality, and real-time transcription with persistent storage.',
+    techStack: 'Python, Google Speech Recognition, PyAudio, Tkinter',
     status: 'Completed - June 2024',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/voice-memo-transcriber',
@@ -594,8 +619,8 @@ export const projects = [
   },
   {
     name: 'window manager',
-    description: 'Manages and organizes application windows in a user-friendly interface.',
-    techStack: 'Python, Tkinter',
+    description: 'A Windows desktop utility for managing, organizing, and resizing application windows with smart layout saving and restoration features.',
+    techStack: 'Python, customtkinter, psutil, pywin32',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/window_manager',
@@ -619,8 +644,8 @@ export const projects = [
   },
   {
     name: 'portmon',
-    description: 'A TUI interface for managing your active ports and services. Clean, efficient port monitoring with real-time updates.',
-    techStack: 'Go, BubbleTea, Lipgloss',
+    description: 'A live port monitoring tool with real-time, interactive terminal interface for viewing and managing network ports and their associated processes with smart categorization.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/portmon',
@@ -633,8 +658,8 @@ export const projects = [
   },
   {
     name: 'scout',
-    description: 'A TUI fuzzy search tool for quickly finding files and directories in your system. Fast, efficient file searching with a clean interface.',
-    techStack: 'Go, BubbleTea, Lipgloss',
+    description: 'A lightning-fast TUI file explorer and fuzzy finder for developers with live preview, Git integration, smart navigation, VS Code integration, and bookmark management.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/scout',
@@ -653,8 +678,8 @@ export const projects = [
   },
   {
     name: 'zap',
-    description: 'A TUI interface for managing your file registries and their contents.',
-    techStack: 'Go, BubbleTea, Lipgloss',
+    description: 'An easy to manage TUI file registry for developers to organize and instantly access important files across all projects with project organization and smart editor detection.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/zap',
@@ -668,8 +693,8 @@ export const projects = [
   },
   {
     name: 'git-helper',
-    description: 'A TUI interface for managing your git repositories and workflows. Streamlined git operations with real-time feedback.',
-    techStack: 'Go, BubbleTea, Lipgloss',
+    description: 'A simple, user-friendly terminal UI for creating git commits with smart suggestions, function detection, conventional commits formatting, and commit hook management.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/git-helper',
@@ -698,8 +723,8 @@ export const projects = [
   },
   {
     name: 'project-launcher',
-    description: 'TUI application for launching and managing personal projects with quick access to tools and resources.',
-    techStack: 'BubbleTea, Go',
+    description: 'A sleek project launcher and manager with interactive terminal interface for organizing, launching, and managing development projects with cross-platform support and WSL2 integration.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/project-launcher',
@@ -712,8 +737,8 @@ export const projects = [
   },
   {
     name: 'dwight',
-    description: 'Local LLM assistant interface built for Ollama. Terminal-based AI companion for development tasks and queries.',
-    techStack: 'Go, Ollama API, BubbleTea',
+    description: 'Terminal-based AI resource manager and assistant powered by Docker + Ollama with support for custom models, organizing prompts, templates, and project files.',
+    techStack: 'Go, Docker, Ollama API, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/dwight',
@@ -762,8 +787,8 @@ export const projects = [
   },
   {
     name: 'logdog',
-    description: 'TUI/CLI-driven custom logging system designed for personal projects with advanced filtering and analysis.',
-    techStack: 'Go, Log Parsing, TUI',
+    description: 'A TUI-based logging utility that makes structured logging simple and consistent across Go projects with automatic project detection, JSON logs with daily rotation, and log management.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/logdog',
@@ -780,8 +805,8 @@ export const projects = [
   },
   {
     name: 'backup-xd',
-    description: 'TUI application for backing up personal projects, configurations, and important files with automated scheduling.',
-    techStack: 'Go, File System APIs, BubbleTea',
+    description: 'A terminal-based backup management system for creating, scheduling, and managing backups for databases, files, and directories with automated cleanup and restore operations.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/backup-xd',
@@ -805,8 +830,8 @@ export const projects = [
   },
   {
     name: 'scriptgodx',
-    description: 'TUI application for managing and automating scripts and tasks.',
-    techStack: 'Go, File System APIs, BubbleTea',
+    description: 'A lightning-fast TUI script manager for developers to organize and instantly run most-used scripts and commands with category organization, script tracking, and output history.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/scriptgodx',
@@ -819,8 +844,8 @@ export const projects = [
   },
   {
     name: 'lif',
-    description: 'Personal productivity TUI app featuring timers, reminders, glossary, and daily task management.',
-    techStack: 'Go, SQLite, BubbleTea, Cron',
+    description: 'A terminal user interface application for managing daily tasks, reminders, rolling todos, and a command glossary with countdown timers, alarms, and cross-platform notifications.',
+    techStack: 'Go, SQLite, BubbleTea, Bubbles, Lipgloss, Cron',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/lif',
@@ -848,9 +873,23 @@ export const projects = [
     ]
   },
   {
-    name: 'tui-games',
-    description: 'Collection of terminal-based games built with Go and BubbleTea.',
-    techStack: 'Go, BubbleTea',
+    name: 'tui-hub (apps)',
+    description: 'Collection of terminal applications for productivity, development, and system utilities. Browse file managers, text editors, system monitors, and other TUI tools.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
+    status: 'In Development - Summer 2025',
+    liveDemo: '#',
+    github: '#',
+    media: [
+      {
+        type: 'image',
+        url: '/tui-hub/tui-hub.png'
+      },
+    ]
+  },
+  {
+    name: 'tui-hub (games)',
+    description: 'A collection of terminal-based games built with Go and BubbleTea including Chess with full rule implementation, Snake with score tracking, Blackjack with card counting, Auto-battler with strategic gameplay, and Mini ASCII Roguelike with dungeon exploration and combat systems.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - Summer 2025',
     liveDemo: '#',
     github: '#',
@@ -878,42 +917,17 @@ export const projects = [
     ]
   },
   {
-    name: 'z-chat',
-    description: 'Real-time chat application with modern UI and messaging features.',
-    techStack: 'React, Node.js, Socket.IO',
-    status: 'Completed - 2025',
-    liveDemo: '#',
-    github: '#',
-    media: [
-      {
-        type: 'image',
-        url: '/z-chat/z-chat.png',
-        caption: ''
-      },
-      {
-        type: 'image',
-        url: '/z-chat/z-chat2.png',
-        caption: ''
-      },
-      {
-        type: 'image',
-        url: '/z-chat/z-chat3.png',
-        caption: ''
-      }
-    ]
-  },
-  {
     name: 'isle of brynd',
-    description: '3D Skyrim-like RPG with exploration, quests, and a dynamic world. Features immersive gameplay mechanics and rich storytelling.',
-    techStack: 'Godot, GDScript',
+    description: 'A fantasy action RPG built with Godot Engine featuring 3D combat system, character progression, equipment system, quest system, multi-level world exploration, and interactive NPCs.',
+    techStack: 'Godot Engine, GDScript',
     status: 'Demo Completed - May 2025',
     liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
     github: 'https://github.com/LFroesch/3d-rpg',
     media: [
       {
-        type: 'video',
-        url: '/rpg/rpg.mp4',
-        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
+        type: 'image',
+        url: '/rpg/promo5.png',
+        caption: ''
       },
       {
         type: 'image',
@@ -921,9 +935,9 @@ export const projects = [
         caption: ''
       },
       {
-        type: 'image',
-        url: '/rpg/promo5.png',
-        caption: ''
+        type: 'video',
+        url: '/rpg/rpg.mp4',
+        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
       },
       {
         type: 'image',
@@ -949,10 +963,10 @@ export const projects = [
   },
   {
     name: 'asteroids',
-    description: 'Basic pygame implementation of Asteroids, my first venture into coding, ever.',
+    description: 'Basic pygame implementation of Asteroids game.',
     techStack: 'Python, Pygame',
     status: 'Completed - Late 2024',
-    liveDemo: '#',
+    liveDemo: 'https://lfroesch.itch.io/asteroids',
     github: 'https://github.com/LFroesch/asteroids',
     media: [
       {
