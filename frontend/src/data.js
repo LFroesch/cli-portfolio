@@ -878,7 +878,7 @@ export const projects = [
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - Summer 2025',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/tui-hub',
     media: [
       {
         type: 'image',
@@ -892,7 +892,7 @@ export const projects = [
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - Summer 2025',
     liveDemo: '#',
-    github: '#',
+    github: 'https://github.com/LFroesch/tui-hub',
     media: [
       {
         type: 'image',
