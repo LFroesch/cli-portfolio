@@ -30,6 +30,21 @@ function ConsolePortfolio() {
   const [showLightbox, setShowLightbox] = useState(false);
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
   const [lightboxImages, setLightboxImages] = useState([]);
+  const [isScrolledIntoProject, setIsScrolledIntoProject] = useState(false);
+  
+  // Scroll tracking
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Check if we're scrolled into project content (adjust threshold as needed)
+      const scrollThreshold = 100; // pixels
+      setIsScrolledIntoProject(currentScrollY > scrollThreshold && currentSection === 'projects');
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentSection]);
   
   // Toggle section collapse
   const toggleSection = (sectionKey) => {
@@ -98,6 +113,24 @@ function ConsolePortfolio() {
     setTimeout(() => setMediaLoading(false), 300);
   }, []);
 
+  const navigateMedia = useCallback((direction) => {
+    const currentProject = projects[currentProjectIndex];
+    if (!currentProject.media || !Array.isArray(currentProject.media)) return;
+    
+    setMediaLoading(true);
+    setCurrentMediaIndex(prev => {
+      let newIndex = prev + direction;
+      if (newIndex < 0) {
+        newIndex = currentProject.media.length - 1; // Loop to end
+      } else if (newIndex >= currentProject.media.length) {
+        newIndex = 0; // Loop to beginning
+      }
+      return newIndex;
+    });
+    // Clear loading after a short delay
+    setTimeout(() => setMediaLoading(false), 200);
+  }, [currentProjectIndex]);
+
   // Handle initial load completion
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -146,10 +179,22 @@ function ConsolePortfolio() {
       // Normal navigation when lightbox is closed
       switch(e.key) {
         case 'ArrowLeft':
-          navigateMenu(-1);
+          // If scrolled into project content, navigate photos instead of menu
+          if (isScrolledIntoProject) {
+            e.preventDefault();
+            navigateMedia(-1);
+          } else {
+            navigateMenu(-1);
+          }
           break;
         case 'ArrowRight':
-          navigateMenu(1);
+          // If scrolled into project content, navigate photos instead of menu
+          if (isScrolledIntoProject) {
+            e.preventDefault();
+            navigateMedia(1);
+          } else {
+            navigateMenu(1);
+          }
           break;
         case 'ArrowUp':
           if (currentSection === 'projects') {
@@ -168,7 +213,7 @@ function ConsolePortfolio() {
 
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [currentSection, currentProjectIndex, currentBlogIndex, showLightbox, lightboxImages.length, navigateMenu, navigateProjects]);
+  }, [currentSection, currentProjectIndex, currentBlogIndex, showLightbox, lightboxImages.length, isScrolledIntoProject, navigateMenu, navigateProjects, navigateMedia]);
 
   // Cycle through variations every 8 seconds for dynamic feel
   useEffect(() => {
@@ -190,25 +235,6 @@ function ConsolePortfolio() {
       }
     }
     return ''; // Sharp edges - no border radius
-  };
-
-
-  const navigateMedia = (direction) => {
-    const currentProject = projects[currentProjectIndex];
-    if (!currentProject.media || !Array.isArray(currentProject.media)) return;
-    
-    setMediaLoading(true);
-    setCurrentMediaIndex(prev => {
-      let newIndex = prev + direction;
-      if (newIndex < 0) {
-        newIndex = currentProject.media.length - 1; // Loop to end
-      } else if (newIndex >= currentProject.media.length) {
-        newIndex = 0; // Loop to beginning
-      }
-      return newIndex;
-    });
-    // Clear loading after a short delay
-    setTimeout(() => setMediaLoading(false), 200);
   };
 
   // Lightbox functions - Updated to work with different image sources
@@ -867,9 +893,9 @@ function ConsolePortfolio() {
 
         return (
           <div className="w-full">
-            {/* Project Card Layout - Restructured */}
+            {/* Project Card Layout - With Rounded UI */}
             <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
-              {/* Top Bar - Header with Project Info and Actions */}
+              {/* Header with Project Info and Actions */}
               <div className="border-b border-white/10 bg-white/5">
                 {/* Mobile Layout */}
                 <div className="block lg:hidden">
@@ -911,29 +937,51 @@ function ConsolePortfolio() {
                 {/* Desktop Layout */}
                 <div className="hidden lg:flex justify-between items-center p-4 lg:p-6">
                   <div className="flex items-center gap-4">
-                    {/* Navigation Arrows */}
+                    {/* Navigation Arrows - Change appearance when in photo mode */}
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => navigateProjects(-1)}
-                        className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
-                        title="Previous project"
+                        onClick={() => isScrolledIntoProject ? navigateMedia(-1) : navigateProjects(-1)}
+                        className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
+                          isScrolledIntoProject 
+                            ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
+                            : 'border-white/40 hover:bg-white/10 hover:border-white/60'
+                        }`}
+                        title={isScrolledIntoProject ? "← Previous photo (Left arrow key)" : "Previous project"}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
+                        {isScrolledIntoProject ? (
+                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                            ←
+                          </div>
+                        ) : (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                          </svg>
+                        )}
                       </button>
                       <button
-                        onClick={() => navigateProjects(1)}
-                        className={`p-2 border border-white/40 hover:bg-white/10 hover:border-white/60 transition-all duration-300 ${getBorderRadius('button')}`}
-                        title="Next project"
+                        onClick={() => isScrolledIntoProject ? navigateMedia(1) : navigateProjects(1)}
+                        className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
+                          isScrolledIntoProject 
+                            ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
+                            : 'border-white/40 hover:bg-white/10 hover:border-white/60'
+                        }`}
+                        title={isScrolledIntoProject ? "→ Next photo (Right arrow key)" : "Next project"}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
+                        {isScrolledIntoProject ? (
+                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                            →
+                          </div>
+                        ) : (
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        )}
                       </button>
                     </div>
                     
-                    <h2 className="text-xl lg:text-2xl font-bold">{currentProject.name}</h2>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h2 className="text-xl lg:text-2xl font-bold">{currentProject.name}</h2>
+                    </div>
                     <span className="text-sm opacity-60 bg-white/10 px-2 py-1 rounded-full">
                       {currentProject.status || 'Completed'}
                     </span>

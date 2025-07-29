@@ -425,8 +425,24 @@ export const projects = [
     media: [
       {
         type: 'image',
+        url: '/project-manager/project-manager2.png'
+      },
+      {
+        type: 'image',
         url: '/project-manager/project-manager.png'
-      }
+      },
+      {
+        type: 'image',
+        url: '/project-manager/project-manager5.png'
+      },
+      {
+        type: 'image',
+        url: '/project-manager/project-manager3.png'
+      },
+      {
+        type: 'image',
+        url: '/project-manager/project-manager4.png'
+      },
     ]
   },
   {
@@ -440,7 +456,56 @@ export const projects = [
       {
         type: 'image',
         url: '/gator/gator.png',
-        caption: 'RSS feed reader interface showing recent articles and categories'
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/gator/gator2.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/gator/gator3.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/gator/gator5.png',
+        caption: ''
+      },
+      {
+        type: 'image',
+        url: '/gator/gator4.png',
+        caption: ''
+      }
+    ]
+  },
+  {
+    name: 'streaming-helper',
+    description: 'A Netflix-style streaming platform built to help find actors, movies and TV shows as well as information about them.',
+    techStack: 'Node.js, Express, MongoDB, TMDB API',
+    status: 'Completed - May 2025',
+    liveDemo: 'https://streaming-helper-production.up.railway.app/',
+    github: 'https://github.com/LFroesch/streaming-helper',
+    media: [
+      {
+        type: 'image',
+        url: '/streaming-helper/streaming-helper.png'
+      },
+      {
+        type: 'image',
+        url: '/streaming-helper/streaming-helper2.png'
+      },
+      {
+        type: 'image',
+        url: '/streaming-helper/streaming-helper3.png'
+      },{
+        type: 'image',
+        url: '/streaming-helper/streaming-helper4.png'
+      },
+      {
+        type: 'image',
+        url: '/streaming-helper/streaming-helper5.png'
       }
     ]
   },
@@ -454,7 +519,15 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/fresh-notes/fresh-notes.png'
+        url: '/fresh-notes/FreshNotes.png'
+      },
+      {
+        type: 'image',
+        url: '/fresh-notes/FreshNotes2.png'
+      },
+      {
+        type: 'image',
+        url: '/fresh-notes/FreshNotes3.png'
       }
     ]
   },
@@ -469,6 +542,14 @@ export const projects = [
       {
         type: 'image',
         url: '/template-hub/template-hub.png'
+      },
+      {
+        type: 'image',
+        url: '/template-hub/template-hub2.png'
+      },
+      {
+        type: 'image',
+        url: '/template-hub/template-hub3.png'
       }
     ]
   },
@@ -639,6 +720,44 @@ export const projects = [
         type: 'image',
         url: '/window_manager/window-manager3.png',
         caption: ''
+      }
+    ]
+  },
+  {
+    name: 'tui-hub',
+    description: 'A comprehensive collection of terminal-based applications and games built with Go and BubbleTea. Features productivity apps like file managers, text editors, and system monitors, alongside engaging games including Chess with full rule implementation, Snake with score tracking, Blackjack with card counting, Auto-battler with strategic gameplay, and Mini ASCII Roguelike with dungeon exploration and combat systems.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
+    status: 'In Development - Summer 2025',
+    liveDemo: '#',
+    github: 'https://github.com/LFroesch/tui-hub',
+    media: [
+      {
+        type: 'image',
+        url: '/tui-hub/tui-hub.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/tui-games.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/Blackjack.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/Blackjack2.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/MiniRoguelike.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/SnakeGame.png'
+      },
+      {
+        type: 'image',
+        url: '/tui-hub/TUI-Chess.png'
       }
     ]
   },
@@ -873,50 +992,6 @@ export const projects = [
     ]
   },
   {
-    name: 'tui-hub (apps)',
-    description: 'Collection of terminal applications for productivity, development, and system utilities. Browse file managers, text editors, system monitors, and other TUI tools.',
-    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
-    status: 'In Development - Summer 2025',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/tui-hub',
-    media: [
-      {
-        type: 'image',
-        url: '/tui-hub/tui-hub.png'
-      },
-    ]
-  },
-  {
-    name: 'tui-hub (games)',
-    description: 'A collection of terminal-based games built with Go and BubbleTea including Chess with full rule implementation, Snake with score tracking, Blackjack with card counting, Auto-battler with strategic gameplay, and Mini ASCII Roguelike with dungeon exploration and combat systems.',
-    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
-    status: 'In Development - Summer 2025',
-    liveDemo: '#',
-    github: 'https://github.com/LFroesch/tui-hub',
-    media: [
-      {
-        type: 'image',
-        url: '/tui-games/Blackjack.png'
-      },
-      {
-        type: 'image',
-        url: '/tui-games/Blackjack2.png'
-      },
-      {
-        type: 'image',
-        url: '/tui-games/MiniRoguelike.png'
-      },
-      {
-        type: 'image',
-        url: '/tui-games/SnakeGame.png'
-      },
-      {
-        type: 'image',
-        url: '/tui-games/TUI-Chess.png'
-      }
-    ]
-  },
-  {
     name: 'isle of brynd',
     description: 'A fantasy action RPG built with Godot Engine featuring 3D combat system, character progression, equipment system, quest system, multi-level world exploration, and interactive NPCs.',
     techStack: 'Godot Engine, GDScript',
@@ -963,7 +1038,7 @@ export const projects = [
   },
   {
     name: 'asteroids',
-    description: 'Basic pygame implementation of Asteroids game.',
+    description: 'My first game, basic pygame implementation of Asteroids game. Learned the basics of game development, physics, and collision detection.',
     techStack: 'Python, Pygame',
     status: 'Completed - Late 2024',
     liveDemo: 'https://lfroesch.itch.io/asteroids',
