@@ -935,22 +935,27 @@ function ConsolePortfolio() {
                 </div>
                 
                 {/* Desktop Layout */}
-                <div className="hidden lg:flex justify-between items-center p-4 lg:p-6">
-                  <div className="flex items-center gap-4">
-                    {/* Navigation Arrows - Change appearance when in photo mode */}
+                <div className="hidden lg:flex justify-between items-center p-4 lg:p-4">
+                  <div className="flex items-center gap-2">
+                    {/* Project Counter */}
+                    <div className="text-sm opacity-60">
+                      {currentProjectIndex + 1} / {projects.length}
+                    </div>
+                    
+                    {/* Project Navigation (always visible) */}
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => isScrolledIntoProject ? navigateMedia(-1) : navigateProjects(-1)}
+                        onClick={() => navigateProjects(-1)}
                         className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
                           isScrolledIntoProject 
                             ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
                             : 'border-white/40 hover:bg-white/10 hover:border-white/60'
                         }`}
-                        title={isScrolledIntoProject ? "← Previous photo (Left arrow key)" : "Previous project"}
+                        title={isScrolledIntoProject ? "↑ Previous project (Up arrow key)" : "Previous project"}
                       >
                         {isScrolledIntoProject ? (
                           <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
-                            ←
+                            ↑
                           </div>
                         ) : (
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -959,17 +964,17 @@ function ConsolePortfolio() {
                         )}
                       </button>
                       <button
-                        onClick={() => isScrolledIntoProject ? navigateMedia(1) : navigateProjects(1)}
+                        onClick={() => navigateProjects(1)}
                         className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
                           isScrolledIntoProject 
                             ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
                             : 'border-white/40 hover:bg-white/10 hover:border-white/60'
                         }`}
-                        title={isScrolledIntoProject ? "→ Next photo (Right arrow key)" : "Next project"}
+                        title={isScrolledIntoProject ? "↓ Next project (Down arrow key)" : "Next project"}
                       >
                         {isScrolledIntoProject ? (
                           <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
-                            →
+                            ↓
                           </div>
                         ) : (
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -978,6 +983,30 @@ function ConsolePortfolio() {
                         )}
                       </button>
                     </div>
+                    
+                    {/* Photo Navigation (only visible after scroll) */}
+                    {isScrolledIntoProject && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => navigateMedia(-1)}
+                          className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60`}
+                          title="← Previous photo (Left arrow key)"
+                        >
+                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                            ←
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => navigateMedia(1)}
+                          className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60`}
+                          title="→ Next photo (Right arrow key)"
+                        >
+                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                            →
+                          </div>
+                        </button>
+                      </div>
+                    )}
                     
                     <div className="flex items-center gap-2 mb-1">
                       <h2 className="text-xl lg:text-2xl font-bold">{currentProject.name}</h2>
@@ -988,10 +1017,7 @@ function ConsolePortfolio() {
                   </div>
                   
                   <div className="flex items-center gap-3">
-                    {/* Project Counter */}
-                    <div className="text-sm opacity-60">
-                      {currentProjectIndex + 1} / {projects.length}
-                    </div>
+                    
                     
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
@@ -1943,13 +1969,35 @@ function ConsolePortfolio() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative">
+          <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative group">
           <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 ${getBorderRadius()}`}></div>
+          
+          {/* Left/Right section navigation indicators - Desktop only */}
+          <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-24">
+            <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+              ←
+            </div>
+            <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+              →
+            </div>
+          </div>
+          
+          {/* Up/Down project navigation indicators - Desktop only */}
+          {currentSection === 'projects' && (
+            <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -right-24">
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                ↑
+              </div>
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                ↓
+              </div>
+            </div>
+          )}
+          
           {sections.map((section, index) => (
             <React.Fragment key={section}>
               {section === 'projects' && currentSection === 'projects' ? (
                 <div className="flex flex-col items-center justify-center gap-1 min-w-[200px] h-16 relative">
-                  <div className={`absolute -inset-2 bg-white/5 opacity-0 group-hover:opacity-100 transition-all duration-300 ${getBorderRadius()}`}></div>
                   {renderProjectsWheel()}
                 </div>
               ) : (
