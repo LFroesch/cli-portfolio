@@ -10,7 +10,6 @@ import { useGitHubStats } from './hooks/useGitHubStats'
 import TypingEffect from './components/TypingEffect'
 import LoadingSpinner from './components/LoadingSpinner'
 import { StatsCardSkeleton } from './components/SkeletonLoader'
-import JumpToTop from './components/JumpToTop'
 import './animations.css'
 
 function ConsolePortfolio() {
@@ -31,6 +30,7 @@ function ConsolePortfolio() {
   const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
   const [lightboxImages, setLightboxImages] = useState([]);
   const [isScrolledIntoProject, setIsScrolledIntoProject] = useState(false);
+  const [showFloatingButtons, setShowFloatingButtons] = useState(false);
   
   // Scroll tracking
   useEffect(() => {
@@ -38,8 +38,11 @@ function ConsolePortfolio() {
       const currentScrollY = window.scrollY;
       
       // Check if we're scrolled into project content (adjust threshold as needed)
-      const scrollThreshold = 100; // pixels
+      const scrollThreshold = 70; // pixels
       setIsScrolledIntoProject(currentScrollY > scrollThreshold && currentSection === 'projects');
+      
+      // Show floating buttons when scrolled down on any page
+      setShowFloatingButtons(currentScrollY > 70);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -604,7 +607,6 @@ function ConsolePortfolio() {
               )}
             </div> */}
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
@@ -795,7 +797,6 @@ function ConsolePortfolio() {
               })}
             </div>
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
@@ -865,20 +866,50 @@ function ConsolePortfolio() {
             <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center">
               {renderMediaContent()}
               
-              {/* Media Navigation Arrows */}
+              {/* Media Navigation Arrows - Changes based on scroll state */}
               {hasMultipleMedia && (
                 <>
                   <button
                     onClick={() => navigateMedia(-1)}
-                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 border border-white/20 transition-all duration-300 ${getBorderRadius('button')}`}
+                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 p-2 transition-all duration-300 ${getBorderRadius('button')} ${
+                      isScrolledIntoProject 
+                        ? 'bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60' 
+                        : 'bg-black/50 hover:bg-black/80 border border-white/20'
+                    }`}
+                    title={isScrolledIntoProject ? "← Previous photo (Left arrow key)" : "Previous photo"}
                   >
-                    ←
+                    {isScrolledIntoProject ? (
+                      <div className="hidden lg:flex w-4 h-4 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold text-green-100">
+                        ←
+                      </div>
+                    ) : (
+                      <span className="text-white">←</span>
+                    )}
+                    {/* Mobile fallback for scrolled state */}
+                    {isScrolledIntoProject && (
+                      <span className="lg:hidden text-white">←</span>
+                    )}
                   </button>
                   <button
                     onClick={() => navigateMedia(1)}
-                    className={`absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 hover:bg-black/80 border border-white/20 transition-all duration-300 ${getBorderRadius('button')}`}
+                    className={`absolute right-4 top-1/2 transform -translate-y-1/2 p-2 transition-all duration-300 ${getBorderRadius('button')} ${
+                      isScrolledIntoProject 
+                        ? 'bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60' 
+                        : 'bg-black/50 hover:bg-black/80 border border-white/20'
+                    }`}
+                    title={isScrolledIntoProject ? "→ Next photo (Right arrow key)" : "Next photo"}
                   >
-                    →
+                    {isScrolledIntoProject ? (
+                      <div className="hidden lg:flex w-4 h-4 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold text-green-100">
+                        →
+                      </div>
+                    ) : (
+                      <span className="text-white">→</span>
+                    )}
+                    {/* Mobile fallback for scrolled state */}
+                    {isScrolledIntoProject && (
+                      <span className="lg:hidden text-white">→</span>
+                    )}
                   </button>
                   
                   {/* Media Counter */}
@@ -938,7 +969,7 @@ function ConsolePortfolio() {
                 <div className="hidden lg:flex justify-between items-center p-4 lg:p-4">
                   <div className="flex items-center gap-2">
                     {/* Project Counter */}
-                    <div className="text-sm opacity-60">
+                    <div className="text-sm opacity-60 bg-white/10 px-2 py-1 rounded-full">
                       {currentProjectIndex + 1} / {projects.length}
                     </div>
                     
@@ -954,7 +985,7 @@ function ConsolePortfolio() {
                         title={isScrolledIntoProject ? "↑ Previous project (Up arrow key)" : "Previous project"}
                       >
                         {isScrolledIntoProject ? (
-                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                          <div className="hidden lg:flex w-4 h-4 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
                             ↑
                           </div>
                         ) : (
@@ -973,7 +1004,7 @@ function ConsolePortfolio() {
                         title={isScrolledIntoProject ? "↓ Next project (Down arrow key)" : "Next project"}
                       >
                         {isScrolledIntoProject ? (
-                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
+                          <div className="hidden lg:flex w-4 h-4 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
                             ↓
                           </div>
                         ) : (
@@ -983,30 +1014,6 @@ function ConsolePortfolio() {
                         )}
                       </button>
                     </div>
-                    
-                    {/* Photo Navigation (only visible after scroll) */}
-                    {isScrolledIntoProject && (
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => navigateMedia(-1)}
-                          className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60`}
-                          title="← Previous photo (Left arrow key)"
-                        >
-                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
-                            ←
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => navigateMedia(1)}
-                          className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60`}
-                          title="→ Next photo (Right arrow key)"
-                        >
-                          <div className="w-4 h-4 flex items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold">
-                            →
-                          </div>
-                        </button>
-                      </div>
-                    )}
                     
                     <div className="flex items-center gap-2 mb-1">
                       <h2 className="text-xl lg:text-2xl font-bold">{currentProject.name}</h2>
@@ -1044,6 +1051,31 @@ function ConsolePortfolio() {
                 </div>
               </div>
               
+              {/* Description & Tech Stack - Above Media */}
+              <div className="p-6 lg:p-8 bg-white/5 border-b border-white/10 space-y-4">
+                {/* Description */}
+                <div>
+                  <p className="text-base opacity-80 leading-relaxed text-center">
+                    {currentProject.description}
+                  </p>
+                </div>
+                
+                {/* Tech Stack */}
+                <div className="text-center">
+                  <p className="text-sm opacity-60 mb-3">Tech Stack</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {currentProject.techStack.split(', ').map((tech, index) => (
+                      <span 
+                        key={index}
+                        className={`px-3 py-1 bg-white/5 border border-white/20 text-xs opacity-80 hover:opacity-100 hover:bg-white/10 transition-all duration-200 ${getBorderRadius('small')}`}
+                      >
+                        {tech.trim()}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
               {/* Media Section - Prominent Display */}
               <div className="w-full">
                 <div className="relative w-full h-[500px] lg:h-[600px]">
@@ -1068,33 +1100,41 @@ function ConsolePortfolio() {
                 })()}
               </div>
               
-              {/* Content Section - Below Media */}
-              <div className="p-6 lg:p-8 space-y-6">
-                {/* Description */}
-                <div>
-                  <p className="text-base opacity-80 leading-relaxed text-center">
-                    {currentProject.description}
-                  </p>
-                </div>
-                
-                {/* Tech Stack */}
-                <div className="text-center">
-                  <p className="text-sm opacity-60 mb-3">Tech Stack</p>
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {currentProject.techStack.split(', ').map((tech, index) => (
-                      <span 
-                        key={index}
-                        className={`px-3 py-1 bg-white/5 border border-white/20 text-xs opacity-80 hover:opacity-100 hover:bg-white/10 transition-all duration-200 ${getBorderRadius('small')}`}
-                      >
-                        {tech.trim()}
-                      </span>
-                    ))}
+              {/* Detailed Project Information - Below Media */}
+              {(currentProject.longDescription || currentProject.learned || currentProject.goal) && (
+                <div className="p-6 lg:p-8 bg-white/5 border-t border-white/10 space-y-8">
+                  <div className="max-w-4xl mx-auto space-y-8">
+                    {currentProject.longDescription && (
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-semibold text-center bg-gradient-to-r from-green-200 to-emerald-200 bg-clip-text text-transparent">Project Details:</h3>
+                        <p className="text-base opacity-80 leading-relaxed text-center">
+                          {currentProject.longDescription}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {currentProject.learned && (
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-semibold text-center bg-gradient-to-r from-blue-200 to-cyan-200 bg-clip-text text-transparent">What I Learned:</h3>
+                        <p className="text-base opacity-80 leading-relaxed text-center">
+                          {currentProject.learned}
+                        </p>
+                      </div>
+                    )}
+                    
+                    {currentProject.goal && (
+                      <div className="space-y-3">
+                        <h3 className="text-xl font-semibold text-center bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">Goal:</h3>
+                        <p className="text-base opacity-80 leading-relaxed text-center">
+                          {currentProject.goal}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
+              )}
             </div>
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       }
@@ -1285,7 +1325,6 @@ function ConsolePortfolio() {
               )}
             </div>
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
 
@@ -1522,7 +1561,6 @@ function ConsolePortfolio() {
               )}
             </div>
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       }
@@ -1802,7 +1840,6 @@ function ConsolePortfolio() {
               </form>
             </div>
             
-            <JumpToTop getBorderRadius={getBorderRadius} />
           </div>
         );
       
@@ -1821,15 +1858,16 @@ function ConsolePortfolio() {
       {/* Lightbox Modal */}
       {showLightbox && lightboxImages.length > 0 && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          {/* Close button */}
+          {/* Close button with ESC key styling */}
           <button
             onClick={closeLightbox}
-            className="absolute top-6 right-6 w-10 h-10 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300 z-10"
+            className="absolute top-6 right-6 px-3 py-2 bg-black/70 hover:bg-black/90 border border-red-400/40 hover:border-red-400/60 rounded-lg flex items-center gap-2 transition-all duration-300 z-10"
             title="Close (ESC)"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <div className="hidden lg:flex w-6 h-6 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold text-red-100">
+              ESC
+            </div>
+            <span className="text-red-100 text-sm">Close</span>
           </button>
           
           {/* Image container */}
@@ -1841,13 +1879,36 @@ function ConsolePortfolio() {
               onClick={(e) => e.stopPropagation()}
             />
             
-            {/* Navigation arrows */}
+            {/* Navigation arrows with keyboard indicators */}
             {lightboxImages.length > 1 && (
               <>
+                {/* Desktop version with keyboard indicators */}
                 <button
                   onClick={() => navigateLightbox(-1)}
-                  className="absolute left-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
+                  className="hidden lg:flex absolute left-6 top-1/2 transform -translate-y-1/2 px-4 py-3 bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60 rounded-lg items-center gap-2 transition-all duration-300"
                   title="Previous image (←)"
+                >
+                  <div className="w-6 h-6 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                    ←
+                  </div>
+                  <span className="text-green-100 text-sm">Previous</span>
+                </button>
+                <button
+                  onClick={() => navigateLightbox(1)}
+                  className="hidden lg:flex absolute right-6 top-1/2 transform -translate-y-1/2 px-4 py-3 bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60 rounded-lg items-center gap-2 transition-all duration-300"
+                  title="Next image (→)"
+                >
+                  <div className="w-6 h-6 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                    →
+                  </div>
+                  <span className="text-green-100 text-sm">Next</span>
+                </button>
+                
+                {/* Mobile version without keyboard indicators */}
+                <button
+                  onClick={() => navigateLightbox(-1)}
+                  className="lg:hidden absolute left-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
+                  title="Previous image"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -1855,8 +1916,8 @@ function ConsolePortfolio() {
                 </button>
                 <button
                   onClick={() => navigateLightbox(1)}
-                  className="absolute right-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
-                  title="Next image (→)"
+                  className="lg:hidden absolute right-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
+                  title="Next image"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -1972,15 +2033,17 @@ function ConsolePortfolio() {
           <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative group">
           <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 ${getBorderRadius()}`}></div>
           
-          {/* Left/Right section navigation indicators - Desktop only */}
-          <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-24">
-            <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-              ←
+          {/* Left/Right section navigation indicators - Desktop only, hidden when in keyboard navigation mode */}
+          {!isScrolledIntoProject && (
+            <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-24">
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                ←
+              </div>
+              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+                →
+              </div>
             </div>
-            <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-              →
-            </div>
-          </div>
+          )}
           
           {/* Up/Down project navigation indicators - Desktop only */}
           {currentSection === 'projects' && (
@@ -2036,6 +2099,42 @@ function ConsolePortfolio() {
           </div>
         </div>
       </div>
+      
+      {/* Floating Action Buttons - Bottom Right Overlay */}
+      {showFloatingButtons && (
+        <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+          {/* Chat Bubble Button */}
+          <button
+            onClick={() => {
+              setCurrentSection('contact');
+              trackSectionView('contact');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className={`group w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-400/50 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 ${getBorderRadius('button')}`}
+            title="Contact Me"
+          >
+            <svg className="w-6 h-6 text-blue-300 group-hover:text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.418 8-8 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.418-8 8-8s8 3.582 8 8z" />
+            </svg>
+          </button>
+          
+          {/* Jump to Top Button */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`group w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-green-400/50 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/20 ${getBorderRadius('button')}`}
+            title="Back to Top"
+          >
+            <svg 
+              className="w-6 h-6 text-green-300 group-hover:text-green-200 transition-all duration-300 group-hover:-translate-y-1" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

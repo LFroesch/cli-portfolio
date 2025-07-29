@@ -418,6 +418,9 @@ export const projects = [
   {
     name: 'project-manager',
     description: 'A comprehensive full-stack project management application designed for developers and teams to organize, track, and document their projects with todo management, notes system, development logs, and documentation templates.',
+    longDescription: 'As I worked on multiple coding projects, I found myself losing track of tasks, ideas, and progress. I needed a centralized place to manage everything from initial concepts to deployment notes.',
+    learned: 'This project taught me advanced state management with React and TypeScript, complex database relationships with MongoDB, and how to design intuitive user interfaces for productivity tools. I also learned about real-time updates and collaborative features.',
+    goal: 'Create a developer-focused project management tool that scales from personal projects to team collaboration, with features specifically designed for the software development lifecycle.',
     techStack: 'React, TypeScript, Node.js, Express, MongoDB, Mongoose, Vite, Tailwind CSS',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -448,6 +451,9 @@ export const projects = [
   {
     name: 'gator',
     description: 'A web-based RSS feed aggregator/reader with a React frontend and Go backend API featuring user authentication, real-time feed aggregation, and post browsing with filtering.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, React, PostgreSQL, Vite, Tailwind CSS, React Router',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -483,6 +489,9 @@ export const projects = [
   {
     name: 'streaming-helper',
     description: 'A Netflix-style streaming platform built to help find actors, movies and TV shows as well as information about them.',
+    longDescription: 'I wanted to create a platform that helps users discover and manage their favorite movies and TV shows across multiple streaming services. The goal was to provide a seamless experience for finding content and tracking what to watch next.',
+    learned: 'This project deepened my understanding of full-stack development, API integration, and user authentication. I also learned how to work with third-party APIs like TMDB for movie data and how to implement search and filtering features effectively.',
+    goal: 'Build a comprehensive streaming helper that aggregates content from various platforms, provides detailed information about movies and shows, and allows users to create personalized watchlists.',
     techStack: 'Node.js, Express, MongoDB, TMDB API',
     status: 'Completed - May 2025',
     liveDemo: 'https://streaming-helper-production.up.railway.app/',
@@ -512,6 +521,9 @@ export const projects = [
   {
     name: 'fresh-notes',
     description: 'Simple Markdown note-taking app with React frontend and Node.js backend.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'React, Node.js, Express, MongoDB, Redis, Tailwind CSS',
     status: 'Completed - May 2025',
     liveDemo: 'https://fresh-notes.up.railway.app/',
@@ -534,6 +546,9 @@ export const projects = [
   {
     name: 'template-hub',
     description: 'A full-stack MERN application for developers to share, discover, and manage reusable code templates and snippets with authentication, search & filter, star system, and dark mode support.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'React, Express.js, MongoDB, Mongoose, Tailwind CSS, Vite, JWT, Prism.js',
     status: 'Completed - May 2025',
     liveDemo: '#',
@@ -556,6 +571,9 @@ export const projects = [
   {
     name: 'event-chat',
     description: 'A location-based social platform featuring real-time messaging, event creation, and social networking capabilities with geolocation-based discovery and RSVP system.',
+    longDescription: 'I wanted to create a platform that bridges the gap between online social interaction and real-world events. The idea was to help people discover local events and connect with others who share similar interests.',
+    learned: 'This project was my deep dive into real-time technologies. I mastered Socket.IO for live messaging, learned geolocation APIs, and tackled complex state management for real-time updates. Working with Cloudinary taught me about media optimization and CDN integration.',
+    goal: 'Build a scalable social platform that encourages real-world meetups and community building through location-based event discovery and seamless communication.',
     techStack: 'React, Node.js, MongoDB, Express, Socket.IO, Tailwind CSS, DaisyUI, Zustand, Cloudinary, JWT',
     status: 'Completed - May 2025',
     liveDemo: 'https://event-chat.onrender.com/',
@@ -601,6 +619,9 @@ export const projects = [
   {
     name: 'ecommerce platform',
     description: 'A full-stack e-commerce platform with React frontend and Node.js backend featuring user authentication, shopping cart, Stripe payments, admin dashboard, and coupon system.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'React, Node.js, Express, MongoDB, Stripe, Tailwind CSS, Zustand, Cloudinary, Redis',
     status: 'Completed - May 2025',
     liveDemo: 'https://e-commerce-store-9t97.onrender.com/',
@@ -656,6 +677,9 @@ export const projects = [
   {
     name: 'z-chat',
     description: 'A social media app built with React and Node.js featuring real-time messaging, user authentication, image uploads, and modern social networking capabilities with a clean, responsive interface.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'React, Tailwind CSS, DaisyUI, TanStack Query, React Router, Node.js, Express, MongoDB, JWT, Cloudinary, bcrypt',
     status: 'Completed - 2025',
     liveDemo: 'https://zchat-u64e.onrender.com/',
@@ -681,6 +705,9 @@ export const projects = [
   {
     name: 'voice memo transcriber',
     description: 'A desktop application that uses global hotkeys to capture audio from your microphone and transcribe it to text using speech recognition. Features a dark mode UI for easy note management, voice command functionality, and real-time transcription with persistent storage.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Python, Google Speech Recognition, PyAudio, Tkinter',
     status: 'Completed - June 2024',
     liveDemo: '#',
@@ -701,6 +728,9 @@ export const projects = [
   {
     name: 'window manager',
     description: 'A Windows desktop utility for managing, organizing, and resizing application windows with smart layout saving and restoration features.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Python, customtkinter, psutil, pywin32',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -726,6 +756,9 @@ export const projects = [
   {
     name: 'tui-hub',
     description: 'A comprehensive collection of terminal-based applications and games built with Go and BubbleTea. Features productivity apps like file managers, text editors, and system monitors, alongside engaging games including Chess with full rule implementation, Snake with score tracking, Blackjack with card counting, Auto-battler with strategic gameplay, and Mini ASCII Roguelike with dungeon exploration and combat systems.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - Summer 2025',
     liveDemo: '#',
@@ -764,6 +797,9 @@ export const projects = [
   {
     name: 'portmon',
     description: 'A live port monitoring tool with real-time, interactive terminal interface for viewing and managing network ports and their associated processes with smart categorization.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -778,6 +814,9 @@ export const projects = [
   {
     name: 'scout',
     description: 'A lightning-fast TUI file explorer and fuzzy finder for developers with live preview, Git integration, smart navigation, VS Code integration, and bookmark management.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -798,6 +837,9 @@ export const projects = [
   {
     name: 'zap',
     description: 'An easy to manage TUI file registry for developers to organize and instantly access important files across all projects with project organization and smart editor detection.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -813,6 +855,9 @@ export const projects = [
   {
     name: 'git-helper',
     description: 'A simple, user-friendly terminal UI for creating git commits with smart suggestions, function detection, conventional commits formatting, and commit hook management.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - July 2025',
     liveDemo: '#',
@@ -843,6 +888,9 @@ export const projects = [
   {
     name: 'project-launcher',
     description: 'A sleek project launcher and manager with interactive terminal interface for organizing, launching, and managing development projects with cross-platform support and WSL2 integration.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -857,6 +905,9 @@ export const projects = [
   {
     name: 'dwight',
     description: 'Terminal-based AI resource manager and assistant powered by Docker + Ollama with support for custom models, organizing prompts, templates, and project files.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, Docker, Ollama API, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - July 2025',
     liveDemo: '#',
@@ -907,6 +958,9 @@ export const projects = [
   {
     name: 'logdog',
     description: 'A TUI-based logging utility that makes structured logging simple and consistent across Go projects with automatic project detection, JSON logs with daily rotation, and log management.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -925,6 +979,9 @@ export const projects = [
   {
     name: 'backup-xd',
     description: 'A terminal-based backup management system for creating, scheduling, and managing backups for databases, files, and directories with automated cleanup and restore operations.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -950,6 +1007,9 @@ export const projects = [
   {
     name: 'scriptgodx',
     description: 'A lightning-fast TUI script manager for developers to organize and instantly run most-used scripts and commands with category organization, script tracking, and output history.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -964,6 +1024,9 @@ export const projects = [
   {
     name: 'lif',
     description: 'A terminal user interface application for managing daily tasks, reminders, rolling todos, and a command glossary with countdown timers, alarms, and cross-platform notifications.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Go, SQLite, BubbleTea, Bubbles, Lipgloss, Cron',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -994,6 +1057,9 @@ export const projects = [
   {
     name: 'isle of brynd',
     description: 'A fantasy action RPG built with Godot Engine featuring 3D combat system, character progression, equipment system, quest system, multi-level world exploration, and interactive NPCs.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Godot Engine, GDScript',
     status: 'Demo Completed - May 2025',
     liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
@@ -1039,6 +1105,9 @@ export const projects = [
   {
     name: 'asteroids',
     description: 'My first game, basic pygame implementation of Asteroids game. Learned the basics of game development, physics, and collision detection.',
+    longDescription: '',
+    learned: '',
+    goal: '',
     techStack: 'Python, Pygame',
     status: 'Completed - Late 2024',
     liveDemo: 'https://lfroesch.itch.io/asteroids',
