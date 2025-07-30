@@ -1,5 +1,5 @@
 import React from 'react';
-import { sections, projects } from '../data';
+import { sections } from '../data';
 import ProjectsWheel from './ProjectsWheel';
 
 const DesktopMenu = ({ 
@@ -8,69 +8,30 @@ const DesktopMenu = ({
   trackSectionView,
   currentProjectIndex,
   setCurrentProjectIndex,
-  navigateProjectsWithLoading,
-  isScrolledIntoProject,
   getBorderRadius
 }) => {
   return (
     <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative group">
       <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 ${getBorderRadius()}`}></div>
       
-      {/* Left/Right section navigation indicators - Desktop only, hidden when in keyboard navigation mode */}
-      {!isScrolledIntoProject && (
-        <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-24">
-          <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-            ←
-          </div>
-          <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-            →
-          </div>
+      {/* Left/Right section navigation indicators - Desktop only */}
+      <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-16">
+        <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+          ←
         </div>
-      )}
+        <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+          →
+        </div>
+      </div>
       
       {/* Up/Down project navigation indicators - Desktop only */}
       {currentSection === 'projects' && (
-        <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -right-24">
-          {/* Project Navigation (always visible) */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigateProjectsWithLoading(-1)}
-              className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
-                isScrolledIntoProject 
-                  ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
-                  : 'border-white/40 hover:bg-white/10 hover:border-white/60'
-              }`}
-              title="Previous project (↑)"
-            >
-              {isScrolledIntoProject ? (
-                <svg className="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                </svg>
-              ) : (
-                <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                </svg>
-              )}
-            </button>
-            <button
-              onClick={() => navigateProjectsWithLoading(1)}
-              className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
-                isScrolledIntoProject 
-                  ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
-                  : 'border-white/40 hover:bg-white/10 hover:border-white/60'
-              }`}
-              title="Next project (↓)"
-            >
-              {isScrolledIntoProject ? (
-                <svg className="w-4 h-4 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              ) : (
-                <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              )}
-            </button>
+        <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -right-16">
+          <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+            ↑
+          </div>
+          <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
+            ↓
           </div>
         </div>
       )}

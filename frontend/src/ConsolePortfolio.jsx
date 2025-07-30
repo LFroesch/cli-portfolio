@@ -77,8 +77,8 @@ function ConsolePortfolio() {
   // GitHub stats
   const { githubData, activity, loading: githubLoading } = useGitHubStats();
 
-  // Navigation hookd
-  const { navigateMenu, navigateProjects, navigateMedia, handleKeyPress } = useNavigation({
+  // Navigation hooks
+  const { navigateProjects, navigateMedia, handleKeyPress } = useNavigation({
     currentSection,
     setCurrentSection,
     currentProjectIndex,
@@ -101,12 +101,6 @@ function ConsolePortfolio() {
     navigateProjects(direction);
     setTimeout(() => setMediaLoading(false), 300);
   }, [navigateProjects]);
-
-  const navigateMediaWithLoading = useCallback((direction) => {
-    setMediaLoading(true);
-    navigateMedia(direction);
-    setTimeout(() => setMediaLoading(false), 200);
-  }, [navigateMedia]);
 
   // Handle initial load completion
   useEffect(() => {
@@ -420,12 +414,27 @@ function ConsolePortfolio() {
             <div className="relative w-full h-full overflow-hidden bg-black flex items-center justify-center">
               {renderMediaContent()}
               
-              {/* Media Navigation Arrows - Changes based on scroll state */}
+              {/* Media Counter */}
               {hasMultipleMedia && (
+                <div className="absolute bottom-4 right-4 px-2 py-1 bg-black/70 text-white/80 text-xs rounded">
+                  {currentMediaIndex + 1} / {mediaArray.length}
+                </div>
+              )}
+            </div>
+          );
+        };
+
+        return (
+          <div className="w-full relative">
+            {/* Media Navigation Arrows - Outside project card */}
+            {(() => {
+              const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
+              const hasMultipleMedia = mediaArray.length > 1;
+              return hasMultipleMedia && (
                 <>
                   <button
                     onClick={() => navigateMedia(-1)}
-                    className={`absolute left-4 top-1/2 transform -translate-y-1/2 p-2 transition-all duration-300 ${getBorderRadius('button')} ${
+                    className={`absolute -left-[80px] top-[40%] p-2 transition-all duration-300 z-20 ${getBorderRadius('button')} ${
                       isScrolledIntoProject 
                         ? 'bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60' 
                         : 'bg-black/50 hover:bg-black/80 border border-white/20'
@@ -439,14 +448,13 @@ function ConsolePortfolio() {
                     ) : (
                       <span className="text-white">←</span>
                     )}
-                    {/* Mobile fallback for scrolled state */}
                     {isScrolledIntoProject && (
                       <span className="lg:hidden text-white">←</span>
                     )}
                   </button>
                   <button
                     onClick={() => navigateMedia(1)}
-                    className={`absolute right-4 top-1/2 transform -translate-y-1/2 p-2 transition-all duration-300 ${getBorderRadius('button')} ${
+                    className={`absolute -right-[80px] top-[40%] p-2 transition-all duration-300 z-20 ${getBorderRadius('button')} ${
                       isScrolledIntoProject 
                         ? 'bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60' 
                         : 'bg-black/50 hover:bg-black/80 border border-white/20'
@@ -460,24 +468,14 @@ function ConsolePortfolio() {
                     ) : (
                       <span className="text-white">→</span>
                     )}
-                    {/* Mobile fallback for scrolled state */}
                     {isScrolledIntoProject && (
                       <span className="lg:hidden text-white">→</span>
                     )}
                   </button>
-                  
-                  {/* Media Counter */}
-                  <div className="absolute bottom-4 right-4 px-2 py-1 bg-black/70 text-white/80 text-xs rounded">
-                    {currentMediaIndex + 1} / {mediaArray.length}
-                  </div>
                 </>
-              )}
-            </div>
-          );
-        };
-
-        return (
-          <div className="w-full">
+              );
+            })()}
+            
             {/* Project Card Layout - With Rounded UI */}
             <div className={`border border-white/20 overflow-hidden ${getBorderRadius('card')}`}>
               {/* Header with Project Info and Actions */}
@@ -640,6 +638,7 @@ function ConsolePortfolio() {
                     </div>
                   )}
                 </div>
+                
                 {/* Media Caption */}
                 {(() => {
                   const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
@@ -660,7 +659,7 @@ function ConsolePortfolio() {
                   <div className="max-w-4xl mx-auto space-y-8">
                     {currentProject.longDescription && (
                       <div className="space-y-3">
-                        <h3 className="text-xl font-semibold text-center bg-gradient-to-r from-green-200 to-emerald-200 bg-clip-text text-transparent">Project Details:</h3>
+                        <h3 className="text-xl font-semibold text-center bg-gradient-to-r from-green-200 to-emerald-200 bg-clip-text text-transparent">Why This Project?</h3>
                         <p className="text-base opacity-80 leading-relaxed text-center">
                           {currentProject.longDescription}
                         </p>
@@ -706,20 +705,6 @@ function ConsolePortfolio() {
                 </>
               ) : (
                 <>
-                  {/* <div 
-                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors animate-slide-in ${getBorderRadius('card')}`}
-                    style={{ animationDelay: '0.1s' }}
-                  >
-                    <div className="text-2xl font-bold text-white">{githubData?.user?.followers || 0}</div>
-                    <div className="text-sm opacity-80">followers</div>
-                  </div> */}
-                  {/* <div 
-                    className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors animate-slide-in ${getBorderRadius('card')}`}
-                    style={{ animationDelay: '0.2s' }}
-                  >
-                    <div className="text-2xl font-bold text-white">{githubData?.stats?.totalRepos || 0}</div>
-                    <div className="text-sm opacity-80">repositories</div>
-                  </div> */}
                   <div 
                     className={`p-4 bg-white/5 border border-white/20 text-center hover:bg-white/8 transition-colors ${getBorderRadius('card')}`}
                   >

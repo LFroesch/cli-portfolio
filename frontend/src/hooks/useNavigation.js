@@ -30,7 +30,7 @@ export const useNavigation = ({
     const newIndex = (currentProjectIndex + direction + projects.length) % projects.length;
     setCurrentProjectIndex(newIndex);
     setCurrentMediaIndex(0); // Reset media index when changing projects
-    trackProjectView(projects[newIndex].id);
+    trackProjectView(projects[newIndex].name);
   }, [currentProjectIndex, setCurrentProjectIndex, setCurrentMediaIndex, trackProjectView]);
 
   const navigateMedia = useCallback((direction) => {
