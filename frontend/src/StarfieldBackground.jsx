@@ -7,10 +7,10 @@ const StarfieldBackground = () => {
     
     // Generate stars (only calculated once)
     elements.stars = Array.from({ length: 80 }, (_, i) => {
-      const x = (i * 37 + 13) % 100;
-      const y = (i * 71 + 29) % 100;
-      const size = 0.5 + ((i * 11) % 3) * 0.3;
-      const baseOpacity = 0.15 + ((i * 7) % 4) * 0.1;
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const size = 0.5 + Math.random() * 0.9;
+      const baseOpacity = 0.15 + Math.random() * 0.4;
       
       return (
         <div
@@ -29,9 +29,9 @@ const StarfieldBackground = () => {
 
     // Generate floating particles (only calculated once)
     elements.particles = Array.from({ length: 8 }, (_, i) => {
-      const x = (i * 41 + 17) % 100;
-      const y = (i * 83 + 31) % 100;
-      const size = 1 + ((i * 3) % 2);
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      const size = 1 + Math.random() * 2;
       
       return (
         <div
@@ -102,7 +102,7 @@ const StarfieldBackground = () => {
       </div>
 
       {/* Deep space vignette */}
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black opacity-40"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black opacity-30"></div>
     </div>
   );
 };

@@ -10,7 +10,7 @@ export const contentData = {
     sections: [
       {
         paragraphs: [
-          "I'm a full-stack developer passionate about creating clean and efficient apps, tools, games and more! I enjoy learning new tech/langs or modifying existing ones to their extreme."
+          "I'm a full-stack developer passionate about creating clean and efficient apps, tools, games and more! I enjoy learning new tech/langs or thinking up innovative solutions to complex problems."
         ],
         photo: {
           src: "/general_icons/profile.jpg",
@@ -20,7 +20,7 @@ export const contentData = {
       },
       {
         paragraphs: [
-          "I love building things that solve real problems and make life easier, as well as working on creative projects that push the boundaries of what's possible."
+          "I love building things that solve real problems and make life easier, as well as working on more creative or fun projects."
         ],
         photo: {
           src: "/general_icons/profile.jpg",
@@ -30,7 +30,7 @@ export const contentData = {
       },
       {
         paragraphs: [
-          "I have a wonderful and supportive fiance, Sarah, as well as a rascal of a dog, Brady. When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech/trivia. I love a good info rabbit hole."
+          "At home I have a beautiful and supportive fiancée Sarah, as well as our rascal of a dog, Brady. When I'm not coding (rarely), you can find me playing games, watching movies, or learning about new tech/trivia. I love a good info rabbit hole!"
         ],
         photo: {
           src: "/general_icons/profile.jpg",
@@ -641,57 +641,52 @@ export const projects = [
     media: [
       {
         type: 'image',
-        url: '/e-commerce/e-commerce.png',
-        caption: 'Modern storefront with product catalog and search functionality'
-      },
-      {
-        type: 'image',
         url: '/e-commerce/e-commerce2.png',
-        caption: 'Shopping cart with real-time price calculations and coupon system'
+        caption: 'Customer frontpage with categories'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce3.png',
-        caption: 'Secure checkout process with Stripe payment integration'
+        caption: 'An example category page with products'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce4.png',
-        caption: 'User account dashboard with order history and tracking'
+        caption: 'Checkout page with shopping cart and payment options'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce5.png',
-        caption: 'Admin dashboard with sales analytics and inventory management'
+        caption: 'Stripe payment integration for secure transactions'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce6.png',
-        caption: 'Product management interface for adding and editing items'
+        caption: 'Admin menu to create a new product with image upload'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce7.png',
-        caption: 'Order management system with status tracking and fulfillment'
+        caption: 'Admin product management interface with featured item selection'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce8.png',
-        caption: 'Customer reviews and ratings system with moderation tools'
+        caption: 'Admin analytics dashboard with sales and user statistics'
       },
       {
         type: 'image',
         url: '/e-commerce/e-commerce9.png',
-        caption: 'Mobile-responsive design optimized for mobile shopping experience'
+        caption: 'Successful order page with order details'
       }
     ]
   },
   {
     name: 'z-chat',
     description: 'A social media app built with React and Node.js featuring real-time messaging, user authentication, image uploads, and modern social networking capabilities with a clean, responsive interface.',
-    longDescription: 'I wanted to create a modern social media experience that focused on clean design and real-time interaction. The goal was to build something that felt familiar yet fresh with smooth user experience.',
-    learned: 'This project taught me advanced React patterns with TanStack Query for data management, real-time features, and implementing secure image upload systems with Cloudinary. I also learned about optimistic UI updates and error handling.',
-    goal: 'Build a polished social media platform with modern UX patterns, focusing on real-time messaging, media sharing, and responsive design across all devices.',
+    longDescription: 'I wanted to create a learning experience by building a social media platform and trying to emulate an industry standard structure and codebase. This was one of my first full-stack projects - a simple Twitter clone that helped me understand how social platforms work.',
+    learned: 'This project taught me advanced React patterns with TanStack Query for data management, implementing secure image upload systems with Cloudinary, and how to structure a full-stack application. I also learned about optimistic UI updates and error handling.',
+    goal: 'Build a simple but functional social media platform to learn full-stack development patterns and understand how social platforms are structured and built.',
     techStack: 'React, Tailwind CSS, DaisyUI, TanStack Query, React Router, Node.js, Express, MongoDB, JWT, Cloudinary, bcrypt',
     status: 'Completed - 2025',
     liveDemo: 'https://zchat-u64e.onrender.com/',
@@ -699,27 +694,27 @@ export const projects = [
     media: [
       {
         type: 'image',
+        url: '/z-chat/z-chat3.png',
+        caption: 'Login and registration forms with secure authentication'
+      },
+      {
+        type: 'image',
         url: '/z-chat/z-chat.png',
-        caption: 'Clean social feed with modern post interactions and real-time updates'
+        caption: 'Clean social feed with post interactions and real-time updates'
       },
       {
         type: 'image',
         url: '/z-chat/z-chat2.png',
         caption: 'User profiles with post history and social connection features'
-      },
-      {
-        type: 'image',
-        url: '/z-chat/z-chat3.png',
-        caption: 'Real-time messaging interface with media sharing capabilities'
       }
     ]
   },
   {
     name: 'voice memo transcriber',
-    description: 'A desktop application that uses global hotkeys to capture audio from your microphone and transcribe it to text using speech recognition. Features a dark mode UI for easy note management, voice command functionality, and real-time transcription with persistent storage.',
-    longDescription: 'I needed a way to quickly capture thoughts and ideas while working without interrupting my workflow. Voice memos seemed perfect, but I wanted them automatically transcribed for easy searching and editing.',
-    learned: 'This project taught me about working with system-level APIs, audio processing with PyAudio, and integrating Google\'s speech recognition services. I also learned about global hotkey registration and desktop app UI design.',
-    goal: 'Create a productivity tool that seamlessly captures voice memos and converts them to searchable text, making idea capture effortless during busy work sessions.',
+    description: 'A desktop application that uses global hotkeys to capture audio from your microphone and transcribe it to text using speech recognition. Features a dark mode UI for easy note management, voice command functionality for music control (start/stop/next song), and real-time transcription with persistent storage.',
+    longDescription: 'I needed a way to quickly capture thoughts and ideas while working without interrupting my workflow. Voice memos seemed perfect, but I wanted them automatically transcribed for easy searching and editing. It also includes voice commands for music control.',
+    learned: 'This project taught me about working with system-level APIs, audio processing with PyAudio, and integrating Google\'s speech recognition services. I also learned about implementing voice commands for system control and desktop app UI design.',
+    goal: 'Create a productivity tool that seamlessly captures voice memos, converts them to searchable text, and provides voice commands for music control, making workflow interruption minimal.',
     techStack: 'Python, Google Speech Recognition, PyAudio, Tkinter',
     status: 'Completed - June 2024',
     liveDemo: '#',
@@ -728,12 +723,12 @@ export const projects = [
       {
         type: 'image',
         url: '/voice-memo/voice-memo.png',
-        caption: 'Dark mode interface with transcribed memo list and audio controls'
+        caption: 'Dark mode interface with transcribed memo list and controls'
       },
       {
         type: 'image',
         url: '/voice-memo/voice-memo2.png',
-        caption: 'Real-time transcription display with voice activity detection'
+        caption: 'List of available voice commands'
       }
     ]
   },
@@ -751,26 +746,26 @@ export const projects = [
       {
         type: 'image',
         url: '/window_manager/window-manager.png',
-        caption: 'Main window manager interface with layout presets and window detection'
+        caption: 'Saved layout management with quick restore functionality'
       },
       {
         type: 'image',
         url: '/window_manager/window-manager2.png',
-        caption: 'Window arrangement controls with size and position customization'
+        caption: 'Window detection and selection interface'
       },
       {
         type: 'image',
         url: '/window_manager/window-manager3.png',
-        caption: 'Saved layout management with quick restore functionality'
+        caption: 'Quick actions menu for managing windows'
       }
     ]
   },
   {
     name: 'tui-hub',
-    description: 'A comprehensive collection of terminal-based applications and games built with Go and BubbleTea. Features productivity apps like file managers, text editors, and system monitors, alongside engaging games including Chess with full rule implementation, Snake with score tracking, Blackjack with card counting, Auto-battler with strategic gameplay, and Mini ASCII Roguelike with dungeon exploration and combat systems.',
-    longDescription: 'I became fascinated with terminal user interfaces and wanted to explore how far I could push the boundaries of what\'s possible in a terminal environment. This collection represents my journey into TUI development.',
+    description: 'A comprehensive collection of terminal-based applications and games built with Go and BubbleTea. Features productivity apps like file managers, text editors, and system monitors, alongside engaging games including Chess with full rule implementation, Snake, Blackjack, Auto-battler, and a Mini ASCII Roguelike with dungeon exploration.',
+    longDescription: 'I wanted a kit of staple tools that get the job done quickly and easily all in one place. This collection represents my comprehensive TUI development suite, and the next few projects are from this tui-hub suite. There\'s also a game side with Snake, Chess, a roguelike and more.',
     learned: 'This project was my deep dive into Go programming and the BubbleTea framework. I learned about event-driven programming, complex state management in TUIs, and how to create engaging interactive experiences without traditional graphics.',
-    goal: 'Create a comprehensive suite of terminal applications that proves TUIs can be both powerful and enjoyable, covering everything from productivity tools to entertainment.',
+    goal: 'Create a comprehensive suite of terminal applications that combines essential productivity tools with entertaining games, all accessible from one central hub.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - Summer 2025',
     liveDemo: '#',
@@ -784,7 +779,7 @@ export const projects = [
       {
         type: 'image',
         url: '/tui-hub/tui-games.png',
-        caption: 'Games selection menu with various terminal-based entertainment options'
+        caption: 'Games selection menu with various terminal-based games available'
       },
       {
         type: 'image',
@@ -794,7 +789,7 @@ export const projects = [
       {
         type: 'image',
         url: '/tui-hub/Blackjack2.png',
-        caption: 'Blackjack gameplay showing dealer and player hands with score tracking'
+        caption: 'Blackjack gameplay showing betting options'
       },
       {
         type: 'image',
@@ -816,9 +811,9 @@ export const projects = [
   {
     name: 'portmon',
     description: 'A live port monitoring tool with real-time, interactive terminal interface for viewing and managing network ports and their associated processes with smart categorization.',
-    longDescription: 'As a developer running multiple services, I needed a quick way to see what was running on which ports. Traditional tools felt clunky, so I built an interactive terminal solution.',
+    longDescription: 'As a developer running multiple services, I needed a quick way to see what was running on which ports during app development. Traditional tools felt clunky, so I built an interactive terminal solution that\'s perfect for development workflows.',
     learned: 'This project taught me about system monitoring, network programming in Go, and creating real-time updating interfaces. I learned about port scanning, process detection, and efficient data polling.',
-    goal: 'Create a developer-friendly tool for monitoring network activity that provides clear, real-time information about running services and their resource usage.',
+    goal: 'Create a developer-friendly tool for monitoring network activity during development that provides clear, real-time information about running services and their resource usage.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -834,9 +829,9 @@ export const projects = [
   {
     name: 'scout',
     description: 'A lightning-fast TUI file explorer and fuzzy finder for developers with live preview, Git integration, smart navigation, VS Code integration, and bookmark management.',
-    longDescription: 'I wanted a file explorer that could match the speed of my thinking. Traditional file managers felt slow, so I built a terminal-based solution with fuzzy finding and instant navigation.',
+    longDescription: 'I wanted to make a good solid working fast tool that I could use to navigate my workspaces and see previews, do file operations via a TUI and keyboard inputs. Traditional file managers felt slow, so I built this terminal-based solution.',
     learned: 'This project taught me about efficient file system operations, fuzzy search algorithms, and Git integration. I learned about terminal UI optimization and creating responsive interfaces that feel instant.',
-    goal: 'Build the fastest file navigation tool possible, combining the power of fuzzy finding with the convenience of traditional file management.',
+    goal: 'Build a reliable and fast file navigation tool that combines fuzzy finding with practical file management features for daily development work.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -850,16 +845,16 @@ export const projects = [
       {
         type: 'image',
         url: '/scout/scout2.png',
-        caption: 'Git integration showing file status and branch information'
+        caption: 'Bookmark management interface with quick access to important directories'
       }
     ]
   },
   {
     name: 'zap',
-    description: 'An easy to manage TUI file registry for developers to organize and instantly access important files across all projects with project organization and smart editor detection.',
-    longDescription: 'I found myself constantly hunting for important files across different projects. I needed a centralized registry that could instantly jump to any important file regardless of location.',
-    learned: 'This project taught me about file system watching, cross-project organization, and editor integration. I learned about building efficient search systems and persistent storage for file references.',
-    goal: 'Create a file registry that acts as a bookmark system for developers, enabling instant access to important files across all projects with smart categorization.',
+    description: 'A TUI file bookmarking system for developers to organize and instantly access important files and folders across all projects with smart categorization.',
+    longDescription: 'I needed a way to bookmark and quickly access important files scattered across different projects. Think of it like a bookmark manager but for files - you can instantly jump to any config file regardless of where it\'s located.',
+    learned: 'This project taught me about file system organization, cross-project file management, and editor integration. I learned about building efficient bookmark systems and persistent storage for file references.',
+    goal: 'Create a file bookmarking system that acts as a central hub for quick access to important files across all development projects.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -868,7 +863,7 @@ export const projects = [
       {
         type: 'image',
         url: '/zap/zap.png',
-        caption: 'File registry interface with project organization and quick access'
+        caption: 'File registry interface with quick access'
       }
     ]
   },
@@ -886,31 +881,31 @@ export const projects = [
       {
         type: 'image',
         url: '/git-helper/git-helper.png',
-        caption: 'Git commit interface with smart message suggestions'
+        caption: 'File change dashboard & clean or dirty state detection'
       },
       {
         type: 'image',
         url: '/git-helper/git-helper2.png',
-        caption: 'Change analysis with function detection and impact assessment'
+        caption: 'Change analysis with suggested commit messages based on file changes'
       },
       {
         type: 'image',
         url: '/git-helper/git-helper3.png',
-        caption: 'Conventional commit formatting with category selection'
+        caption: 'Custom commit message with standard enforcement'
       },
       {
         type: 'image',
         url: '/git-helper/git-helper4.png',
-        caption: 'Commit preview with validation and hook management'
+        caption: 'Output of push command with file changes'
       }
     ]
   },
   {
     name: 'project-launcher',
     description: 'A sleek project launcher and manager with interactive terminal interface for organizing, launching, and managing development projects with cross-platform support and WSL2 integration.',
-    longDescription: 'Managing multiple development projects across different directories and environments became tedious. I needed a central launcher that could organize and quickly start any project with the right environment setup.',
+    longDescription: 'I built this to streamline my development workflow by providing a centralized way to launch projects. It organizes development and production environments in one place, with easy path management and quick project switching.',
     learned: 'This project taught me about cross-platform development, WSL2 integration, and process management. I learned about project detection, environment setup automation, and creating intuitive project organization systems.',
-    goal: 'Create a unified project management interface that eliminates the friction of switching between different development projects and environments.',
+    goal: 'Create a simple but effective project launcher that makes it easy to quickly start development or production projects with minimal setup.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
@@ -926,9 +921,9 @@ export const projects = [
   {
     name: 'dwight',
     description: 'Terminal-based AI resource manager and assistant powered by Docker + Ollama with support for custom models, organizing prompts, templates, and project files.',
-    longDescription: 'I wanted to integrate AI assistance into my terminal workflow without leaving my development environment. This tool provides local AI capabilities with organized prompt management and project integration.',
-    learned: 'This project taught me about Docker integration, AI model management with Ollama, and creating conversational interfaces in terminals. I learned about prompt engineering and organizing AI workflows for development tasks.',
-    goal: 'Build a terminal-native AI assistant that integrates seamlessly with development workflows, providing local AI capabilities without disrupting the command-line experience.',
+    longDescription: 'This is my first venture into working with local AI/LLM/model management and wanting to work with it to create efficient workflows and integrate it with other TUI apps. I wanted to integrate AI assistance into my terminal workflow without leaving my development environment.',
+    learned: 'This project taught me about Docker integration, AI model management with Ollama, and creating conversational interfaces in terminals. I learned about prompt engineering, local AI deployment, and organizing AI workflows for development tasks.',
+    goal: 'Build a terminal-native AI assistant that integrates seamlessly with development workflows, providing local AI capabilities and learning how to work with LLMs effectively.',
     techStack: 'Go, Docker, Ollama API, BubbleTea, Bubbles, Lipgloss',
     status: 'In Development - July 2025',
     liveDemo: '#',
@@ -937,51 +932,46 @@ export const projects = [
       {
         type: 'image',
         url: '/dwight/dwight.png',
-        caption: 'AI assistant main interface with model selection and conversation history'
+        caption: 'AI assistant main menu with options for managing models, resources, and settings'
       },
       {
         type: 'image',
         url: '/dwight/dwight2.png',
-        caption: 'Prompt template management with categorization and quick access'
+        caption: 'Resource management interface with prompt templates and file organization'
       },
       {
         type: 'image',
         url: '/dwight/dwight3.png',
-        caption: 'Project integration showing file context and AI-assisted development'
-      },
-      {
-        type: 'image',
-        url: '/dwight/dwight4.png',
-        caption: 'Model management interface with Docker and Ollama integration'
-      },
-      {
-        type: 'image',
-        url: '/dwight/dwight5.png',
-        caption: 'AI conversation interface with syntax highlighting and code assistance'
+        caption: 'Global resource integration with push/pull functionality for managing AI resources'
       },
       {
         type: 'image',
         url: '/dwight/dwight6.png',
-        caption: 'Resource manager for organizing AI-related files and templates'
+        caption: 'Model management interface with Docker and Ollama integration'
       },
       {
         type: 'image',
-        url: '/dwight/dwight7.png',
-        caption: 'Settings and configuration management for AI models and preferences'
+        url: '/dwight/dwight4.png',
+        caption: 'Master settings and configuration management for AI models and preferences'
       },
       {
         type: 'image',
         url: '/dwight/dwight8.png',
-        caption: 'Terminal-based chat interface with streaming responses and history'
+        caption: 'Chat with your selected model with automatic chat history saving'
+      },
+      {
+        type: 'image',
+        url: '/dwight/dwight5.png',
+        caption: 'Clean old chat logs'
       }
     ]
   },
   {
     name: 'logdog',
     description: 'A TUI-based logging utility that makes structured logging simple and consistent across Go projects with automatic project detection, JSON logs with daily rotation, and log management.',
-    longDescription: 'Consistent logging across projects was becoming a challenge. I needed a tool that could standardize logging practices while making it easy to view and manage logs from multiple projects.',
+    longDescription: 'I wanted a custom centralized logging system that could help with both dev and production apps by having log viewer, installer, and management all in one. I needed a tool that could standardize logging practices across projects.',
     learned: 'This project taught me about structured logging best practices, log rotation strategies, and building developer tools that enforce consistency. I learned about JSON logging formats and log aggregation techniques.',
-    goal: 'Standardize logging across all Go projects while providing an intuitive interface for log management and analysis, making debugging and monitoring more efficient.',
+    goal: 'Create a custom centralized logging system that provides both development and production logging capabilities with integrated viewing and management tools.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -990,19 +980,19 @@ export const projects = [
       {
         type: 'image',
         url: '/logdog/logdog1.png',
-        caption: 'Logging utility interface with project detection and log configuration'
+        caption: 'Main menu with project detection and log management options'
       },
       {
         type: 'image',
         url: '/logdog/logdog2.png',
-        caption: 'Log viewer with filtering and search capabilities across multiple projects'
+        caption: 'Clean, simple tui log viewer'
       }
     ]
   },
   {
     name: 'backup-xd',
     description: 'A terminal-based backup management system for creating, scheduling, and managing backups for databases, files, and directories with automated cleanup and restore operations.',
-    longDescription: 'Managing backups across multiple projects and databases was becoming cumbersome. I needed a centralized solution that could handle different backup types with scheduling and automated cleanup.',
+    longDescription: 'I wanted a comprehensive backup solution for managing backups across multiple projects and databases. I needed a centralized tool that could handle different backup types with scheduling and automated cleanup.',
     learned: 'This project taught me about backup strategies, database dump operations, and automated scheduling systems. I learned about data integrity verification and creating reliable restore procedures.',
     goal: 'Create a comprehensive backup solution that automates the entire backup lifecycle from creation to cleanup, ensuring data safety without manual intervention.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
@@ -1013,26 +1003,26 @@ export const projects = [
       {
         type: 'image',
         url: '/backup-xd/backup-xd.png',
-        caption: 'Backup management interface with scheduling and job status monitoring'
+        caption: 'Backup management interface with scheduling, status, and restore options'
       },
       {
         type: 'image',
         url: '/backup-xd/backup-xd2.png',
-        caption: 'Database backup configuration with multiple engine support'
+        caption: 'View your backups with details'
       },
       {
         type: 'image',
         url: '/backup-xd/backup-xd3.png',
-        caption: 'Backup history and restore operations with integrity verification'
+        caption: 'Auto clean up backups older than a specified number of days'
       }
     ]
   },
   {
     name: 'scriptgodx',
     description: 'A lightning-fast TUI script manager for developers to organize and instantly run most-used scripts and commands with category organization, script tracking, and output history.',
-    longDescription: 'I had dozens of utility scripts scattered across projects and constantly forgot where specific scripts were located. I needed a centralized manager that could organize and execute scripts instantly.',
+    longDescription: 'I had dozens of utility scripts scattered across projects and constantly forgot where specific scripts were located. I needed a simple centralized manager that could organize and execute scripts easily.',
     learned: 'This project taught me about script execution management, output capturing, and creating efficient search systems. I learned about cross-platform script handling and building responsive terminal interfaces.',
-    goal: 'Create the ultimate script management tool that eliminates the friction of finding and running utility scripts, with smart organization and execution tracking.',
+    goal: 'Create a simple script management tool that helps organize and run utility scripts with basic categorization and execution tracking.',
     techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - June 2025',
     liveDemo: '#',
@@ -1048,10 +1038,10 @@ export const projects = [
   {
     name: 'lif',
     description: 'A terminal user interface application for managing daily tasks, reminders, rolling todos, and a command glossary with countdown timers, alarms, and cross-platform notifications.',
-    longDescription: 'I needed a productivity system that lived in my terminal and could handle tasks, reminders, and knowledge management without disrupting my development workflow. Something personal and always accessible.',
-    learned: 'This project taught me about persistent data storage with SQLite, cross-platform notifications, and building complex TUI applications with multiple views. I learned about cron-like scheduling and terminal-based productivity systems.',
-    goal: 'Build a comprehensive personal productivity system that integrates seamlessly with terminal-based workflows, combining task management with knowledge tracking.',
-    techStack: 'Go, SQLite, BubbleTea, Bubbles, Lipgloss, Cron',
+    longDescription: 'I needed a productivity system that lived in my terminal and could handle tasks, reminders, and knowledge management without disrupting my development workflow. It\'s just a basic TUI reminder system with rolling todos and a glossary for commands I may forget.',
+    learned: 'This project taught me about persistent data storage, cross-platform notifications, and building complex TUI applications with multiple views. I learned about terminal-based productivity systems and simple task management.',
+    goal: 'Build a simple personal productivity system that integrates with terminal workflows, combining basic task management with a command glossary.',
+    techStack: 'Go, BubbleTea, Bubbles, Lipgloss',
     status: 'Completed - July 2025',
     liveDemo: '#',
     github: 'https://github.com/LFroesch/lif',
@@ -1059,17 +1049,17 @@ export const projects = [
       {
         type: 'image',
         url: '/lif/lif.png',
-        caption: 'Personal productivity dashboard with tasks and reminders'
+        caption: 'Personal productivity dashboard front page with reminder & rolling todo widget'
       },
       {
         type: 'image',
         url: '/lif/lif2.png',
-        caption: 'Task management with rolling todos and deadline tracking'
+        caption: 'Dailies that reset every day with a simple checklist system'
       },
       {
         type: 'image',
         url: '/lif/lif3.png',
-        caption: 'Command glossary for storing frequently used commands and snippets'
+        caption: 'Rolling to do list to manage tasks that may not relate to other projects'
       },
       {
         type: 'image',
@@ -1081,9 +1071,9 @@ export const projects = [
   {
     name: 'isle of brynd',
     description: 'A fantasy action RPG built with Godot Engine featuring 3D combat system, character progression, equipment system, quest system, multi-level world exploration, and interactive NPCs.',
-    longDescription: 'I wanted to create a complete RPG experience that showcased everything I had learned about game development. This project represents my most ambitious game development effort to date.',
+    longDescription: 'This is a comprehensive 3D RPG featuring quests, combat, inventory management, equipment systems, skills, dialogue trees, and multiple explorable areas. It is similar in playstyle to Skyrim, although it is not as expansive, of course.',
     learned: 'This project taught me advanced 3D game development, including complex state machines, inventory systems, and level design. I learned about quest scripting, NPC behavior systems, and creating engaging combat mechanics.',
-    goal: 'Create a polished RPG demo that demonstrates advanced game development skills while providing an engaging fantasy adventure experience with professional-quality systems.',
+    goal: 'Create a feature-complete RPG that demonstrates solid intermediate game development skills with polished systems and engaging gameplay mechanics.',
     techStack: 'Godot Engine, GDScript',
     status: 'Demo Completed - May 2025',
     liveDemo: 'https://lfroesch.itch.io/isle-of-brynd',
@@ -1092,44 +1082,44 @@ export const projects = [
       {
         type: 'image',
         url: '/rpg/promo5.png',
-        caption: 'Fantasy world exploration with detailed environments and atmospheric lighting'
+        caption: 'Explore a world of combat, magic, and adventure!'
       },
       {
         type: 'image',
         url: '/rpg/promo4.png',
-        caption: 'Character progression system with skill trees and equipment management'
+        caption: 'Shop UI with buying and selling items, currency and upgrades'
       },
       {
         type: 'video',
         url: '/rpg/rpg.mp4',
-        caption: 'Gameplay footage showing exploration, combat, and quest mechanics in the 3D RPG world'
+        caption: 'Gameplay footage showing a combat quest with NPC interaction and combat mechanics'
       },
       {
         type: 'image',
         url: '/rpg/promo6.png',
-        caption: 'Combat system with real-time action and strategic depth'
+        caption: 'Lootable Chests with randomized items and equipment drops that persist on reload'
       },
       {
         type: 'image',
         url: '/rpg/promo7.png',
-        caption: 'Quest system with dynamic NPC interactions and story progression'
+        caption: 'Inventory and equipment management system with character stats and item attributes'
       },
       {
         type: 'image',
         url: '/rpg/promo8.png',
-        caption: 'Multi-level dungeon exploration with puzzle and combat challenges'
+        caption: 'Heal yourself with magic!'
       },
       {
         type: 'image',
         url: '/rpg/promo9.png',
-        caption: 'Rich fantasy world with immersive environments and detailed assets'
+        caption: 'Use different weapons and combat styles to defeat different enemies!'
       }
     ]
   },
   {
     name: 'asteroids',
-    description: 'My first game, basic pygame implementation of Asteroids game. Learned the basics of game development, physics, and collision detection.',
-    longDescription: 'This was my very first game project and my introduction to programming beyond basic tutorials. It represents the beginning of my journey into game development and programming in general.',
+    description: 'My first game, basic pygame implementation of Asteroids game. This was one of the first Boot.dev assignments and it got me hooked on programming.',
+    longDescription: 'This was one of the first Boot.dev assignments and it really got me hooked on programming! It was my very first game project and my introduction to programming beyond basic tutorials. It represents the beginning of my journey into game development.',
     learned: 'This project taught me the fundamentals of game development, including game loops, collision detection, and basic physics. I learned about object-oriented programming and how to structure a complete project from start to finish.',
     goal: 'Learn the basics of game development while creating a functional clone of the classic Asteroids arcade game, establishing a foundation for future projects.',
     techStack: 'Python, Pygame',

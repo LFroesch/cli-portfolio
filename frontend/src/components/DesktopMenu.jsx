@@ -22,6 +22,13 @@ const DesktopMenu = ({
         <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
           →
         </div>
+        <div className="absolute top-12 left-1/2 transform -translate-x-1/2 text-xs text-white/60 font-mono whitespace-nowrap text-center">
+          hint: use
+          <br />
+          arrow keys
+          <br />
+          to navigate
+        </div>
       </div>
       
       {/* Up/Down project navigation indicators - Desktop only */}

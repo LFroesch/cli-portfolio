@@ -1,4 +1,3 @@
-import React from 'react';
 import { contentData } from '../data';
 
 const CollapsibleHeader = ({ sectionKey, collapsedSections, toggleSection, title }) => (
@@ -81,14 +80,13 @@ const LearningTimeline = ({ collapsedSections, toggleSection, getBorderRadius })
             {contentData.about.timeline.map((item, index) => (
               <div key={index} className="relative flex flex-col md:flex-row md:items-center">
                 {/* Timeline Node */}
-                <div className="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-3 h-3 bg-white/80 rounded-full border-2 border-white/40 z-10"></div>
+                <div className="absolute left-6 md:left-1/2 top-32 md:top-24 transform -translate-x-1/2 w-3 h-3 bg-white/80 rounded-full border-2 border-white/40 z-10"></div>
                 
                 {/* Content */}
                 <div className={`ml-16 md:ml-0 ${index % 2 === 0 ? 'md:pr-8 md:text-right md:w-1/2' : 'md:pl-8 md:text-left md:w-1/2 md:ml-auto'}`}>
                   <div className={`bg-white/5 border border-white/10 p-6 backdrop-blur-sm ${getBorderRadius('card')}`}>
-                    <div className="flex flex-col md:flex-row md:items-center gap-3 mb-3">
-                      <span className="text-lg font-semibold text-white/90">{item.period}</span>
-                      <span className="text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full">{item.type}</span>
+                    <div className={`flex flex-col md:flex-row md:items-center gap-3 mb-3 ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
+                      <span className="text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full">{item.period}</span>
                     </div>
                     <h4 className="text-xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                       {item.title}
