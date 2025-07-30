@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { personalInfo, sections, projects, contentData } from './data'
+import { personalInfo, projects, contentData } from './data'
 import blogPosts from './blogPosts.json'
 import StarfieldBackground from './StarfieldBackground'
 import PaperPlanes from './PaperPlanes'
@@ -7,9 +7,17 @@ import { getSkillCategoryIcon } from './SkillIcons'
 import { useStats } from './useStats'
 import { useContactForm } from './hooks/useContactForm'
 import { useGitHubStats } from './hooks/useGitHubStats'
+import { useNavigation } from './hooks/useNavigation'
+import { useLightbox } from './hooks/useLightbox'
 import TypingEffect from './components/TypingEffect'
 import LoadingSpinner from './components/LoadingSpinner'
 import { StatsCardSkeleton } from './components/SkeletonLoader'
+import FloatingButtons from './components/FloatingButtons'
+import Lightbox from './components/Lightbox'
+import AboutSection from './components/AboutSection'
+import MobileMenu from './components/MobileMenu'
+import DesktopMenu from './components/DesktopMenu'
+import { getBorderRadiusClasses, copyEmailToClipboard, createToggleSection } from './utils/helpers'
 import './animations.css'
 
 function ConsolePortfolio() {
@@ -26,11 +34,13 @@ function ConsolePortfolio() {
   const [collapsedSections, setCollapsedSections] = useState({});
   const [certGalleryIndex, setCertGalleryIndex] = useState(0);
   const [showCertGallery, setShowCertGallery] = useState(false);
-  const [showLightbox, setShowLightbox] = useState(false);
-  const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
-  const [lightboxImages, setLightboxImages] = useState([]);
   const [isScrolledIntoProject, setIsScrolledIntoProject] = useState(false);
   const [showFloatingButtons, setShowFloatingButtons] = useState(false);
+  
+  // Initialize hooks
+  const { showLightbox, lightboxImages, lightboxImageIndex, openLightbox, closeLightbox, navigateLightbox } = useLightbox(currentProjectIndex);
+  const getBorderRadius = getBorderRadiusClasses(designVariant);
+  const toggleSection = createToggleSection(setCollapsedSections);
   
   // Scroll tracking
   useEffect(() => {
@@ -49,30 +59,6 @@ function ConsolePortfolio() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [currentSection]);
   
-  // Toggle section collapse
-  const toggleSection = (sectionKey) => {
-    setCollapsedSections(prev => ({
-      ...prev,
-      [sectionKey]: !prev[sectionKey]
-    }));
-  };
-  
-  // Copy email to clipboard
-  const copyEmailToClipboard = async (email) => {
-    try {
-      await navigator.clipboard.writeText(email);
-      // Could add a toast notification here if desired
-    } catch (err) {
-      console.error('Failed to copy email: ', err);
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = email;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    }
-  };
   
   // Stats tracking
   const { 
@@ -91,48 +77,36 @@ function ConsolePortfolio() {
   // GitHub stats
   const { githubData, activity, loading: githubLoading } = useGitHubStats();
 
-  // Navigation functions (defined before useEffect that references them)
-  const navigateMenu = useCallback((direction) => {
-    const currentIndex = sections.indexOf(currentSection);
-    const newIndex = Math.max(0, Math.min(sections.length - 1, currentIndex + direction));
-    const newSection = sections[newIndex];
-    setCurrentSection(newSection);
-    trackSectionView(newSection);
-  }, [currentSection, trackSectionView]);
+  // Navigation hookd
+  const { navigateMenu, navigateProjects, navigateMedia, handleKeyPress } = useNavigation({
+    currentSection,
+    setCurrentSection,
+    currentProjectIndex,
+    setCurrentProjectIndex,
+    currentMediaIndex,
+    setCurrentMediaIndex,
+    currentBlogIndex,
+    setCurrentBlogIndex,
+    showLightbox,
+    isScrolledIntoProject,
+    navigateLightbox,
+    closeLightbox,
+    trackSectionView,
+    trackProjectView
+  });
 
-  const navigateProjects = useCallback((direction) => {
+  // Local navigation functions with loading states
+  const navigateProjectsWithLoading = useCallback((direction) => {
     setMediaLoading(true);
-    setCurrentProjectIndex(prev => {
-      let newIndex = prev + direction;
-      if (newIndex < 0) {
-        newIndex = projects.length - 1; // Loop to end
-      } else if (newIndex >= projects.length) {
-        newIndex = 0; // Loop to beginning
-      }
-      setCurrentMediaIndex(0); // Reset media index when changing projects
-      return newIndex;
-    });
-    // Clear loading after a short delay
+    navigateProjects(direction);
     setTimeout(() => setMediaLoading(false), 300);
-  }, []);
+  }, [navigateProjects]);
 
-  const navigateMedia = useCallback((direction) => {
-    const currentProject = projects[currentProjectIndex];
-    if (!currentProject.media || !Array.isArray(currentProject.media)) return;
-    
+  const navigateMediaWithLoading = useCallback((direction) => {
     setMediaLoading(true);
-    setCurrentMediaIndex(prev => {
-      let newIndex = prev + direction;
-      if (newIndex < 0) {
-        newIndex = currentProject.media.length - 1; // Loop to end
-      } else if (newIndex >= currentProject.media.length) {
-        newIndex = 0; // Loop to beginning
-      }
-      return newIndex;
-    });
-    // Clear loading after a short delay
+    navigateMedia(direction);
     setTimeout(() => setMediaLoading(false), 200);
-  }, [currentProjectIndex]);
+  }, [navigateMedia]);
 
   // Handle initial load completion
   useEffect(() => {
@@ -159,64 +133,11 @@ function ConsolePortfolio() {
     }
   }, [currentSection, currentProjectIndex, lastTrackedProject, trackProjectView]);
 
+  // Keyboard event handler
   useEffect(() => {
-    const handleKeyPress = (e) => {
-      // Handle lightbox navigation first
-      if (showLightbox) {
-        switch(e.key) {
-          case 'Escape':
-            closeLightbox();
-            break;
-          case 'ArrowLeft':
-            e.preventDefault();
-            navigateLightbox(-1);
-            break;
-          case 'ArrowRight':
-            e.preventDefault();
-            navigateLightbox(1);
-            break;
-        }
-        return; // Don't handle other navigation when lightbox is open
-      }
-
-      // Normal navigation when lightbox is closed
-      switch(e.key) {
-        case 'ArrowLeft':
-          // If scrolled into project content, navigate photos instead of menu
-          if (isScrolledIntoProject) {
-            e.preventDefault();
-            navigateMedia(-1);
-          } else {
-            navigateMenu(-1);
-          }
-          break;
-        case 'ArrowRight':
-          // If scrolled into project content, navigate photos instead of menu
-          if (isScrolledIntoProject) {
-            e.preventDefault();
-            navigateMedia(1);
-          } else {
-            navigateMenu(1);
-          }
-          break;
-        case 'ArrowUp':
-          if (currentSection === 'projects') {
-            e.preventDefault();
-            navigateProjects(-1);
-          }
-          break;
-        case 'ArrowDown':
-          if (currentSection === 'projects') {
-            e.preventDefault();
-            navigateProjects(1);
-          }
-          break;
-      }
-    };
-
     document.addEventListener('keydown', handleKeyPress);
     return () => document.removeEventListener('keydown', handleKeyPress);
-  }, [currentSection, currentProjectIndex, currentBlogIndex, showLightbox, lightboxImages.length, isScrolledIntoProject, navigateMenu, navigateProjects, navigateMedia]);
+  }, [handleKeyPress]);
 
   // Cycle through variations every 8 seconds for dynamic feel
   useEffect(() => {
@@ -227,134 +148,8 @@ function ConsolePortfolio() {
     return () => clearInterval(interval);
   }, []);
 
-  // Helper function to get border radius classes based on variant
-  const getBorderRadius = (element = 'default') => {
-    if (designVariant === 'rounded') {
-      switch (element) {
-        case 'card': return 'rounded-xl';
-        case 'button': return 'rounded-md';
-        case 'small': return 'rounded-sm';
-        default: return 'rounded-lg';
-      }
-    }
-    return ''; // Sharp edges - no border radius
-  };
-
-  // Lightbox functions - Updated to work with different image sources
-  const openLightbox = (imageSource, imageIndex = 0) => {
-    let imageArray = [];
-    
-    // Handle different image sources
-    if (Array.isArray(imageSource)) {
-      // Direct array of images (e.g., certificates)
-      imageArray = imageSource.filter(item => 
-        item.url && (item.type === 'image' || item.type === 'gif' || !item.type)
-      );
-    } else if (imageSource && typeof imageSource === 'object') {
-      // Single image object (e.g., blog media)
-      if (imageSource.type === 'image' && imageSource.url) {
-        imageArray = [imageSource];
-      }
-    } else {
-      // Project media (existing functionality)
-      const currentProject = projects[currentProjectIndex];
-      if (!currentProject.media) return;
-      
-      // Handle both single media objects and arrays of media
-      const mediaArray = Array.isArray(currentProject.media) ? currentProject.media : [currentProject.media];
-      
-      // Filter to only include images (exclude videos)
-      imageArray = mediaArray.filter(media => 
-        media.type === 'image' || media.type === 'gif'
-      );
-      
-      // Find the corresponding image index for the given media index
-      let correctedIndex = 0;
-      let imageCount = 0;
-      for (let i = 0; i <= imageSource && i < mediaArray.length; i++) {
-        if (mediaArray[i].type === 'image' || mediaArray[i].type === 'gif') {
-          if (i === imageSource) {
-            correctedIndex = imageCount;
-            break;
-          }
-          imageCount++;
-        }
-      }
-      imageIndex = correctedIndex;
-    }
-    
-    if (imageArray.length === 0) return;
-    
-    setLightboxImages(imageArray);
-    setLightboxImageIndex(Math.min(imageIndex, imageArray.length - 1));
-    setShowLightbox(true);
-  };
-
-  const closeLightbox = () => {
-    setShowLightbox(false);
-    setLightboxImages([]);
-    setLightboxImageIndex(0);
-  };
-
-  const navigateLightbox = (direction) => {
-    setLightboxImageIndex(prev => {
-      let newIndex = prev + direction;
-      if (newIndex < 0) {
-        newIndex = lightboxImages.length - 1;
-      } else if (newIndex >= lightboxImages.length) {
-        newIndex = 0;
-      }
-      return newIndex;
-    });
-  };
 
 
-  const renderProjectsWheel = () => {
-    const visibleProjects = [];
-    const totalVisible = 5; // Show 2 above, current, 2 below
-    const halfVisible = Math.floor(totalVisible / 2);
-    
-    for (let i = -halfVisible; i <= halfVisible; i++) {
-      let index = currentProjectIndex + i;
-      
-      // Handle looping for the wheel display
-      if (index < 0) {
-        index = projects.length + index; // Wrap to end
-      } else if (index >= projects.length) {
-        index = index - projects.length; // Wrap to beginning
-      }
-      
-      visibleProjects.push({ project: projects[index].name, originalIndex: index, offset: i });
-    }
-    
-    return visibleProjects.map(({ project, originalIndex, offset }) => {
-      let className = "text-center py-2 px-3 transition-all duration-500 cursor-pointer flex items-center justify-center min-w-[250px] max-w-[250px] relative group ";
-      
-      if (offset === 0) {
-        // Current/center project
-        className += `border border-white/80 font-medium opacity-100 text-base h-10 bg-white/10 shadow-lg shadow-white/20 ${getBorderRadius('button')}`;
-      } else if (Math.abs(offset) === 1) {
-        // Adjacent projects
-        className += `opacity-70 text-sm h-8 hover:opacity-90 hover:bg-white/5 border border-white/20 ${getBorderRadius('button')}`;
-      } else {
-        // Outer projects
-        className += `opacity-40 text-xs h-6 hover:opacity-60 border border-white/10 ${getBorderRadius('small')}`;
-      }
-
-      return (
-        <div 
-          key={`${originalIndex}-${offset}`} 
-          className={className}
-          onClick={() => {
-            setCurrentProjectIndex(originalIndex);
-          }}
-        >
-          <div className={`absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${getBorderRadius('button')}`}></div>
-          <span className="truncate relative z-10">{project}</span>
-        </div>
-      );
-    });
-  };
 
   const renderContent = () => {
     const currentProject = projects[currentProjectIndex];
@@ -362,252 +157,11 @@ function ConsolePortfolio() {
     switch(currentSection) {
       case 'about':
         return (
-          <div className="w-full max-w-4xl mx-auto">
-            {/* About Header */}
-            <div className="mb-12">
-              <button
-                onClick={() => toggleSection('about-bio')}
-                className="w-full group flex items-center gap-4 mb-8 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
-              >
-                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-bio'] ? 'bg-white/20' : ''}`}>
-                  <div className={`transition-transform duration-300 ${collapsedSections['about-bio'] ? 'rotate-180' : ''}`}>
-                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
-                  About
-                </h3>
-              </button>
-              {!collapsedSections['about-bio'] && (
-                <div className="animate-fade-in space-y-12">
-                  {/* Photo and Text Sections */}
-                  {contentData.about.sections.map((section, index) => {
-                    const isLeftPhoto = index % 2 === 0; // Left for even indices (0, 2), Right for odd indices (1)
-                    
-                    return (
-                      <div key={index} className={`flex flex-col ${isLeftPhoto ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-8 lg:gap-12`}>
-                        {/* Photo */}
-                        <div className="flex-shrink-0">
-                          <div className={`w-48 h-48 lg:w-56 lg:h-56 border-2 border-white/20 overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex items-center justify-center ${getBorderRadius('card')}`}>
-                            <img
-                              src={section.photo.src}
-                              alt={section.photo.alt}
-                              className={`w-full h-full object-cover ${getBorderRadius('card')}`}
-                              onError={(e) => {
-                                e.target.style.display = 'none';
-                                e.target.nextSibling.style.display = 'flex';
-                              }}
-                            />
-                            <div className="hidden w-full h-full flex-col items-center justify-center text-white/40">
-                              <div className="text-6xl mb-2">👨‍💻</div>
-                              <div className="text-sm">Lucas F.</div>
-                            </div>
-                          </div>
-                          {/* Photo Caption */}
-                          <p className="text-center text-sm opacity-60 mt-2">
-                            {section.photo.caption}
-                          </p>
-                        </div>
-                        
-                        {/* Text Content */}
-                        <div className={`flex-1 text-center ${isLeftPhoto ? 'lg:text-left' : 'lg:text-right'}`}>
-                          {section.paragraphs.map((paragraph, paragraphIndex) => (
-                            <p key={paragraphIndex} className="text-xl lg:text-2xl opacity-90 leading-relaxed mb-6 last:mb-0">
-                              {paragraph}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-            
-            {/* Learning Timeline */}
-            <div className="mt-16">
-              <button
-                onClick={() => toggleSection('about-timeline')}
-                className="w-full group flex items-center gap-4 mb-12 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
-              >
-                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-timeline'] ? 'bg-white/20' : ''}`}>
-                  <div className={`transition-transform duration-300 ${collapsedSections['about-timeline'] ? 'rotate-180' : ''}`}>
-                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
-                  Learning Journey
-                </h3>
-              </button>
-              {!collapsedSections['about-timeline'] && (
-                <div className="animate-fade-in">
-                  <div className="relative max-w-4xl mx-auto">
-                {/* Desktop Timeline Line */}
-                <div className="hidden md:block absolute left-1/2 transform -translate-x-0.5 w-0.5 h-full bg-gradient-to-b from-white/20 via-white/40 to-white/20"></div>
-                
-                {/* Mobile Timeline Line */}
-                <div className="md:hidden absolute left-6 top-0 w-0.5 h-full bg-gradient-to-b from-white/20 via-white/40 to-white/20"></div>
-                
-                {/* Timeline Items */}
-                <div className="space-y-8 md:space-y-12">
-                  {contentData.about.timeline.map((item, index) => (
-                    <div key={index} className={`flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                      {/* Mobile Timeline Dot */}
-                      <div className="md:hidden flex-shrink-0 w-12 flex justify-center">
-                        <div className="w-3 h-3 bg-white/60 rounded-full border-2 border-black z-10 relative">
-                          <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
-                        </div>
-                      </div>
-                      
-                      {/* Content */}
-                      <div className={`w-full md:w-6/12 text-left ${index % 2 === 0 ? 'md:text-right md:pr-6' : 'md:text-left md:pl-6'}`}>
-                        <div className={`p-4 md:p-6 bg-white/5 border border-white/20 hover:bg-white/10 transition-all duration-300 ${getBorderRadius('card')} ml-2 md:ml-0`}>
-                          <div className="text-sm opacity-60 mb-2">{item.period}</div>
-                          <h4 className="text-lg font-semibold mb-3 hyphens-auto">{item.title}</h4>
-                          <p className="text-sm opacity-80 mb-4 leading-relaxed hyphens-auto">{item.description}</p>
-                          <div className="flex flex-wrap gap-2 justify-start">
-                            {item.tech.map((tech, techIndex) => (
-                              <span 
-                                key={techIndex}
-                                className={`px-2 py-1 bg-white/10 border border-white/20 text-xs opacity-80 ${getBorderRadius('small')}`}
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Desktop Timeline Dot */}
-                      <div className="hidden md:flex w-2/12 justify-center">
-                        <div className="w-4 h-4 bg-white/60 rounded-full border-4 border-black z-10 relative">
-                          <div className="absolute inset-0 bg-white/30 rounded-full animate-pulse"></div>
-                        </div>
-                      </div>
-                      
-                      {/* Empty space for alignment - Hidden on mobile */}
-                      <div className="hidden md:block w-6/12"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-                </div>
-              )}
-            </div>
-            
-            {/* FAQ Section */}
-            <div className="mt-16">
-              <button
-                onClick={() => toggleSection('about-faq')}
-                className="w-full group flex items-center gap-4 mb-12 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
-              >
-                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-faq'] ? 'bg-white/20' : ''}`}>
-                  <div className={`transition-transform duration-300 ${collapsedSections['about-faq'] ? 'rotate-180' : ''}`}>
-                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
-                  {contentData.about.faq.title}
-                </h3>
-              </button>
-              {!collapsedSections['about-faq'] && (
-                <div className="animate-fade-in">
-                  <p className="text-center text-lg opacity-80 leading-relaxed mb-12">
-                    {contentData.about.faq.description}
-                  </p>
-              
-              <div className="space-y-8">
-                {contentData.about.faq.sections.map((section, sectionIndex) => (
-                  <div key={sectionIndex} className={`border border-white/20 bg-white/5 ${getBorderRadius('card')}`}>
-                    <div className="p-6">
-                      <h4 className="text-xl font-semibold mb-6 text-center bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
-                        {section.category}
-                      </h4>
-                      
-                      <div className="space-y-6">
-                        {section.questions.map((qa, qaIndex) => (
-                          <div key={qaIndex} className="text-left">
-                            <h5 className="text-base lg:text-lg font-medium mb-3 text-white/90">
-                              Q: {qa.question}
-                            </h5>
-                            <p className="text-sm lg:text-base opacity-80 leading-relaxed pl-4 border-l-2 border-white/20">
-                              {qa.answer}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Recommendations Section */}
-            {/* <div className="mt-16">
-              <button
-                onClick={() => toggleSection('about-recommendations')}
-                className="w-full group flex items-center gap-4 mb-8 hover:bg-white/5 p-3 rounded-lg transition-all duration-300"
-              >
-                <div className={`flex-shrink-0 w-8 h-8 border-2 border-white/40 rounded-full flex items-center justify-center group-hover:border-white/80 group-hover:bg-white/10 transition-all duration-300 ${collapsedSections['about-recommendations'] ? 'bg-white/20' : ''}`}>
-                  <div className={`transition-transform duration-300 ${collapsedSections['about-recommendations'] ? 'rotate-180' : ''}`}>
-                    <svg className="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent text-left">
-                  {contentData.about.recommendations.title}
-                </h3>
-              </button>
-              {!collapsedSections['about-recommendations'] && (
-                <div className="animate-fade-in">
-                  <p className="text-center text-base lg:text-lg opacity-80 leading-relaxed mb-12">
-                    {contentData.about.recommendations.description}
-                  </p>
-              
-              <div className="space-y-8">
-                {contentData.about.recommendations.categories.map((category, categoryIndex) => (
-                  <div key={categoryIndex}>
-                    {/* Category Header */}
-                    {/* <div className="flex items-center justify-center gap-3 mb-6">
-                      <div className="text-xl lg:text-2xl">{category.icon}</div>
-                      <h4 className="text-lg lg:text-xl font-bold">{category.name}</h4>
-                    </div>
-                    
-                    {/* Tools Grid */}
-                    {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {category.items.map((tool, toolIndex) => (
-                        <div 
-                          key={toolIndex}
-                          className={`group border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:shadow-lg text-center ${getBorderRadius('card')}`}
-                        >
-                          <div className="p-4">
-                            <h5 className="text-sm lg:text-base font-semibold mb-2 group-hover:text-white transition-colors duration-300">
-                              {tool.name}
-                            </h5>
-                            <p className="text-xs lg:text-sm opacity-80 leading-relaxed">
-                              {tool.description}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-                </div>
-              )}
-            </div> */}
-            
-          </div>
+          <AboutSection 
+            collapsedSections={collapsedSections}
+            toggleSection={toggleSection}
+            getBorderRadius={getBorderRadius}
+          />
         );
       
       case 'skills':
@@ -976,7 +530,7 @@ function ConsolePortfolio() {
                     {/* Project Navigation (always visible) */}
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => navigateProjects(-1)}
+                        onClick={() => navigateProjectsWithLoading(-1)}
                         className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
                           isScrolledIntoProject 
                             ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
@@ -995,7 +549,7 @@ function ConsolePortfolio() {
                         )}
                       </button>
                       <button
-                        onClick={() => navigateProjects(1)}
+                        onClick={() => navigateProjectsWithLoading(1)}
                         className={`p-2 border transition-all duration-300 ${getBorderRadius('button')} ${
                           isScrolledIntoProject 
                             ? 'border-green-400/40 hover:bg-green-500/10 hover:border-green-400/60' 
@@ -1856,96 +1410,13 @@ function ConsolePortfolio() {
       <PaperPlanes />
       
       {/* Lightbox Modal */}
-      {showLightbox && lightboxImages.length > 0 && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          {/* Close button with ESC key styling */}
-          <button
-            onClick={closeLightbox}
-            className="absolute top-6 right-6 px-3 py-2 bg-black/70 hover:bg-black/90 border border-red-400/40 hover:border-red-400/60 rounded-lg flex items-center gap-2 transition-all duration-300 z-10"
-            title="Close (ESC)"
-          >
-            <div className="hidden lg:flex w-6 h-6 items-center justify-center bg-white/10 border border-white/30 rounded text-xs font-mono font-bold text-red-100">
-              ESC
-            </div>
-            <span className="text-red-100 text-sm">Close</span>
-          </button>
-          
-          {/* Image container */}
-          <div className="relative w-full h-full flex items-center justify-center">
-            <img
-              src={lightboxImages[lightboxImageIndex]?.url}
-              alt={lightboxImages[lightboxImageIndex]?.alt || `Image ${lightboxImageIndex + 1}`}
-              className="max-w-full max-h-full object-contain select-none"
-              onClick={(e) => e.stopPropagation()}
-            />
-            
-            {/* Navigation arrows with keyboard indicators */}
-            {lightboxImages.length > 1 && (
-              <>
-                {/* Desktop version with keyboard indicators */}
-                <button
-                  onClick={() => navigateLightbox(-1)}
-                  className="hidden lg:flex absolute left-6 top-1/2 transform -translate-y-1/2 px-4 py-3 bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60 rounded-lg items-center gap-2 transition-all duration-300"
-                  title="Previous image (←)"
-                >
-                  <div className="w-6 h-6 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                    ←
-                  </div>
-                  <span className="text-green-100 text-sm">Previous</span>
-                </button>
-                <button
-                  onClick={() => navigateLightbox(1)}
-                  className="hidden lg:flex absolute right-6 top-1/2 transform -translate-y-1/2 px-4 py-3 bg-black/70 hover:bg-black/90 border border-green-400/40 hover:border-green-400/60 rounded-lg items-center gap-2 transition-all duration-300"
-                  title="Next image (→)"
-                >
-                  <div className="w-6 h-6 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                    →
-                  </div>
-                  <span className="text-green-100 text-sm">Next</span>
-                </button>
-                
-                {/* Mobile version without keyboard indicators */}
-                <button
-                  onClick={() => navigateLightbox(-1)}
-                  className="lg:hidden absolute left-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
-                  title="Previous image"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  onClick={() => navigateLightbox(1)}
-                  className="lg:hidden absolute right-6 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 hover:border-white/40 rounded-full flex items-center justify-center transition-all duration-300"
-                  title="Next image"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-                
-                {/* Image counter */}
-                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-black/70 text-white/90 text-sm rounded-full border border-white/20">
-                  {lightboxImageIndex + 1} / {lightboxImages.length}
-                </div>
-              </>
-            )}
-          </div>
-          
-          {/* Caption */}
-          {lightboxImages[lightboxImageIndex]?.caption && (
-            <div className="absolute bottom-6 right-6 max-w-md p-3 bg-black/70 text-white/80 text-sm rounded-lg border border-white/20">
-              {lightboxImages[lightboxImageIndex].caption}
-            </div>
-          )}
-          
-          {/* Click outside to close */}
-          <div 
-            className="absolute inset-0 -z-10" 
-            onClick={closeLightbox}
-          />
-        </div>
-      )}
+      <Lightbox 
+        showLightbox={showLightbox}
+        lightboxImages={lightboxImages}
+        lightboxImageIndex={lightboxImageIndex}
+        closeLightbox={closeLightbox}
+        navigateLightbox={navigateLightbox}
+      />
       
       <div className="text-center w-full max-w-5xl relative z-10 mx-auto py-8">
 
@@ -1974,120 +1445,27 @@ function ConsolePortfolio() {
         {/* Navigation Container */}
         <div className="mb-16">
           {/* Mobile Navigation */}
-          <div className="lg:hidden flex flex-col items-center">
-          {/* Mobile Nav Button */}
-          <button 
-            className="flex items-center justify-center gap-2 bg-white/10 border border-white/20 rounded-full px-6 py-3 mb-4 hover:bg-white/20 transition-all relative"
-            onClick={() => setShowMobileMenu(!showMobileMenu)}
-          >
-            <span className="text-white font-medium">{sections[currentSection]}</span>
-            <div className={`w-4 h-4 border-l-2 border-b-2 border-white/60 transform transition-transform ${showMobileMenu ? 'rotate-135' : '-rotate-45'} relative top-[-2px] left-[-4px]`}></div>
-          </button>
-          
-          {/* Mobile Menu */}
-          {showMobileMenu && (
-            <div className="w-full max-w-sm bg-black/80 border border-white/20 rounded-lg p-4 backdrop-blur-sm">
-              {sections.map((section) => (
-                <button
-                  key={section}
-                  className={`w-full text-left p-3 rounded-lg mb-2 transition-all ${
-                    currentSection === section 
-                      ? 'bg-white/20 text-white' 
-                      : 'text-white/70 hover:bg-white/10 hover:text-white'
-                  }`}
-                  onClick={() => {
-                    setCurrentSection(section);
-                    setShowMobileMenu(false);
-                    trackSectionView(section);
-                  }}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </button>
-              ))}
-            </div>
-          )}
-          
-          {/* Mobile Projects Navigation */}
-          {currentSection === 'projects' && (
-            <div className="flex items-center gap-4 mt-4">
-              <button 
-                className="bg-white/10 border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all"
-                onClick={() => navigateProjects(-1)}
-              >
-                <div className="w-4 h-4 border-l-2 border-t-2 border-white/60 transform -rotate-45"></div>
-              </button>
-              <span className="text-white/70 text-sm">
-                {currentProjectIndex + 1} / {projects.length}
-              </span>
-              <button 
-                className="bg-white/10 border border-white/20 rounded-full p-3 hover:bg-white/20 transition-all"
-                onClick={() => navigateProjects(1)}
-              >
-                <div className="w-4 h-4 border-r-2 border-t-2 border-white/60 transform rotate-45"></div>
-              </button>
-            </div>
-          )}
-          </div>
+          <MobileMenu 
+            currentSection={currentSection}
+            setCurrentSection={setCurrentSection}
+            showMobileMenu={showMobileMenu}
+            setShowMobileMenu={setShowMobileMenu}
+            trackSectionView={trackSectionView}
+            currentProjectIndex={currentProjectIndex}
+            navigateProjectsWithLoading={navigateProjectsWithLoading}
+          />
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center justify-center gap-4 h-16 relative group">
-          <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 ${getBorderRadius()}`}></div>
-          
-          {/* Left/Right section navigation indicators - Desktop only, hidden when in keyboard navigation mode */}
-          {!isScrolledIntoProject && (
-            <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -left-24">
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                ←
-              </div>
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                →
-              </div>
-            </div>
-          )}
-          
-          {/* Up/Down project navigation indicators - Desktop only */}
-          {currentSection === 'projects' && (
-            <div className="hidden lg:flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute -right-24">
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                ↑
-              </div>
-              <div className="w-8 h-8 flex items-center justify-center bg-white/10 border border-white/30 rounded text-sm font-mono font-bold">
-                ↓
-              </div>
-            </div>
-          )}
-          
-          {sections.map((section, index) => (
-            <React.Fragment key={section}>
-              {section === 'projects' && currentSection === 'projects' ? (
-                <div className="flex flex-col items-center justify-center gap-1 min-w-[200px] h-16 relative">
-                  {renderProjectsWheel()}
-                </div>
-              ) : (
-                <div 
-                  className={`relative text-lg font-light tracking-wider py-3 px-4 transition-all duration-500 cursor-pointer border min-w-[120px] text-center group ${getBorderRadius('button')} ${
-                    currentSection === section 
-                      ? 'border-white/80 font-normal shadow-lg shadow-white/20 bg-white/5' 
-                      : 'border-white/20 hover:border-white/60 hover:bg-white/5 hover:shadow-md hover:shadow-white/10'
-                  }`}
-                  onClick={() => {
-                    setCurrentSection(section);
-                    trackSectionView(section);
-                  }}
-                  style={{animationDelay: `${index * 0.1}s`}}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${getBorderRadius('button')}`}></div>
-                  <span className="relative z-10">{section}</span>
-                </div>
-              )}
-              {section !== sections[sections.length - 1] && (
-                <div className="flex items-center">
-                  <div className="w-px h-6 bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-          </div>
+          <DesktopMenu 
+            currentSection={currentSection}
+            setCurrentSection={setCurrentSection}
+            trackSectionView={trackSectionView}
+            currentProjectIndex={currentProjectIndex}
+            setCurrentProjectIndex={setCurrentProjectIndex}
+            navigateProjectsWithLoading={navigateProjectsWithLoading}
+            isScrolledIntoProject={isScrolledIntoProject}
+            getBorderRadius={getBorderRadius}
+          />
         </div>
 
         {/* Content Area - Dynamic Height */}
@@ -2101,40 +1479,13 @@ function ConsolePortfolio() {
       </div>
       
       {/* Floating Action Buttons - Bottom Right Overlay */}
-      {showFloatingButtons && (
-        <div className="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
-          {/* Chat Bubble Button */}
-          <button
-            onClick={() => {
-              setCurrentSection('contact');
-              trackSectionView('contact');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className={`group w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-blue-400/50 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20 ${getBorderRadius('button')}`}
-            title="Contact Me"
-          >
-            <svg className="w-6 h-6 text-blue-300 group-hover:text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.418 8-8 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.418-8 8-8s8 3.582 8 8z" />
-            </svg>
-          </button>
-          
-          {/* Jump to Top Button */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className={`group w-14 h-14 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-green-400/50 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/20 ${getBorderRadius('button')}`}
-            title="Back to Top"
-          >
-            <svg 
-              className="w-6 h-6 text-green-300 group-hover:text-green-200 transition-all duration-300 group-hover:-translate-y-1" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </button>
-        </div>
-      )}
+      <FloatingButtons 
+        showFloatingButtons={showFloatingButtons}
+        showLightbox={showLightbox}
+        setCurrentSection={setCurrentSection}
+        trackSectionView={trackSectionView}
+        getBorderRadius={getBorderRadius}
+      />
     </div>
   );
 }
