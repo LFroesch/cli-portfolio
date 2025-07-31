@@ -111,9 +111,10 @@ export const useStats = () => {
         clearTimeout(projectViewTimeouts.current[projectName]);
       }
       
-      // Debounce server tracking by 3 seconds
+      // Debounce server tracking by 1 second
       projectViewTimeouts.current[projectName] = setTimeout(async () => {
         try {
+          console.log('Tracking project view:', projectName);
           await apiService.trackProjectView(projectName);
           // Refresh server stats periodically
           if (Math.random() < 0.1) { // 10% chance to refresh
@@ -123,7 +124,7 @@ export const useStats = () => {
           console.error('Failed to track project view:', error);
         }
         delete projectViewTimeouts.current[projectName];
-      }, 3000);
+      }, 1000);
     } else {
       // Fallback to old local method
       setStats(prev => ({
@@ -152,9 +153,10 @@ export const useStats = () => {
         clearTimeout(sectionViewTimeouts.current[sectionName]);
       }
       
-      // Debounce server tracking by 3 seconds
+      // Debounce server tracking by 1 second
       sectionViewTimeouts.current[sectionName] = setTimeout(async () => {
         try {
+          console.log('Tracking section view:', sectionName);
           await apiService.trackSectionView(sectionName);
           // Refresh server stats periodically
           if (Math.random() < 0.1) { // 10% chance to refresh
@@ -164,7 +166,7 @@ export const useStats = () => {
           console.error('Failed to track section view:', error);
         }
         delete sectionViewTimeouts.current[sectionName];
-      }, 3000);
+      }, 1000);
     } else {
       // Fallback to old local method
       setStats(prev => ({

@@ -17,12 +17,17 @@ import Lightbox from './components/Lightbox'
 import AboutSection from './components/AboutSection'
 import MobileMenu from './components/MobileMenu'
 import DesktopMenu from './components/DesktopMenu'
+import SplashScreen from './components/SplashScreen'
 import { getBorderRadiusClasses, copyEmailToClipboard, createToggleSection } from './utils/helpers'
 import './animations.css'
 
 function ConsolePortfolio() {
-  const [currentSection, setCurrentSection] = useState('projects');
-  const [currentProjectIndex, setCurrentProjectIndex] = useState(2);
+  // Check if this is first visit
+  const isFirstVisit = !sessionStorage.getItem('portfolio_visited');
+  
+  const [showSplash, setShowSplash] = useState(isFirstVisit);
+  const [currentSection, setCurrentSection] = useState(isFirstVisit ? 'about' : 'projects');
+  const [currentProjectIndex, setCurrentProjectIndex] = useState(0);
   const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
   const [currentBlogIndex, setCurrentBlogIndex] = useState(0);
   const [designVariant] = useState('rounded'); // 'rounded' or 'sharp'
@@ -41,6 +46,12 @@ function ConsolePortfolio() {
   const { showLightbox, lightboxImages, lightboxImageIndex, openLightbox, closeLightbox, navigateLightbox } = useLightbox(currentProjectIndex);
   const getBorderRadius = getBorderRadiusClasses(designVariant);
   const toggleSection = createToggleSection(setCollapsedSections);
+  
+  // Handle splash screen completion
+  const handleSplashComplete = useCallback(() => {
+    setShowSplash(false);
+    sessionStorage.setItem('portfolio_visited', 'true');
+  }, []);
   
   // Scroll tracking
   useEffect(() => {
@@ -68,6 +79,7 @@ function ConsolePortfolio() {
     getTopProjects, 
     getTotalProjectViews,
     getTotalSectionViews,
+    loadServerStats,
     isOnline
   } = useStats();
 
@@ -115,7 +127,7 @@ function ConsolePortfolio() {
   useEffect(() => {
     if (currentSection === 'projects' && projects[currentProjectIndex]) {
       const currentProjectName = projects[currentProjectIndex].name;
-      // Only track if the project actually changed
+      // Track if the project changed OR if we just entered the projects section
       if (lastTrackedProject !== currentProjectName) {
         trackProjectView(currentProjectName);
         setLastTrackedProject(currentProjectName);
@@ -126,6 +138,13 @@ function ConsolePortfolio() {
       setLastTrackedProject(null);
     }
   }, [currentSection, currentProjectIndex, lastTrackedProject, trackProjectView]);
+
+  // Force refresh stats when navigating to stats section
+  useEffect(() => {
+    if (currentSection === 'stats') {
+      loadServerStats();
+    }
+  }, [currentSection]);
 
   // Keyboard event handler
   useEffect(() => {
@@ -1389,21 +1408,28 @@ function ConsolePortfolio() {
 
   return (
     <div className="bg-black text-white min-h-screen font-mono relative overflow-x-hidden">
-      {/* Optimized Space Background */}
-      <StarfieldBackground />
-      {/* Paper Planes */}
-      <PaperPlanes />
+      {/* Show splash screen on first visit */}
+      {showSplash && (
+        <SplashScreen onComplete={handleSplashComplete} />
+      )}
       
-      {/* Lightbox Modal */}
-      <Lightbox 
-        showLightbox={showLightbox}
-        lightboxImages={lightboxImages}
-        lightboxImageIndex={lightboxImageIndex}
-        closeLightbox={closeLightbox}
-        navigateLightbox={navigateLightbox}
-      />
-      
-      <div className="text-center w-full max-w-5xl relative z-10 mx-auto py-8">
+      {/* Main portfolio content - hidden during splash */}
+      <div className={`transition-opacity duration-1000 ${showSplash ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Optimized Space Background */}
+        <StarfieldBackground />
+        {/* Paper Planes */}
+        <PaperPlanes />
+        
+        {/* Lightbox Modal */}
+        <Lightbox 
+          showLightbox={showLightbox}
+          lightboxImages={lightboxImages}
+          lightboxImageIndex={lightboxImageIndex}
+          closeLightbox={closeLightbox}
+          navigateLightbox={navigateLightbox}
+        />
+        
+        <div className="text-center w-full max-w-5xl relative z-10 mx-auto py-8">
 
         {/* Header */}
         <div className="mb-12 animate-fade-in">
@@ -1461,16 +1487,17 @@ function ConsolePortfolio() {
             </div>
           </div>
         </div>
+        
+        {/* Floating Action Buttons - Bottom Right Overlay */}
+        <FloatingButtons 
+          showFloatingButtons={showFloatingButtons}
+          showLightbox={showLightbox}
+          setCurrentSection={setCurrentSection}
+          trackSectionView={trackSectionView}
+          getBorderRadius={getBorderRadius}
+        />
       </div>
-      
-      {/* Floating Action Buttons - Bottom Right Overlay */}
-      <FloatingButtons 
-        showFloatingButtons={showFloatingButtons}
-        showLightbox={showLightbox}
-        setCurrentSection={setCurrentSection}
-        trackSectionView={trackSectionView}
-        getBorderRadius={getBorderRadius}
-      />
+      </div>
     </div>
   );
 }
